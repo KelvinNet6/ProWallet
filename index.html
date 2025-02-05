@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="sidebar">
+    <button class="menu-btn" id="menu-btn">☰</button>
+
+    <div class="sidebar" id="sidebar">
         <ul>
             <li><a href="/home">Home</a></li>
             <li><a href="/Send">Send</a></li>
@@ -20,7 +22,7 @@
 
     <div class="main-content">
         <header class="header">
-            <h1>EasyPay Wallet</h1>
+            <h1>EasyPay</h1>
         </header>
         
         <section class="account-info">
@@ -56,17 +58,17 @@
     </div>
 
     <script src="app.js"></script>
-<script>
-    // Logout functionality
-document.getElementById("logout-btn").addEventListener("click", () => {
-    // Clear session storage or cookies here
-    localStorage.removeItem('authToken');  // or sessionStorage if using it
-    
-    // Redirect to login page
-    window.location.href = "/login";
-});
+    <script>
+        // Toggle Sidebar for Mobile
+        document.getElementById("menu-btn").addEventListener("click", () => {
+            document.getElementById("sidebar").classList.toggle("active");
+        });
 
-</script>
-    
+        // Logout functionality
+        document.getElementById("logout-btn").addEventListener("click", () => {
+            localStorage.removeItem('authToken');
+            window.location.href = "/login";
+        });
+    </script>
 </body>
 </html>
