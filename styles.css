@@ -18,6 +18,9 @@ body {
     padding: 20px;
     height: 100%;
     position: fixed;
+    left: 0;
+    top: 0;
+    transition: transform 0.3s ease-in-out;
 }
 
 .sidebar ul {
@@ -130,23 +133,40 @@ button:hover {
     background-color: #c0392b;
 }
 
-/* Responsiveness */
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
     .sidebar {
         width: 200px;
+        transform: translateX(-100%);
+        position: fixed;
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .menu-btn {
+        display: block;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: #2c3e50;
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        font-size: 18px;
     }
     
     .main-content {
-        margin-left: 220px;
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
     }
 }
 
 @media (max-width: 480px) {
     .sidebar {
         width: 150px;
-    }
-    
-    .main-content {
-        margin-left: 170px;
     }
 }
