@@ -212,3 +212,48 @@ button:hover {
         font-size: 18px;
     }
 }
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.sidebar.dark-mode {
+    background-color: #333;
+    color: #e0e0e0;
+}
+
+.header.dark-mode {
+    background-color: #1c1c1c;
+}
+
+.transaction-item {
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+body.dark-mode .transaction-item {
+    background-color: #333;
+    border: 1px solid #555;
+}
+
+button.mode-toggle-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #333;
+}
+
+body.dark-mode button.mode-toggle-btn {
+    color: #e0e0e0;
+}
+
+button.mode-toggle-btn:hover {
+    opacity: 0.7;
+}
