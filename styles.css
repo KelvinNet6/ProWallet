@@ -209,6 +209,10 @@ body.dark-mode {
     background-color: #121212;
     color: #e0e0e0;
 }
+h1.dark-mode {
+    font-size: 2rem;
+    color: #2c3e50;
+}
 
 .sidebar.dark-mode {
     background-color: #333;
