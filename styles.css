@@ -9,6 +9,7 @@ body {
     background-color: #f5f5f5;
     display: flex;
     height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 .sidebar {
@@ -18,7 +19,7 @@ body {
     padding: 20px;
     height: 100%;
     position: fixed;
-    left: -250px; /* Hidden by default */
+    left: -250px; /* Initially hidden */
     transition: left 0.3s ease;
 }
 
@@ -46,7 +47,7 @@ body {
 }
 
 .main-content {
-    margin-left: 260px;
+    margin-left: 250px;
     padding: 20px;
     width: calc(100% - 250px);
     transition: margin-left 0.3s ease;
@@ -151,15 +152,17 @@ button:hover {
 }
 
 @media (max-width: 768px) {
+    /* Sidebar */
     .sidebar {
         width: 250px;
     }
     
+    /* Main Content */
     .main-content {
         margin-left: 0;
     }
 
-    /* Show the sidebar toggle button */
+    /* Sidebar Toggle (Hamburger menu) */
     .sidebar-toggle {
         display: block;
     }
@@ -175,5 +178,10 @@ button:hover {
     .sidebar ul li button {
         font-size: 16px;
     }
-}
 
+    /* Ensure content fits within the screen */
+    .main-content {
+        width: 100%;
+        padding: 15px;
+    }
+}
