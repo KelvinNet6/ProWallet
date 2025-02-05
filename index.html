@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyPay</title>
+    <title>Home - Easy Pay App</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="sidebar">
+    <!-- Sidebar Toggle Button for Mobile -->
+    <div class="sidebar-toggle" id="sidebar-toggle">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <div class="sidebar" id="sidebar">
         <ul>
             <li><a href="/home">Home</a></li>
             <li><a href="/transactions">Transactions</a></li>
@@ -16,14 +24,15 @@
         </ul>
     </div>
 
+    <!-- Main Content Area -->
     <div class="main-content">
         <header class="header">
-            <h1>EasyPay Wallet</h1>
+            <h1>Welcome to Your Account</h1>
         </header>
         
         <section class="account-info">
             <div class="account-details">
-                <h2>Account Name: Kelvin Kadzenje</h2>
+                <h2>Account Name: Kelvin</h2>
                 <br>
                 <p>Account Number: 460006759</p>
             </div>
@@ -33,7 +42,7 @@
             <h3>Transaction History</h3>
             <div class="transactions">
                 <div class="transaction-item">
-                    <span class="type">Monhtly Payment Deposit</span>
+                    <span class="type">Monthly Payment</span>
                     <span class="amount">$500</span>
                     <span class="date">02/05/2025</span>
                 </div>
@@ -52,9 +61,23 @@
     </div>
 
     <script src="app.js"></script>
-<script>
 
-  // Logout functionality
+    <script>
+        // Get the toggle button and the sidebar elements
+const toggleButton = document.getElementById("sidebar-toggle");
+const sidebar = document.getElementById("sidebar");
+
+// Add an event listener to the toggle button
+toggleButton.addEventListener("click", () => {
+    // Toggle the sidebar visibility
+    if (sidebar.style.left === "0px") {
+        sidebar.style.left = "-250px"; // Hide sidebar
+    } else {
+        sidebar.style.left = "0px"; // Show sidebar
+    }
+});
+
+// Logout functionality
 document.getElementById("logout-btn").addEventListener("click", () => {
     // Clear session storage or cookies here
     localStorage.removeItem('authToken');  // or sessionStorage if using it
@@ -62,7 +85,7 @@ document.getElementById("logout-btn").addEventListener("click", () => {
     // Redirect to login page
     window.location.href = "/login";
 });
-</script>
+
+    </script>
 </body>
 </html>
-
