@@ -1,0 +1,152 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    background-color: #2c3e50;
+    color: white;
+    width: 250px;
+    padding: 20px;
+    height: 100%;
+    position: fixed;
+}
+
+.sidebar ul {
+    list-style-type: none;
+}
+
+.sidebar ul li {
+    margin: 20px 0;
+}
+
+.sidebar ul li a,
+.sidebar ul li button {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li button:hover {
+    background-color: #34495e;
+}
+
+.main-content {
+    margin-left: 260px;
+    padding: 20px;
+    width: calc(100% - 250px);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #2c3e50;
+}
+
+.account-info {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+}
+
+.account-details h2 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+}
+
+.account-details p {
+    font-size: 1rem;
+    color: #7f8c8d;
+}
+
+.transaction-history {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-history h3 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.transactions {
+    list-style-type: none;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.transaction-item .type {
+    font-weight: bold;
+    color: #34495e;
+}
+
+.transaction-item .amount {
+    font-weight: bold;
+    color: #27ae60;
+}
+
+.transaction-item .date {
+    color: #7f8c8d;
+}
+
+button {
+    background-color: #e74c3c;
+    border: none;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #c0392b;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+    
+    .main-content {
+        margin-left: 220px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 150px;
+    }
+    
+    .main-content {
+        margin-left: 170px;
+    }
+}
