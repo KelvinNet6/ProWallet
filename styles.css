@@ -18,6 +18,8 @@ body {
     padding: 20px;
     height: 100%;
     position: fixed;
+    left: -250px; /* Hidden by default */
+    transition: left 0.3s ease;
 }
 
 .sidebar ul {
@@ -47,6 +49,7 @@ body {
     margin-left: 260px;
     padding: 20px;
     width: calc(100% - 250px);
+    transition: margin-left 0.3s ease;
 }
 
 .header {
@@ -130,23 +133,47 @@ button:hover {
     background-color: #c0392b;
 }
 
-/* Responsiveness */
+/* Hamburger Menu */
+.sidebar-toggle {
+    display: none;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.sidebar-toggle .bar {
+    width: 30px;
+    height: 4px;
+    margin: 6px 0;
+    background-color: #333;
+}
+
 @media (max-width: 768px) {
     .sidebar {
-        width: 200px;
+        width: 250px;
     }
     
     .main-content {
-        margin-left: 220px;
+        margin-left: 0;
+    }
+
+    /* Show the sidebar toggle button */
+    .sidebar-toggle {
+        display: block;
     }
 }
 
+/* For mobile */
 @media (max-width: 480px) {
     .sidebar {
-        width: 150px;
+        width: 200px;
     }
-    
-    .main-content {
-        margin-left: 170px;
+
+    .sidebar ul li a,
+    .sidebar ul li button {
+        font-size: 16px;
     }
 }
+
