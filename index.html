@@ -1,1 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyPay</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sidebar">
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/transactions">Transactions</a></li>
+            <li><a href="/account-settings">Account Settings</a></li>
+            <li><button id="logout-btn">Logout</button></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header class="header">
+            <h1>Welcome to Your Account</h1>
+        </header>
+        
+        <section class="account-info">
+            <div class="account-details">
+                <h2>Account Name: John Doe</h2>
+                <p>Account Number: 1234567890</p>
+            </div>
+        </section>
+        
+        <section class="transaction-history">
+            <h3>Transaction History</h3>
+            <div class="transactions">
+                <div class="transaction-item">
+                    <span class="type">Payment Deposit</span>
+                    <span class="amount">$500</span>
+                    <span class="date">02/05/2025</span>
+                </div>
+                <div class="transaction-item">
+                    <span class="type">Transfer</span>
+                    <span class="amount">$200</span>
+                    <span class="date">01/29/2025</span>
+                </div>
+                <div class="transaction-item">
+                    <span class="type">Withdrawal</span>
+                    <span class="amount">$50</span>
+                    <span class="date">01/25/2025</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+<script>
+
+  // Logout functionality
+document.getElementById("logout-btn").addEventListener("click", () => {
+    // Clear session storage or cookies here
+    localStorage.removeItem('authToken');  // or sessionStorage if using it
+    
+    // Redirect to login page
+    window.location.href = "/login";
+});
+</script>
+</body>
+</html>
 
