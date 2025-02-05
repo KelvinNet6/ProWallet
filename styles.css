@@ -11,6 +11,14 @@ body {
     height: 100vh;
 }
 
+.header {
+    background: url('Capture.PNG') no-repeat center center/cover; /* Image fills the header */
+    background-color: #111111; /* Fallback for unsupported image loading */
+    color: white;
+    padding: 40px 0;
+    min-height: 80vh; /* Minimum height for the section */
+}
+
 .sidebar {
     background-color: #2c3e50;
     color: white;
