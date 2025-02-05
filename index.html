@@ -60,9 +60,17 @@
     <script src="app.js"></script>
     <script>
         // Toggle Sidebar for Mobile
-        document.getElementById("menu-btn").addEventListener("click", () => {
-            document.getElementById("sidebar").classList.toggle("active");
-        });
+       document.getElementById("menu-btn").addEventListener("click", () => {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("active");
+    
+    // Close the sidebar immediately after clicking the button
+    if (sidebar.classList.contains("active")) {
+        setTimeout(() => {
+            sidebar.classList.remove("active");
+        }, 0); // This removes the active class immediately
+    }
+});
 
         // Logout functionality
         document.getElementById("logout-btn").addEventListener("click", () => {
