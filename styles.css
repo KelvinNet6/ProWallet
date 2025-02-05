@@ -259,6 +259,7 @@ button.mode-toggle-btn:hover {
     width: 100%;
     height: 400px; /* Adjust height as needed */
     overflow: hidden;
+    border-radius: 10px;
 }
 
 .background-video {
