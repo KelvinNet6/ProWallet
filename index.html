@@ -61,22 +61,15 @@
     <script>
         // Toggle Sidebar for Mobile
        document.getElementById("menu-btn").addEventListener("click", () => {
-    const sidebar = document.getElementById("sidebar");
-    sidebar.classList.toggle("active");
-    
-    // Close the sidebar immediately after clicking the button
-    if (sidebar.classList.contains("active")) {
-        setTimeout(() => {
-            sidebar.classList.remove("active");
-        }, 0); // This removes the active class immediately
-    }
-});
-
-        // Logout functionality
+                          const sidebar = document.getElementById("sidebar");
+                      // Toggle the "active" class to open/close the sidebar
+                          sidebar.classList.toggle("active");
+                            });
+                     // Logout functionality
         document.getElementById("logout-btn").addEventListener("click", () => {
-            localStorage.removeItem('authToken');
-            window.location.href = "/login";
-        });
+                       localStorage.removeItem('authToken');
+                       window.location.href = "/login";
+                            });
     </script>
 </body>
 </html>
