@@ -16,7 +16,7 @@ body {
     background-color: #111111; /* Fallback for unsupported image loading */
     color: white;
     padding: 40px 0;
-    min-height: 80vh; /* Minimum height for the section */
+    min-height: 40vh; /* Minimum height for the section */
 }
 
 .sidebar {
