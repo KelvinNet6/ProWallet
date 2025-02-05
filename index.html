@@ -3,19 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Easy Pay App</title>
+    <title>EasyPay App</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Sidebar Toggle Button for Mobile -->
-    <div class="sidebar-toggle" id="sidebar-toggle">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-    </div>
-
-    <!-- Sidebar Menu -->
-    <div class="sidebar" id="sidebar">
+    <div class="sidebar">
         <ul>
             <li><a href="/home">Home</a></li>
             <li><a href="/transactions">Transactions</a></li>
@@ -24,15 +16,15 @@
         </ul>
     </div>
 
-    <!-- Main Content Area -->
     <div class="main-content">
         <header class="header">
-            <h1>Welcome to Your Account</h1>
+            <h1>EasyPay Account</h1>
         </header>
         
         <section class="account-info">
             <div class="account-details">
                 <h2>Account Name: John Doe</h2>
+                <br>
                 <p>Account Number: 1234567890</p>
             </div>
         </section>
@@ -60,23 +52,8 @@
     </div>
 
     <script src="app.js"></script>
-
 <script>
-        // Get the toggle button and the sidebar elements
-const toggleButton = document.getElementById("sidebar-toggle");
-const sidebar = document.getElementById("sidebar");
-
-// Add an event listener to the toggle button
-toggleButton.addEventListener("click", () => {
-    // Toggle the sidebar visibility
-    if (sidebar.style.left === "0px") {
-        sidebar.style.left = "-250px"; // Hide sidebar
-    } else {
-        sidebar.style.left = "0px"; // Show sidebar
-    }
-});
-
-// Logout functionality
+    // Logout functionality
 document.getElementById("logout-btn").addEventListener("click", () => {
     // Clear session storage or cookies here
     localStorage.removeItem('authToken');  // or sessionStorage if using it
