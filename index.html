@@ -9,6 +9,9 @@
 <body>
     <button class="menu-btn" id="menu-btn">☰</button>
 
+    <!-- Dark/Light Mode Toggle Button -->
+    <button class="mode-toggle-btn" id="mode-toggle-btn">🌙</button>
+
     <div class="sidebar" id="sidebar">
         <ul>
             <li><a href="index.html">Home</a></li>
@@ -22,7 +25,7 @@
 
     <div class="main-content" id="home">
         <header class="header">
-            <h1></h1>
+            <h1>EasyPay</h1>
         </header>
         
         <section class="account-info">
@@ -60,16 +63,29 @@
     <script src="app.js"></script>
     <script>
         // Toggle Sidebar for Mobile
-       document.getElementById("menu-btn").addEventListener("click", () => {
-                          const sidebar = document.getElementById("sidebar");
-                      // Toggle the "active" class to open/close the sidebar
-                          sidebar.classList.toggle("active");
-                            });
-                     // Logout functionality
+        document.getElementById("menu-btn").addEventListener("click", () => {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("active");
+        });
+
+        // Logout functionality
         document.getElementById("logout-btn").addEventListener("click", () => {
-                       localStorage.removeItem('authToken');
-                       window.location.href = "/login";
-                            });
+            localStorage.removeItem('authToken');
+            window.location.href = "/login";
+        });
+
+        // Dark/Light Mode Toggle
+        const modeToggleBtn = document.getElementById("mode-toggle-btn");
+        modeToggleBtn.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+
+            // Toggle the icon for day/night
+            if (document.body.classList.contains("dark-mode")) {
+                modeToggleBtn.textContent = "🌞"; // Sun icon for light mode
+            } else {
+                modeToggleBtn.textContent = "🌙"; // Moon icon for dark mode
+            }
+        });
     </script>
 </body>
 </html>
