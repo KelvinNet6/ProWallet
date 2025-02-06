@@ -151,28 +151,31 @@
             window.location.href = "/login";
         });
 
-       // Open and close modal for viewing all transactions
+    //-------------------------------Open and close modal for viewing all transactions---------------------//
     const viewAllTransactionsBtn = document.getElementById("view-all-transactions-btn");
     const modal = document.getElementById("transactions-modal");
     const closeModal = document.getElementById("close-modal");
+    const body = document.body;
 
     // Open the modal when "View All Transactions" button is clicked
     viewAllTransactionsBtn.addEventListener("click", () => {
         modal.style.display = "block"; // Show the modal
+        body.style.overflow = "hidden"; // Prevent the body from scrolling when the modal is open
     });
 
     // Close the modal when the close button (X) is clicked
     closeModal.addEventListener("click", () => {
         modal.style.display = "none"; // Hide the modal
+        body.style.overflow = "auto"; // Re-enable body scrolling
     });
 
     // Close the modal if the user clicks outside the modal content
     window.addEventListener("click", (event) => {
         if (event.target === modal) {
             modal.style.display = "none"; // Hide the modal
+            body.style.overflow = "auto"; // Re-enable body scrolling
         }
     });
-
         //-----------------------load graph-------------------------//
         window.addEventListener('load', function() {
             // Log to check that the script is working
