@@ -382,7 +382,7 @@ canvas {
 /* Transfer Container Styling */
 .transfer-container {
     width: 100%;
-    max-width: 800px; /* Increase max-width for better spacing */
+    max-width: 800px; /* Increased max-width for better spacing */
     margin: 30px auto;
     padding: 30px; /* Added more padding for spacing */
     background-color: #f9f9f9;
@@ -452,13 +452,43 @@ textarea {
 /* Form Row for Aligning Input Fields */
 .form-row {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column; /* Arrange the fields vertically */
     gap: 20px; /* Adding gap between input fields */
-    flex-wrap: wrap;
 }
 
+/* Individual Form Group Styles for Separation */
 .form-group {
-    width: 32%; /* Make form groups smaller for a 3-column layout */
+    width: 100%; /* Ensures that each form group takes full width */
+}
+
+/* Security Popup Styling */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.close-btn {
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
 @media (max-width: 768px) {
@@ -468,7 +498,7 @@ textarea {
     }
 
     .form-group {
-        width: 100%; /* Make input fields full-width on smaller screens */
+        width: 100%; /* Ensure all form groups are full-width */
     }
 
     .submit-btn {
