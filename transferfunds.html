@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EasyPay</title>
-      <link rel="icon" href="screenshot_2025_02_06_14_53_13_EIJ_icon.ico" type="image/png">
+
+    <link rel="icon" href="screenshot_2025_02_06_14_53_13_EIJ_icon.ico" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
@@ -18,7 +19,6 @@
             <li><a href="/withdraw"><i class="fas fa-money-check-alt"></i> Cash Out</a></li>
             <li><a href="/Account-Settings"><i class="fas fa-cogs"></i> Account Settings</a></li>
             <li><button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sign Out</button></li>
-
         </ul>
     </div>
 
@@ -27,41 +27,54 @@
             <h1>EasyPay Wallet</h1>
         </header>
 
-<!-- Transfer Funds Section -->
-<div class="transfer-container">
-  <h2>Enter TRansfer Details!</h2>
-    <br>
-  <form action="/process-transfer" method="POST" class="transfer-form">
-    
-    <div class="form-group">
-      <label for="from-account">From Account</label>
-      <input type="text" id="from-account" name="from_account" value="Your EasyPay Account" readonly />
+        <!-- Transfer Funds Section -->
+        <div class="transfer-container">
+            <h2>Enter Transfer Details!</h2>
+            <br>
+
+            <form action="/process-transfer" method="POST" class="transfer-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="from-account">From Account</label>
+                        <input type="text" id="from-account" name="from_account" value="Your EasyPay Account" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="to-account">To Account (Recipient)</label>
+                        <input type="text" id="to-account" name="to_account" placeholder="Enter recipient's EasyPay account ID" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <input type="number" id="amount" name="amount" placeholder="Enter amount to transfer" required />
+                    </div>
+                </div>
+
+                <button type="button" class="submit-btn" id="transfer-btn">
+                    <i class="fas fa-paper-plane"></i> Transfer
+                </button>
+            </form>
+
+            <!-- Security Code Popup -->
+            <div id="security-popup" class="popup">
+                <div class="popup-content">
+                    <h3>Enter Security Code</h3>
+                    <form action="/process-security" method="POST" class="security-form">
+                        <label for="security-code">Security Code</label>
+                        <input type="password" id="security-code" name="security_code" placeholder="Enter your security code" required />
+                        <button type="submit">Submit</button>
+                    </form>
+                    <button id="close-popup" class="close-btn">Close</button>
+                </div>
+            </div>
+
+            <div id="transfer-status" class="status-message"></div>
+        </div>
+
     </div>
 
-    <div class="form-group">
-      <label for="to-account">To Account (Recipient)</label>
-      <input type="text" id="to-account" name="to_account" placeholder="Enter recipient's EasyPay account ID" required />
-    </div>
-
-    <div class="form-group">
-      <label for="amount">Amount</label>
-      <input type="number" id="amount" name="amount" placeholder="Enter amount to transfer" required />
-    </div>
-
-    <div class="form-group">
-      <label for="security-code">Security Code</label>
-      <input type="password" id="security-code" name="security_code" placeholder="Enter your security code" required />
-    </div>
- <button type="submit" class="submit-btn">
-    <i class="fas fa-paper-plane"></i> Transfer
- </button>
-  </form>
-  
-  <div id="transfer-status" class="status-message"></div>
-</div>
-
-        <script>
-            // Toggle Sidebar for Mobile
+    <script>
+        // Toggle Sidebar for Mobile
         document.getElementById("menu-btn").addEventListener("click", () => {
             const sidebar = document.getElementById("sidebar");
             sidebar.classList.toggle("active");
@@ -72,6 +85,18 @@
             localStorage.removeItem('authToken');
             window.location.href = "index.html";
         });
-        </script>
+
+        // Show security popup when transfer button is clicked
+        document.getElementById("transfer-btn").addEventListener("click", () => {
+            const popup = document.getElementById("security-popup");
+            popup.style.display = "block";
+        });
+
+        // Close popup
+        document.getElementById("close-popup").addEventListener("click", () => {
+            const popup = document.getElementById("security-popup");
+            popup.style.display = "none";
+        });
+    </script>
 </body>
 </html>
