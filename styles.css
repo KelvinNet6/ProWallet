@@ -391,7 +391,7 @@ canvas {
     justify-content: space-between;  /* Ensures the two containers are side by side */
     align-items: flex-start; /* Align both containers at the top */
     gap: 1%; /* Smaller gap between containers */
-    flex-wrap: nowrap; /* Prevent wrapping (important for horizontal layout) */
+    flex-wrap: wrap; /* Allow containers to wrap if needed on small screens */
     box-sizing: border-box; /* Include padding and border in the width calculation */
 }
 
@@ -429,8 +429,8 @@ label {
 /* Input and Textarea Styling */
 input[type="text"],
 input[type="number"],
-input[type="password"]
-{
+input[type="password"],
+textarea {
     width: 100%;
     padding: 12px;
     font-size: 16px;
@@ -507,8 +507,7 @@ input[type="password"]
 
 /* Responsive Fix */
 @media (max-width: 768px) {
-    
-     /* Adjust layout for smaller screens */
+    /* Adjust layout for smaller screens */
     .transfer-container {
         flex-direction: column; /* Stack left and right containers on smaller screens */
         align-items: center; /* Center containers for better appearance */
