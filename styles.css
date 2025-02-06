@@ -391,26 +391,28 @@ canvas {
     justify-content: space-between;  /* Ensures the two containers are side by side */
     align-items: flex-start; /* Align both containers at the top */
     gap: 1%; /* Smaller gap between containers */
-    flex-wrap: wrap; /* Allow containers to wrap if needed on small screens */
+    flex-wrap: nowrap; /* Prevent wrapping (important for horizontal layout) */
     box-sizing: border-box; /* Include padding and border in the width calculation */
 }
 
 /* Left Container */
 .left-container {
-    width: calc(50% - 1%); /* Adjust width to fit side by side, subtracting the gap */
+    flex: 1; /* Allow the left container to take up available space */
     padding: 20px;
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
     box-sizing: border-box; /* Include padding and border in width calculation */
+    max-width: calc(50% - 1%); /* Ensure it takes half the container width minus the gap */
 }
 
 /* Right Container */
 .right-container {
-    width: calc(50% - 1%); /* Adjust width to fit side by side, subtracting the gap */
+    flex: 1; /* Allow the right container to take up available space */
     padding: 20px;
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
     box-sizing: border-box; /* Include padding and border in width calculation */
+    max-width: calc(50% - 1%); /* Ensure it takes half the container width minus the gap */
 }
 
 /* Form Group Styling */
@@ -507,15 +509,15 @@ input[type="password"]
 
 /* Responsive Fix */
 @media (max-width: 768px) {
-    /* Adjust layout for smaller screens */
-    .transfer-container {
-        flex-direction: column; /* Stack left and right containers on smaller screens */
-        align-items: center; /* Center containers for better appearance */
+    
+   .transfer-container {
+        flex-direction: column; /* Stack the containers vertically on smaller screens */
+        align-items: center; /* Center the containers */
     }
 
     .left-container, .right-container {
-        width: 100%; /* Full width for each container */
-        margin-right: 0; /* Remove margin on smaller screens */
+        width: 100%; /* Ensure they take up the full width on smaller screens */
+        margin-bottom: 20px; /* Add some space between containers */
     }
 
     .submit-btn {
