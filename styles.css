@@ -472,7 +472,6 @@ textarea {
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
-    display: flex;
     justify-content: center;  /* Center horizontally */
     align-items: center;      /* Center vertically */
 }
@@ -484,29 +483,24 @@ textarea {
     border-radius: 10px;
     width: 100%;
     max-width: 400px;  /* Maximum width */
-    position: relative;  /* Keeps the close button positioned inside */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Adds depth */
-    text-align: center; /* Centers content */
+    position: relative;  /* To position the close button absolutely */
 }
 
 /* Close Button Styling (X) */
 .close-btn {
     background: none;
     border: none;
-    font-size: 24px;
+    font-size: 30px;
     color: #333;
     position: absolute;
     top: 10px;
     right: 10px;
     cursor: pointer;
-    padding: 5px;
-    transition: color 0.3s ease;
 }
 
 .close-btn:hover {
     color: #f44336;  /* Red color on hover */
 }
-
 
 /* Responsive Fix */
 @media (max-width: 768px) {
