@@ -504,9 +504,9 @@ textarea {
 }
 
 
-       .container {
+    .container {
             width: 100%;
-            max-width: 400px;
+            max-width: 100%; /* Default to full width */
             margin: 0 auto;
             padding: 20px;
         }
@@ -573,9 +573,17 @@ textarea {
             text-align: center;
         }
         
-        /* Responsive Design */
+        /* Mobile View */
         @media (max-width: 600px) {
             .container {
                 padding: 10px;
+            }
+        }
+        
+        /* Desktop View */
+        @media (min-width: 601px) {
+            .container {
+                max-width: 600px;  /* Increase width for desktop */
+                padding: 30px;
             }
         }
