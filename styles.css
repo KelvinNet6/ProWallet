@@ -379,9 +379,26 @@ canvas {
         }
     }
 
+/* Main Content Styling */
+.main-content {
+    width: 100%;
+    max-width: 1200px; /* Ensure content doesn't stretch too wide */
+    margin: 0 auto;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+/* Left and Right Containers Container (using flex for horizontal layout on desktop) */
+.form-container {
+    display: flex;
+    justify-content: space-between; /* Horizontally align left and right containers with space */
+    gap: 20px; /* Ensure there is space between containers */
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+}
+
 /* Left Container */
 .left-container {
-    width: calc(50% - 1%); /* Adjust width to fit side by side, subtracting the gap */
+    flex: 1 1 calc(50% - 10px); /* Flexbox allows the left container to take 50% minus the gap */
     padding: 20px;
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
@@ -390,7 +407,7 @@ canvas {
 
 /* Right Container */
 .right-container {
-    width: calc(50% - 1%); /* Adjust width to fit side by side, subtracting the gap */
+    flex: 1 1 calc(50% - 10px); /* Flexbox allows the right container to take 50% minus the gap */
     padding: 20px;
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
@@ -489,16 +506,20 @@ textarea {
     color: #f44336;  /* Red color on hover */
 }
 
-/* Responsive Fix */
+/* Responsive Fix for Mobile View */
 @media (max-width: 768px) {
     /* Adjust layout for smaller screens */
+    .form-container {
+        flex-direction: column; /* Stack left and right containers vertically */
+        align-items: center; /* Center containers for better appearance */
+        gap: 20px; /* Add gap between stacked containers */
+    }
+
     .left-container, .right-container {
         width: 100%; /* Full width for each container */
-        margin-right: 0; /* Remove margin on smaller screens */
     }
 
     .submit-btn {
         font-size: 16px;
     }
 }
-
