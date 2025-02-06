@@ -395,24 +395,11 @@ canvas {
     box-sizing: border-box; /* Include padding and border in the width calculation */
 }
 
-/* Left Container */
-.left-container {
-    flex: 1; /* Allow the left container to take up available space */
-    padding: 20px;
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-    box-sizing: border-box; /* Include padding and border in width calculation */
-    max-width: calc(50% - 1%); /* Ensure it takes half the container width minus the gap */
-}
-
-/* Right Container */
-.right-container {
-    flex: 1; /* Allow the right container to take up available space */
-    padding: 20px;
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-    box-sizing: border-box; /* Include padding and border in width calculation */
-    max-width: calc(50% - 1%); /* Ensure it takes half the container width minus the gap */
+/* Ensure the containers have equal width and don't stretch too much */
+.left-container, .right-container {
+    flex: 1; /* Equal distribution of space */
+    min-width: 45%; /* Ensure each container has a minimum width, but takes up 45% max */
+    max-width: 48%; /* Prevent stretching too wide */
 }
 
 /* Form Group Styling */
