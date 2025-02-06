@@ -28,13 +28,14 @@
         <header class="header">
             <h1>EasyPay Wallet - Cash Out</h1>
         </header>
-        <div class="container">
+        
+      <div class="container">
     <div class="form-container">
         <h1>Cash Out</h1>
         <form id="cashOutForm">
-            <!-- Payment Collection Number -->
+            <!-- Payment Collection Number (Read-Only) -->
             <label for="paymentNumber">Payment Collection Number:</label>
-            <input type="text" id="paymentNumber" name="paymentNumber" placeholder="Enter Payment Number" required>
+            <input type="text" id="paymentNumber" name="paymentNumber" value="460006759" readonly>
             
             <!-- Amount to Cash Out -->
             <label for="amount">Amount to Cash Out:</label>
@@ -69,17 +70,6 @@
 </div>
 
 <script>
-        // Toggle Sidebar for Mobile
-        document.getElementById("menu-btn").addEventListener("click", () => {
-            const sidebar = document.getElementById("sidebar");
-            sidebar.classList.toggle("active");
-        });
-
-        // Logout functionality
-        document.getElementById("logout-btn").addEventListener("click", () => {
-            localStorage.removeItem('authToken');
-            window.location.href = "index.html";
-        });
     // Handle form submission
     document.getElementById("cashOutForm").addEventListener("submit", function(event) {
         event.preventDefault();
