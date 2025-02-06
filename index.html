@@ -28,16 +28,21 @@
     </div>
 
     <script src="app.js">
-// Form validation logic
+// Default credentials
+const defaultEmail = "user@example.com";
+const defaultPassword = "password123";
+
+// Form validation and login function
 document.getElementById("login-btn").addEventListener("click", function () {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    if (email && password) {
-        // Normally here would be an AJAX call to authenticate the user
-        alert("Login Successful!");
+    // Check if the entered credentials match the default ones
+    if (email === defaultEmail && password === defaultPassword) {
+        // Redirect to home.html if login is successful
+        window.location.href = "home.html";
     } else {
-        alert("Please fill in both fields.");
+        alert("Invalid email or password. Please try again.");
     }
 });
 
@@ -46,6 +51,7 @@ function handleBiometricLogin() {
     // Placeholder logic for biometric authentication
     alert("Biometric Authentication not available. Placeholder for real implementation.");
 }
+        
   </script>
 </body>
 </html>
