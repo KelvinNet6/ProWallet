@@ -1,1 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Wallet Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo-container">
+                <img src="wallet-logo.png" alt="Wallet Logo" class="logo">
+                <h2>Mobile Wallet</h2>
+            </div>
+            <form id="login-form">
+                <input type="email" id="email" placeholder="Email Address" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="button" id="login-btn">Sign In</button>
+                <div class="options">
+                    <button type="button" class="biometric-btn" onclick="handleBiometricLogin()">Login with Biometrics</button>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+            </form>
+            <div class="terms">
+                <p>By signing in, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js">
+// Form validation logic
+document.getElementById("login-btn").addEventListener("click", function () {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (email && password) {
+        // Normally here would be an AJAX call to authenticate the user
+        alert("Login Successful!");
+    } else {
+        alert("Please fill in both fields.");
+    }
+});
+
+// Simulate biometric login
+function handleBiometricLogin() {
+    // Placeholder logic for biometric authentication
+    alert("Biometric Authentication not available. Placeholder for real implementation.");
+}
+  </script>
+</body>
+</html>
 
