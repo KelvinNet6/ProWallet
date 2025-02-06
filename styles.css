@@ -379,14 +379,6 @@ canvas {
         }
     }
 
-/* Main Content Styling */
-.main-content {
-    width: 100%;
-    max-width: 1200px; /* Ensure content doesn't stretch too wide */
-    margin: 0 auto;
-    padding: 30px;
-    box-sizing: border-box;
-}
 
 /* Left and Right Containers Container (using flex for horizontal layout on desktop) */
 .form-container {
