@@ -381,8 +381,8 @@ canvas {
 
 /* Transfer Container Styling */
 .transfer-container {
-    width: 100%;
-    max-width: 800px;
+    width: 100%; /* Ensures full width */
+    max-width: 100%; /* Ensures it doesn't exceed the screen width */
     margin: 30px auto;
     padding: 30px;
     background-color: #f1f1f1; /* Light dark background */
@@ -391,10 +391,9 @@ canvas {
     display: flex;
     justify-content: space-between;  /* Ensures the two containers are side by side */
     align-items: flex-start; /* Ensures both containers align at the top */
-    gap: 2%; /* Reduced gap between left and right containers */
-    flex-wrap: wrap; /* Ensures the containers can wrap if necessary */
+    gap: 2%; /* Reduced gap */
+    flex-wrap: wrap; /* Allows containers to wrap on smaller screens */
 }
-
 /* Left Container */
 .left-container {
     width: 48%; /* Left container takes up 48% of space */
