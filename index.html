@@ -104,31 +104,43 @@
             }
         });
 
-        <script>
-    window.addEventListener('load', function() {
-        const ctx = document.getElementById('transactionChart').getContext('2d');
-        const transactionChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['01/25/2025', '01/29/2025', '02/05/2025'],
-                datasets: [{
-                    label: 'Transaction Amount (K)',
-                    data: [50, 200, 500],
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    fill: true,
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+   window.addEventListener('load', function() {
+    // Log to check that the script is working
+    console.log("Page loaded, creating chart...");
+
+    // Get the canvas element
+    const canvas = document.getElementById('transactionChart');
+    
+    // Force width and height of the canvas
+    canvas.width = 400; // Set width of the canvas
+    canvas.height = 200; // Set height of the canvas
+
+    // Get the context to draw on the canvas
+    const ctx = canvas.getContext('2d');
+
+    // Initialize Chart.js
+    const transactionChart = new Chart(ctx, {
+        type: 'line', // Type of chart (line chart in this case)
+        data: {
+            labels: ['01/25/2025', '01/29/2025', '02/05/2025'], // Transaction dates
+            datasets: [{
+                label: 'Transaction Amount (K)',
+                data: [50, 200, 500], // Transaction amounts
+                borderColor: 'rgba(75, 192, 192, 1)', // Color of the line
+                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Background color under the line
+                fill: true, // Fill the area under the line
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
-        });
+        }
     });
+});
     </script>
 </body>
 </html>
