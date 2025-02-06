@@ -27,54 +27,52 @@
             <h1>EasyPay Wallet</h1>
         </header>
 
-        <!-- Transfer Funds Section -->
-        <div class="transfer-container">
-            <h2>Enter Transfer Details!</h2>
-            <br>
+        <!-- Transfer Funds Section (without the transfer-container div) -->
+        <h2>Enter Transfer Details!</h2>
+        <br>
 
-            <!-- Form -->
-            <form action="/process-transfer" method="POST" class="transfer-form" id="transfer-form">
-                <!-- Left Container (From Account) -->
-                <div class="left-container">
-                    <div class="form-group">
-                        <label for="from-account">From Account</label>
-                        <input type="text" id="from-account" name="from_account" value="460006759" readonly />
-                    </div>
+        <!-- Form -->
+        <form action="/process-transfer" method="POST" class="transfer-form" id="transfer-form">
+            <!-- Left Container (From Account) -->
+            <div class="left-container">
+                <div class="form-group">
+                    <label for="from-account">From Account</label>
+                    <input type="text" id="from-account" name="from_account" value="460006759" readonly />
+                </div>
+            </div>
+
+            <!-- Right Container (Recipient, Amount, and Transfer Button) -->
+            <div class="right-container">
+                <div class="form-group">
+                    <label for="to-account">To Account (Recipient)</label>
+                    <input type="text" id="to-account" name="to_account" placeholder="Enter recipient's EasyPay account ID" />
                 </div>
 
-                <!-- Right Container (Recipient, Amount, and Transfer Button) -->
-                <div class="right-container">
-                    <div class="form-group">
-                        <label for="to-account">To Account (Recipient)</label>
-                        <input type="text" id="to-account" name="to_account" placeholder="Enter recipient's EasyPay account ID" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="amount">Amount</label>
-                        <input type="number" id="amount" name="amount" placeholder="Enter amount to transfer" />
-                    </div>
-
-                    <button type="button" class="submit-btn" id="transfer-btn">
-                        <i class="fas fa-paper-plane"></i> Transfer
-                    </button>
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" name="amount" placeholder="Enter amount to transfer" />
                 </div>
 
-                <!-- Error Message -->
-                <div id="error-message" class="error-message"></div>
-            </form>
+                <button type="button" class="submit-btn" id="transfer-btn">
+                    <i class="fas fa-paper-plane"></i> Transfer
+                </button>
+            </div>
 
-            <!-- Security Code Popup -->
-            <div id="security-popup" class="popup">
-                <div class="popup-content">
-                    <h3>Enter Security Code</h3>
-                    <form action="/process-security" method="POST" class="security-form">
-                        <label for="security-code">Security Code</label>
-                        <input type="password" id="security-code" name="security_code" placeholder="Enter your security code" required />
-                        <button type="submit">Submit</button>
-                        <br>
-                    </form>
-                     <button id="closePopupBtn" class="close-btn">&times;</button>
-                </div>
+            <!-- Error Message -->
+            <div id="error-message" class="error-message"></div>
+        </form>
+
+        <!-- Security Code Popup -->
+        <div id="security-popup" class="popup">
+            <div class="popup-content">
+                <h3>Enter Security Code</h3>
+                <form action="/process-security" method="POST" class="security-form">
+                    <label for="security-code">Security Code</label>
+                    <input type="password" id="security-code" name="security_code" placeholder="Enter your security code" required />
+                    <button type="submit">Submit</button>
+                    <br>
+                </form>
+                <button id="closePopupBtn" class="close-btn">&times;</button>
             </div>
         </div>
     </div>
@@ -93,38 +91,37 @@
         });
 
         document.addEventListener("DOMContentLoaded", function() {
-    const transferBtn = document.getElementById("transfer-btn");
-    const popup = document.getElementById("security-popup");
-    const closePopupBtn = document.getElementById("closePopupBtn"); // Close button
-    const errorMessage = document.getElementById("error-message");
+            const transferBtn = document.getElementById("transfer-btn");
+            const popup = document.getElementById("security-popup");
+            const closePopupBtn = document.getElementById("closePopupBtn"); // Close button
+            const errorMessage = document.getElementById("error-message");
 
-    transferBtn.addEventListener("click", () => {
-        const fromAccount = document.getElementById("from-account").value;
-        const toAccount = document.getElementById("to-account").value;
-        const amount = document.getElementById("amount").value;
+            transferBtn.addEventListener("click", () => {
+                const fromAccount = document.getElementById("from-account").value;
+                const toAccount = document.getElementById("to-account").value;
+                const amount = document.getElementById("amount").value;
 
-        if (!toAccount || !amount) {
-            errorMessage.textContent = "Please fill in both recipient and amount.";
-            errorMessage.style.display = "block";
-        } else {
-            errorMessage.style.display = "none";
-            popup.style.display = "flex"; // Show security code popup (centered)
-        }
-    });
+                if (!toAccount || !amount) {
+                    errorMessage.textContent = "Please fill in both recipient and amount.";
+                    errorMessage.style.display = "block";
+                } else {
+                    errorMessage.style.display = "none";
+                    popup.style.display = "flex"; // Show security code popup (centered)
+                }
+            });
 
-    // Close the popup when the close button is clicked
-    closePopupBtn.addEventListener("click", () => {
-        popup.style.display = "none";
-    });
+            // Close the popup when the close button is clicked
+            closePopupBtn.addEventListener("click", () => {
+                popup.style.display = "none";
+            });
 
-    // Close the popup when clicking outside the popup content
-    popup.addEventListener("click", function(event) {
-        if (event.target === popup) {
-            popup.style.display = "none";
-        }
-    });
-});
-
+            // Close the popup when clicking outside the popup content
+            popup.addEventListener("click", function(event) {
+                if (event.target === popup) {
+                    popup.style.display = "none";
+                }
+            });
+        });
     </script>
 </body>
 </html>
