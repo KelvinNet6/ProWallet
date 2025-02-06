@@ -391,7 +391,8 @@ canvas {
     display: flex;
     justify-content: space-between;  /* Ensures the two containers are side by side */
     align-items: flex-start; /* Ensures both containers align at the top */
-    gap: 4%; /* Add some space between left and right containers */
+    gap: 2%; /* Reduced gap between left and right containers */
+    flex-wrap: wrap; /* Ensures the containers can wrap if necessary */
 }
 
 /* Left Container */
