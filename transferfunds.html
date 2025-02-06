@@ -32,26 +32,35 @@
             <h2>Enter Transfer Details!</h2>
             <br>
 
-            <form action="/process-transfer" method="POST" class="transfer-form">
-                <div class="form-group">
-                    <label for="from-account">From Account</label>
-                    <input type="text" id="from-account" name="from_account" value="Your EasyPay Account" readonly />
+            <!-- Form -->
+            <form action="/process-transfer" method="POST" class="transfer-form" id="transfer-form">
+                <!-- Left Container (From Account) -->
+                <div class="left-container">
+                    <div class="form-group">
+                        <label for="from-account">From Account</label>
+                        <input type="text" id="from-account" name="from_account" value="Your EasyPay Account" readonly />
+                    </div>
                 </div>
 
-                <!-- Grouped Recipient and Amount Fields -->
-                <div class="form-group">
-                    <label for="to-account">To Account (Recipient)</label>
-                    <input type="text" id="to-account" name="to_account" placeholder="Enter recipient's EasyPay account ID" required />
+                <!-- Right Container (Recipient, Amount, and Transfer Button) -->
+                <div class="right-container">
+                    <div class="form-group">
+                        <label for="to-account">To Account (Recipient)</label>
+                        <input type="text" id="to-account" name="to_account" placeholder="Enter recipient's EasyPay account ID" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <input type="number" id="amount" name="amount" placeholder="Enter amount to transfer" />
+                    </div>
+
+                    <button type="button" class="submit-btn" id="transfer-btn">
+                        <i class="fas fa-paper-plane"></i> Transfer
+                    </button>
                 </div>
 
-                <div class="form-group">
-                    <label for="amount">Amount</label>
-                    <input type="number" id="amount" name="amount" placeholder="Enter amount to transfer" required />
-                </div>
-
-                <button type="button" class="submit-btn" id="transfer-btn">
-                    <i class="fas fa-paper-plane"></i> Transfer
-                </button>
+                <!-- Error Message -->
+                <div id="error-message" class="error-message"></div>
             </form>
 
             <!-- Security Code Popup -->
@@ -66,10 +75,7 @@
                     <button id="close-popup" class="close-btn">Close</button>
                 </div>
             </div>
-
-            <div id="transfer-status" class="status-message"></div>
         </div>
-
     </div>
 
     <script>
@@ -87,8 +93,19 @@
 
         // Show security popup when transfer button is clicked
         document.getElementById("transfer-btn").addEventListener("click", () => {
-            const popup = document.getElementById("security-popup");
-            popup.style.display = "block";
+            const fromAccount = document.getElementById("from-account").value;
+            const toAccount = document.getElementById("to-account").value;
+            const amount = document.getElementById("amount").value;
+            const errorMessage = document.getElementById("error-message");
+
+            if (!toAccount || !amount) {
+                errorMessage.textContent = "Please fill in both recipient and amount.";
+                errorMessage.style.display = "block";
+            } else {
+                errorMessage.style.display = "none";
+                const popup = document.getElementById("security-popup");
+                popup.style.display = "block"; // Show security code popup
+            }
         });
 
         // Close popup
