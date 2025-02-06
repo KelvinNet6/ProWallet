@@ -307,7 +307,7 @@ canvas {
     width: 100% !important;
     height: 300px !important;
 }
-  /* Modal Styles */
+     /* Modal Styles */
     .modal {
         display: none; /* Ensure the modal is hidden by default */
         position: fixed;
@@ -325,8 +325,10 @@ canvas {
         margin: 15% auto;
         padding: 20px;
         width: 80%;
+        max-width: 600px; /* Maximum width for larger screens */
         max-height: 80%;
         overflow-y: auto;
+        border-radius: 15px; /* Apply border radius for rounded corners */
     }
 
     .close-btn {
@@ -356,4 +358,23 @@ canvas {
 
     .transaction-item:last-child {
         border-bottom: none;
+    }
+
+    /* Mobile Responsiveness */
+    @media screen and (max-width: 768px) {
+        .modal-content {
+            margin: 5% auto; /* Adjust margin for mobile */
+            width: 90%; /* Ensure modal is wide enough */
+            height: 90%; /* Take up most of the screen */
+            max-height: none; /* Remove max-height to allow the modal to expand */
+            border-radius: 10px; /* Slightly smaller border radius on mobile */
+        }
+
+        .scroll-container {
+            max-height: 70%; /* Reduce scrollable area to fit better on mobile */
+        }
+
+        .close-btn {
+            font-size: 24px; /* Make close button a bit smaller on mobile */
+        }
     }
