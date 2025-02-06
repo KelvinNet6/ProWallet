@@ -508,14 +508,15 @@ input[type="password"]
 /* Responsive Fix */
 @media (max-width: 768px) {
     
-   .transfer-container {
-        flex-direction: column; /* Stack the containers vertically on smaller screens */
-        align-items: center; /* Center the containers */
+     /* Adjust layout for smaller screens */
+    .transfer-container {
+        flex-direction: column; /* Stack left and right containers on smaller screens */
+        align-items: center; /* Center containers for better appearance */
     }
 
     .left-container, .right-container {
-        width: 100%; /* Ensure they take up the full width on smaller screens */
-        margin-bottom: 20px; /* Add some space between containers */
+        width: 100%; /* Full width for each container */
+        margin-right: 0; /* Remove margin on smaller screens */
     }
 
     .submit-btn {
