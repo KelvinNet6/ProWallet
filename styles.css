@@ -391,6 +391,7 @@ canvas {
     display: flex;
     justify-content: space-between;  /* Ensures the two containers are side by side */
     align-items: flex-start; /* Ensures both containers align at the top */
+    gap: 4%; /* Add some space between left and right containers */
 }
 
 /* Left Container */
@@ -399,7 +400,6 @@ canvas {
     padding: 20px;
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-    margin-right: 4%; /* Adds space between left and right containers */
 }
 
 /* Right Container */
