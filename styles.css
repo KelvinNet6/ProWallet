@@ -379,22 +379,6 @@ canvas {
         }
     }
 
-/* Transfer Container Styling */
-.transfer-container {
-    width: 100%; /* Full width of the screen */
-    margin: 30px auto;
-    padding: 30px;
-    background-color: #f1f1f1; /* Light dark background */
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;  /* Ensures the two containers are side by side */
-    align-items: flex-start; /* Align both containers at the top */
-    gap: 1%; /* Smaller gap between containers */
-    flex-wrap: wrap; /* Allow containers to wrap if needed on small screens */
-    box-sizing: border-box; /* Include padding and border in the width calculation */
-}
-
 /* Left Container */
 .left-container {
     width: calc(50% - 1%); /* Adjust width to fit side by side, subtracting the gap */
@@ -508,11 +492,6 @@ textarea {
 /* Responsive Fix */
 @media (max-width: 768px) {
     /* Adjust layout for smaller screens */
-    .transfer-container {
-        flex-direction: column; /* Stack left and right containers on smaller screens */
-        align-items: center; /* Center containers for better appearance */
-    }
-
     .left-container, .right-container {
         width: 100%; /* Full width for each container */
         margin-right: 0; /* Remove margin on smaller screens */
@@ -522,3 +501,4 @@ textarea {
         font-size: 16px;
     }
 }
+
