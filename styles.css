@@ -382,36 +382,36 @@ canvas {
 /* Transfer Container Styling */
 .transfer-container {
     width: 100%;
-    max-width: 800px; 
+    max-width: 800px;
     margin: 30px auto;
-    padding: 30px; 
-    background-color: #f9f9f9;
+    padding: 30px;
+    background-color: #f1f1f1; /* Light dark background */
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between;  /* Ensures the two containers are side by side */
 }
 
 /* Left Container */
 .left-container {
-    width: 48%; /* Small width for the left container */
+    width: 48%; /* Left container takes up 48% of space */
 }
 
 /* Right Container */
 .right-container {
-    width: 48%; /* Small width for the right container */
+    width: 48%; /* Right container also takes up 48% of space */
 }
 
 /* Form Group Styling */
 .form-group {
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
 }
 
 /* Label Styling */
 label {
     display: block;
     font-weight: bold;
-    margin-bottom: 8px; 
+    margin-bottom: 8px;
     color: #555;
 }
 
@@ -444,7 +444,7 @@ textarea {
 
 .submit-btn:hover {
     background-color: #45a049;
-    transform: translateY(-2px); 
+    transform: translateY(-2px);
 }
 
 /* Error Message Styling */
@@ -496,6 +496,6 @@ textarea {
     }
 
     .submit-btn {
-        font-size: 16px; 
+        font-size: 16px;
     }
 }
