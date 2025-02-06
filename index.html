@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EasyPay App</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js CDN -->
 </head>
 <body>
     <button class="menu-btn" id="menu-btn">☰</button>
@@ -55,7 +56,8 @@
                 </div>
             </div>
         </section>
-          <br><br>
+        
+        <br><br>
         <!-- New Section with Background Video -->
         <section class="video-container">
             <div class="video-overlay">
@@ -66,6 +68,12 @@
                 <source src="853984-hd_1920_1080_25fps.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
+        </section>
+
+        <!-- New Section for Transaction Graph -->
+        <section class="transaction-graph">
+            <h3>Transaction Trends</h3>
+            <canvas id="transactionChart" width="400" height="200"></canvas>
         </section>
     </div>
 
@@ -93,6 +101,30 @@
                 modeToggleBtn.textContent = "🌞"; // Sun icon for light mode
             } else {
                 modeToggleBtn.textContent = "🌙"; // Moon icon for dark mode
+            }
+        });
+
+        // Transaction Graph
+        const ctx = document.getElementById('transactionChart').getContext('2d');
+        const transactionChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['01/25/2025', '01/29/2025', '02/05/2025'], // Transaction dates
+                datasets: [{
+                    label: 'Transaction Amount (K)',
+                    data: [50, 200, 500], // Corresponding amounts for the transactions
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
         });
     </script>
