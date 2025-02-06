@@ -318,6 +318,7 @@ canvas {
         height: 100%;
         overflow: auto;
         background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent overlay */
+        border-radius: 15px; /* Optional: apply border radius */
     }
 
     .modal-content {
