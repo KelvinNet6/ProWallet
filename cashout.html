@@ -28,7 +28,99 @@
         <header class="header">
             <h1>EasyPay Wallet - Cash Out</h1>
         </header>
+        <div class="container">
+    <div class="form-container">
+        <h1>Cash Out</h1>
+        <form id="cashOutForm">
+            <!-- Payment Collection Number -->
+            <label for="paymentNumber">Payment Collection Number:</label>
+            <input type="text" id="paymentNumber" name="paymentNumber" placeholder="Enter Payment Number" required>
+            
+            <!-- Amount to Cash Out -->
+            <label for="amount">Amount to Cash Out:</label>
+            <input type="number" id="amount" name="amount" placeholder="Amount" required>
+            
+            <div class="fee-info" id="feeInfo">Transaction Fee: $0.00</div>
+
+            <!-- Payment Method -->
+            <label for="paymentMethod">Payment Method:</label>
+            <select id="paymentMethod" name="paymentMethod" required>
+                <option value="bank">Bank Transfer</option>
+                <option value="pickup">Cash Pickup</option>
+            </select>
+
+            <!-- Cash Pickup Location (if selected) -->
+            <label for="pickupLocation" id="pickupLocationLabel" style="display: none;">Cash Pickup Location:</label>
+            <input type="text" id="pickupLocation" name="pickupLocation" placeholder="Enter Pickup Location" style="display: none;">
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn">Confirm Cash-Out</button>
+        </form>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="error"></div>
+
+        <!-- Transaction Summary -->
+        <div id="transactionSummary" class="transaction-summary" style="display: none;">
+            <h3>Transaction Summary</h3>
+            <p id="summaryDetails"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Handle form submission
+    document.getElementById("cashOutForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const paymentNumber = document.getElementById("paymentNumber").value.trim();
+        const amount = parseFloat(document.getElementById("amount").value.trim());
+        const paymentMethod = document.getElementById("paymentMethod").value;
+        const pickupLocation = document.getElementById("pickupLocation").value.trim();
+
+        // Validate inputs
+        if (!paymentNumber || !amount || isNaN(amount) || amount <= 0) {
+            document.getElementById("errorMessage").innerText = "Please fill in all fields with valid information.";
+            return;
+        }
+
+        // Hide the form and show transaction summary
+        document.querySelector(".form-container").style.display = "none";
+        document.getElementById("transactionSummary").style.display = "block";
+
+        // Display summary
+        let summaryText = `Payment Collection Number: ${paymentNumber}<br>Amount: $${amount.toFixed(2)}<br>Payment Method: ${paymentMethod}`;
         
+        if (paymentMethod === 'pickup') {
+            if (!pickupLocation) {
+                document.getElementById("errorMessage").innerText = "Please enter a valid pickup location.";
+                return;
+            }
+            summaryText += `<br>Pickup Location: ${pickupLocation}`;
+        }
+
+        document.getElementById("summaryDetails").innerHTML = summaryText;
+    });
+
+    // Change transaction fee based on amount
+    document.getElementById("amount").addEventListener("input", function() {
+        const amount = parseFloat(document.getElementById("amount").value.trim());
+        const fee = amount * 0.02; // 2% fee
+        document.getElementById("feeInfo").innerText = `Transaction Fee: $${fee.toFixed(2)}`;
+    });
+
+    // Toggle Cash Pickup Location visibility
+    document.getElementById("paymentMethod").addEventListener("change", function() {
+        if (this.value === 'pickup') {
+            document.getElementById("pickupLocationLabel").style.display = "block";
+            document.getElementById("pickupLocation").style.display = "block";
+        } else {
+            document.getElementById("pickupLocationLabel").style.display = "none";
+            document.getElementById("pickupLocation").style.display = "none";
+        }
+    });
+</script>
+
  
 </body>
 </html>
