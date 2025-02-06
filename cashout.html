@@ -69,6 +69,17 @@
 </div>
 
 <script>
+        // Toggle Sidebar for Mobile
+        document.getElementById("menu-btn").addEventListener("click", () => {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("active");
+        });
+
+        // Logout functionality
+        document.getElementById("logout-btn").addEventListener("click", () => {
+            localStorage.removeItem('authToken');
+            window.location.href = "index.html";
+        });
     // Handle form submission
     document.getElementById("cashOutForm").addEventListener("submit", function(event) {
         event.preventDefault();
