@@ -381,8 +381,7 @@ canvas {
 
 /* Transfer Container Styling */
 .transfer-container {
-    width: 100%; /* Ensures full width */
-    max-width: 100%; /* Ensures it doesn't exceed the screen width */
+    width: 100%; /* Full width of the screen */
     margin: 30px auto;
     padding: 30px;
     background-color: #f1f1f1; /* Light dark background */
@@ -390,16 +389,19 @@ canvas {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;  /* Ensures the two containers are side by side */
-    align-items: flex-start; /* Ensures both containers align at the top */
+    align-items: flex-start; /* Align both containers at the top */
     gap: 2%; /* Reduced gap */
-    flex-wrap: wrap; /* Allows containers to wrap on smaller screens */
+    flex-wrap: wrap; /* Allow containers to wrap if needed on small screens */
+    box-sizing: border-box; /* Include padding and border in the width calculation */
 }
+
 /* Left Container */
 .left-container {
     width: 48%; /* Left container takes up 48% of space */
     padding: 20px;
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    box-sizing: border-box; /* Include padding and border in width calculation */
 }
 
 /* Right Container */
@@ -408,6 +410,7 @@ canvas {
     padding: 20px;
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    box-sizing: border-box; /* Include padding and border in width calculation */
 }
 
 /* Form Group Styling */
