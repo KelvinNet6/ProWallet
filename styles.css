@@ -382,24 +382,36 @@ canvas {
 /* Transfer Container Styling */
 .transfer-container {
     width: 100%;
-    max-width: 800px; /* Increased max-width for better spacing */
+    max-width: 800px; 
     margin: 30px auto;
-    padding: 30px; /* Added more padding for spacing */
+    padding: 30px; 
     background-color: #f9f9f9;
-    border-radius: 10px; /* Slightly rounder corners */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Stronger shadow */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Left Container */
+.left-container {
+    width: 48%; /* Small width for the left container */
+}
+
+/* Right Container */
+.right-container {
+    width: 48%; /* Small width for the right container */
 }
 
 /* Form Group Styling */
 .form-group {
-    margin-bottom: 20px; /* Increased bottom margin for more space */
+    margin-bottom: 20px; 
 }
 
 /* Label Styling */
 label {
     display: block;
     font-weight: bold;
-    margin-bottom: 8px; /* Increased spacing between label and input */
+    margin-bottom: 8px; 
     color: #555;
 }
 
@@ -409,56 +421,38 @@ input[type="number"],
 input[type="password"],
 textarea {
     width: 100%;
-    padding: 12px; /* Increased padding for better feel */
+    padding: 12px;
     font-size: 16px;
     border: 1px solid #ddd;
-    border-radius: 6px; /* Slightly more rounded corners */
+    border-radius: 6px;
     box-sizing: border-box;
     margin-top: 5px;
-}
-
-/* Textarea Styling */
-textarea {
-    height: 120px; /* Increased height for better readability */
-    resize: vertical; /* Allows vertical resizing */
 }
 
 /* Submit Button Styling */
 .submit-btn {
     width: 100%;
-    padding: 14px; /* Increased padding for better clickability */
-    font-size: 18px; /* Slightly larger text for readability */
+    padding: 14px;
+    font-size: 18px;
     background-color: #4CAF50;
     color: #fff;
     border: none;
-    border-radius: 6px; /* More rounded button */
+    border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
 }
 
 .submit-btn:hover {
     background-color: #45a049;
-    transform: translateY(-2px); /* Slight elevation effect */
+    transform: translateY(-2px); 
 }
 
-/* Status Message Styling */
-.status-message {
-    margin-top: 25px; /* Increased margin for more space from the form */
-    text-align: center;
-    font-size: 16px;
-    color: #777;
-}
-
-/* Form Row for Aligning Input Fields */
-.form-row {
-    display: flex;
-    flex-direction: column; /* Arrange the fields vertically */
-    gap: 20px; /* Adding gap between input fields */
-}
-
-/* Individual Form Group Styles for Separation */
-.form-group {
-    width: 100%; /* Ensures that each form group takes full width */
+/* Error Message Styling */
+.error-message {
+    color: red;
+    font-size: 14px;
+    display: none; /* Initially hidden */
+    margin-top: 20px;
 }
 
 /* Security Popup Styling */
@@ -492,16 +486,16 @@ textarea {
 }
 
 @media (max-width: 768px) {
-    /* Adjust for mobile screens */
-    .form-row {
-        flex-direction: column; /* Stack the fields vertically on smaller screens */
+    /* Adjust layout for smaller screens */
+    .transfer-container {
+        flex-direction: column; /* Stack left and right containers on smaller screens */
     }
 
-    .form-group {
-        width: 100%; /* Ensure all form groups are full-width */
+    .left-container, .right-container {
+        width: 100%; /* Full width for each container */
     }
 
     .submit-btn {
-        font-size: 16px; /* Adjust font size for mobile */
+        font-size: 16px; 
     }
 }
