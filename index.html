@@ -72,7 +72,7 @@
 
         <!-- New Section for Transaction Graph -->
         <section class="transaction-graph">
-            <h3>Transaction Trends</h3>
+            <h2>Transaction Trends</h2>
              <canvas id="transactionChart" width="400" height="200"></canvas>
         </section>
     </div>
@@ -90,20 +90,8 @@
             localStorage.removeItem('authToken');
             window.location.href = "/login";
         });
-
-        // Dark/Light Mode Toggle
-        const modeToggleBtn = document.getElementById("mode-toggle-btn");
-        modeToggleBtn.addEventListener("click", () => {
-            document.body.classList.toggle("dark-mode");
-
-            // Toggle the icon for day/night
-            if (document.body.classList.contains("dark-mode")) {
-                modeToggleBtn.textContent = "🌞"; // Sun icon for light mode
-            } else {
-                modeToggleBtn.textContent = "🌙"; // Moon icon for dark mode
-            }
-        });
-
+        
+//-----------------------load graph-------------------------//
    window.addEventListener('load', function() {
     // Log to check that the script is working
     console.log("Page loaded, creating chart...");
