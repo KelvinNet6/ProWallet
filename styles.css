@@ -390,14 +390,14 @@ canvas {
     display: flex;
     justify-content: space-between;  /* Ensures the two containers are side by side */
     align-items: flex-start; /* Align both containers at the top */
-    gap: 2%; /* Reduced gap */
+    gap: 1%; /* Smaller gap between containers */
     flex-wrap: wrap; /* Allow containers to wrap if needed on small screens */
     box-sizing: border-box; /* Include padding and border in the width calculation */
 }
 
 /* Left Container */
 .left-container {
-    width: 48%; /* Left container takes up 48% of space */
+    width: calc(50% - 1%); /* Adjust width to fit side by side, subtracting the gap */
     padding: 20px;
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
@@ -406,7 +406,7 @@ canvas {
 
 /* Right Container */
 .right-container {
-    width: 48%; /* Right container also takes up 48% of space */
+    width: calc(50% - 1%); /* Adjust width to fit side by side, subtracting the gap */
     padding: 20px;
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
