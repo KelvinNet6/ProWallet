@@ -104,32 +104,31 @@
             }
         });
 
-        // Wait for the DOM to be fully loaded
-        window.addEventListener('load', function() {
-            // Transaction Graph
-            const ctx = document.getElementById('transactionChart').getContext('2d');
-            const transactionChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['01/25/2025', '01/29/2025', '02/05/2025'], // Transaction dates
-                    datasets: [{
-                        label: 'Transaction Amount (K)',
-                        data: [50, 200, 500], // Corresponding amounts for the transactions
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        fill: true,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+        <script>
+    window.addEventListener('load', function() {
+        const ctx = document.getElementById('transactionChart').getContext('2d');
+        const transactionChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['01/25/2025', '01/29/2025', '02/05/2025'],
+                datasets: [{
+                    label: 'Transaction Amount (K)',
+                    data: [50, 200, 500],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
-            });
+            }
         });
+    });
     </script>
 </body>
 </html>
