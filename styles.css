@@ -380,6 +380,13 @@ canvas {
     }
 
 
+/* Form container */
+.transfer-form {
+    display: flex; /* Enable flexbox layout */
+    justify-content: space-between; /* Ensure the containers are spaced out, left and right */
+    gap: 1%; /* Add some space between the two containers */
+}
+
 /* Left Container */
 .left-container {
     width: calc(50% - 1%); /* Adjust width to fit side by side, subtracting the gap */
@@ -397,7 +404,6 @@ canvas {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
     box-sizing: border-box; /* Include padding and border in width calculation */
 }
-
 /* Form Group Styling */
 .form-group {
     margin-bottom: 20px;
