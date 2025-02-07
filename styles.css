@@ -507,7 +507,7 @@ textarea {
 /* Responsive Fix for Mobile */
 @media (max-width: 768px) {
     .transfer-form {
-        flex-direction: column; 
+        flex-direction: column;
     }
 
     .left-container, .right-container {
@@ -515,10 +515,20 @@ textarea {
         margin-right: 0; 
     }
 
+    .left-container .form-group img.account-icon {
+        margin: 0 auto; /* Center the image horizontally */
+        display: block;
+        width: 200px; /* Ensure the width is consistent */
+        height: 200px;
+        object-fit: contain;
+        margin-top: 20px; /* Adjust vertical space if necessary */
+    }
+
     .submit-btn {
         font-size: 16px;
     }
 }
+
 
 /* Cash Out Code styles*/
     .container {
