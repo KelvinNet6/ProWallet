@@ -395,6 +395,14 @@ canvas {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
     box-sizing: border-box; /* Include padding and border in width calculation */
 }
+/* Style for the image below the input */
+.left-container .form-group img.account-icon {
+    display: block; /* Makes the image appear on a new line */
+    margin-top: 10px; /* Space between input field and image */
+    width: 30px; /* Adjust the width of the image */
+    height: 30px; /* Adjust the height of the image */
+    object-fit: contain; /* Ensures the image maintains its aspect ratio */
+}
 
 /* Right Container */
 .right-container {
