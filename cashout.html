@@ -29,30 +29,40 @@
             <h1>EasyPay Wallet - Cash Out</h1>
         </header>
         
-      <div class="container">
+    <div class="container">
     <div class="form-container">
         <h1>Cash Out</h1>
         <form id="cashOutForm">
-            <!-- Payment Collection Number (Read-Only) -->
-            <label for="paymentNumber">Payment Collection Number:</label>
-            <input type="text" id="paymentNumber" name="paymentNumber" value="460006759" readonly>
-            
-            <!-- Amount to Cash Out -->
-            <label for="amount">Amount to Cash Out:</label>
-            <input type="number" id="amount" name="amount" placeholder="Amount" required>
-            
-            <div class="fee-info" id="feeInfo">Transaction Fee: $0.00</div>
+            <div class="form-row">
+                <!-- Left Container -->
+                <div class="container-left">
+                    <label for="paymentNumber">Payment Collection Number:</label>
+                    <input type="text" id="paymentNumber" name="paymentNumber" value="460006759" readonly>
 
-            <!-- Payment Method -->
-            <label for="paymentMethod">Payment Method:</label>
-            <select id="paymentMethod" name="paymentMethod" required>
-                <option value="bank">None</option>
-                <option value="pickup">Cash Pickup</option>
-            </select>
+                    <!-- Image Below Payment Number -->
+                    <img src="path/to/your/image.jpg" alt="Cash Out Image" class="cashout-image">
+                </div>
 
-            <!-- Cash Pickup Location (if selected) -->
-            <label for="pickupLocation" id="pickupLocationLabel" style="display: none;">Cash Pickup Location:</label>
-            <input type="text" id="pickupLocation" name="pickupLocation" placeholder="Enter Pickup Location" style="display: none;">
+                <!-- Right Container -->
+                <div class="container-right">
+                    <!-- Amount to Cash Out -->
+                    <label for="amount">Amount to Cash Out:</label>
+                    <input type="number" id="amount" name="amount" placeholder="Amount" required>
+
+                    <div class="fee-info" id="feeInfo">Transaction Fee: $0.00</div>
+
+                    <!-- Payment Method -->
+                    <label for="paymentMethod">Payment Method:</label>
+                    <select id="paymentMethod" name="paymentMethod" required>
+                        <option value="bank">None</option>
+                        <option value="pickup">Cash Pickup</option>
+                    </select>
+
+                    <!-- Cash Pickup Location (if selected) -->
+                    <label for="pickupLocation" id="pickupLocationLabel" style="display: none;">Cash Pickup Location:</label>
+                    <input type="text" id="pickupLocation" name="pickupLocation" placeholder="Enter Pickup Location" style="display: none;">
+                </div>
+            </div>
 
             <!-- Submit Button -->
             <button type="submit" class="btn">Confirm Cash-Out</button>
@@ -68,6 +78,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
     
