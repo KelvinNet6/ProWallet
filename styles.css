@@ -644,7 +644,7 @@ input, select {
 /* Desktop View */
 @media (min-width: 601px) {
     .container {
-        max-width: 800px;
+        max-width: 1000px; /* Increased container width */
         padding: 30px;
     }
 
