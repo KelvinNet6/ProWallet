@@ -746,6 +746,6 @@ button:hover {
 /* Desktop View */
 @media (min-width: 601px) {
     .settings-container {
-        max-width: 1000px;
+        max-width: 100%; /* This will make it take up the entire screen width */
     }
 }
