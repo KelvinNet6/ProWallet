@@ -657,3 +657,68 @@ input, select {
         flex: 1;
     }
 }
+.settings-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 18px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin: 8px 0;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.toggle {
+    margin: 10px 0;
+}
+
+.logout-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff3333;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background-color: #cc0000;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .settings-container {
+        padding: 15px;
+    }
+
+    .section {
+        margin-bottom: 15px;
+    }
+}
