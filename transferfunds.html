@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyPay</title>
+    <title>EPayWallet</title>
 
     <link rel="icon" href="screenshot_2025_02_06_14_53_13_EIJ_icon.ico" type="image/png">
     <link rel="stylesheet" href="styles.css">
@@ -25,7 +25,7 @@
 
     <div class="main-content" id="home">
         <header class="header">
-            <h1>EasyTransfer</h1>
+            <h1>EPayTransfer</h1>
         </header>
 
         <!-- Transfer Funds Section (without the transfer-container div) -->
@@ -50,7 +50,7 @@
             <div class="right-container">
                 <div class="form-group">
                     <label for="to-account">To Account (Recipient)</label>
-                    <input type="text" id="to-account" name="to_account" placeholder="Enter recipient's EasyPay account ID" />
+                    <input type="text" id="to-account" name="to_account" placeholder="Enter recipient's EPayWallet Number" />
                 </div>
 
                 <div class="form-group">
@@ -73,9 +73,9 @@
             <div class="popup-content">
                 <h3>Enter Security Code</h3>
                 <form action="/process-security" method="POST" class="security-form">
-                    <label for="security-code">Security Code</label>
+                    <label for="security-code">EPayWallet Code</label>
                     <input type="password" id="security-code" name="security_code" placeholder="Enter your security code" required />
-                    <button type="submit">Submit</button>
+                    <button type="submit">Confirm</button>
                     <br>
                     <!-- Close button to close the popup -->
                    <span id="closePopupBtn" class="close">&times;</span>
