@@ -1,7 +1,7 @@
 {
-  "name": "EasyPay",
-  "short_name": "EasyPay",
-  "description": "A Mobile Wallet Application for EasyPay",
+  "name": "EPayWallet",
+  "short_name": "EPayWallet",
+  "description": "A Mobile Wallet Application for E-PayWallet",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
