@@ -2,7 +2,7 @@
   "name": "PaySheet",
   "short_name": "PaySheet",
   "description": "A Mobile Wallet Application for PaySheet",
-  "start_url": "/PaySheet/index.html",
+  "start_url": "https://kelvinnet6.github.io/PaySheet/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
