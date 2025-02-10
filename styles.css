@@ -787,3 +787,55 @@ button:hover {
         display: flex;
     }
 }
+/* Chat Bubble Styles */
+.chat-window {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.chat-bubble {
+    max-width: 60%;
+    padding: 10px;
+    border-radius: 20px;
+    margin: 5px 0;
+    display: inline-block;
+}
+
+.user-bubble {
+    background-color: #DCF8C6;
+    align-self: flex-end; /* Client's message aligned to the right */
+}
+
+.ai-bubble {
+    background-color: #F1F0F0;
+    align-self: flex-start; /* AI's message aligned to the left */
+}
+
+/* User Input and Button Styles */
+.user-input {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+}
+
+#user-query {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+#send-btn {
+    width: 15%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    background-color: #4CAF50;
+    color: white;
+}
