@@ -29,6 +29,20 @@
             <h1>PaySheet FAQs</h1>
         </header>
 
+
+        <script>
+              // Toggle Sidebar for Mobile
+        document.getElementById("menu-btn").addEventListener("click", () => {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("active");
+        });
+
+        // Logout functionality
+        document.getElementById("logout-btn").addEventListener("click", () => {
+            localStorage.removeItem('authToken');
+            window.location.href = "index.html";
+        });
+        </script>
     <!-- Bottom Navigation for Mobile View -->
 <div class="bottom-nav">
     <a href="home.html" class="nav-item">
