@@ -749,3 +749,40 @@ button:hover {
         max-width: 100%; /* This will make it take up the entire screen width */
     }
 }
+/* Bottom navigation bar styling */
+.bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+}
+
+/* Bottom navigation items */
+.nav-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: #333;
+    text-decoration: none;
+}
+
+/* AI chat logo size */
+.ai-chat-logo .ai-chat-img {
+    width: 30px;
+    height: 30px;
+}
+
+/* Make the bottom navigation visible only on mobile view */
+@media (max-width: 768px) {
+    .bottom-nav {
+        display: flex;
+    }
+}
