@@ -133,7 +133,7 @@ button {
 }
 
 button:hover {
-    background-color: #c0392b;
+    background-color: #007bff;
 }
 
 /* Mobile Responsiveness */
@@ -820,7 +820,7 @@ button:hover {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    background-color: #fff;
+    background-color: #007bff;
     border-top: 1px solid #ddd;
 }
 
@@ -836,6 +836,6 @@ button:hover {
     padding: 10px;
     border-radius: 10px;
     border: 1px solid #ddd;
-    background-color: #4CAF50;
+    background-color: #007bff;
     color: white;
 }
