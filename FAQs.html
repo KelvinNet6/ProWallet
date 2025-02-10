@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PaySheet</title>
-      <link rel="icon" href="screenshot_2025_02_06_14_53_13_QDM_icon.ico" type="image/png">
+    <link rel="icon" href="screenshot_2025_02_06_14_53_13_QDM_icon.ico" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
@@ -20,7 +20,6 @@
             <li><a href="cashout.html"><i class="fas fa-money-check-alt"></i> Cash Out</a></li>
             <li><a href="profilesettings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
             <li><button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sign Out</button></li>
-
         </ul>
     </div>
 
@@ -29,31 +28,53 @@
             <h1>PaySheet FAQs</h1>
         </header>
 
+        <!-- FAQs Section -->
+        <section class="faqs-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>What is PaySheet?</h3>
+                <p>PaySheet is a platform that helps you manage and track your payments, transfers, and account settings in one place.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How can I sign out of my account?</h3>
+                <p>You can sign out by clicking the "Sign Out" button in the sidebar or by going to your account settings page.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How do I transfer funds?</h3>
+                <p>You can transfer funds by clicking on the "Transfer Funds" section from the sidebar, where you can enter the amount and recipient details.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How can I change my account settings?</h3>
+                <p>To change your account settings, visit the "Account Settings" page from the sidebar, where you can update your information and preferences.</p>
+            </div>
+        </section>
 
         <script>
-              // Toggle Sidebar for Mobile
-        document.getElementById("menu-btn").addEventListener("click", () => {
-            const sidebar = document.getElementById("sidebar");
-            sidebar.classList.toggle("active");
-        });
+            // Toggle Sidebar for Mobile
+            document.getElementById("menu-btn").addEventListener("click", () => {
+                const sidebar = document.getElementById("sidebar");
+                sidebar.classList.toggle("active");
+            });
 
-        // Logout functionality
-        document.getElementById("logout-btn").addEventListener("click", () => {
-            localStorage.removeItem('authToken');
-            window.location.href = "index.html";
-        });
+            // Logout functionality
+            document.getElementById("logout-btn").addEventListener("click", () => {
+                localStorage.removeItem('authToken');
+                window.location.href = "index.html";
+            });
         </script>
-    <!-- Bottom Navigation for Mobile View -->
-<div class="bottom-nav">
-    <a href="home.html" class="nav-item">
-        <i class="fas fa-home"></i>
-    </a>
-    <a href="FAQs.html" class="nav-item">
-        <i class="fas fa-question-circle"></i>
-    </a>
-    <a href="ai-chat.html" class="nav-item ai-chat-logo">
-        <img src="Capture.PNG" alt="AI Chat Logo" class="ai-chat-img">
-    </a>
-</div>
+
+        <!-- Bottom Navigation for Mobile View -->
+        <div class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <i class="fas fa-home"></i>
+            </a>
+            <a href="FAQs.html" class="nav-item">
+                <i class="fas fa-question-circle"></i>
+            </a>
+            <a href="ai-chat.html" class="nav-item ai-chat-logo">
+                <img src="Capture.PNG" alt="AI Chat Logo" class="ai-chat-img">
+            </a>
+        </div>
+    </div>
 </body>
 </html>
