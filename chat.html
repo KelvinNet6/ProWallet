@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat | PaySheet</title>
+    <link rel="icon" href="screenshot_2025_02_06_14_53_13_QDM_icon.ico" type="image/png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <button class="menu-btn" id="menu-btn">☰</button>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="home.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="transferfunds.html"><i class="fas fa-exchange-alt"></i> TF</a></li>
+            <li><a href="cashout.html"><i class="fas fa-money-check-alt"></i> Cash Out</a></li>
+            <li><a href="profilesettings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
+            <li><button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sign Out</button></li>
+        </ul>
+    </div>
+
+    <!-- Main Content for AI Chat -->
+    <div class="main-content" id="chat">
+        <header class="header">
+            <h1>AI Chat</h1>
+            <p>How can I assist you today?</p>
+        </header>
+
+        <!-- Chat Window -->
+        <div class="chat-window" id="chat-window">
+            <!-- Automatic Greeting and Messages -->
+        </div>
+
+        <!-- User Input Field -->
+        <div class="user-input">
+            <input type="text" id="user-query" placeholder="Type your question here..." />
+            <button id="send-btn">Send</button>
+        </div>
+
+        <!-- Bottom Navigation for Mobile View -->
+        <div class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <i class="fas fa-home"></i>
+            </a>
+            <a href="FAQs.html" class="nav-item">
+                <i class="fas fa-question-circle"></i>
+            </a>
+            <a href="chat.html" class="nav-item ai-chat-logo">
+                <img src="Capture.PNG" alt="AI Chat Logo" class="ai-chat-img">
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Sidebar for Mobile
+        document.getElementById("menu-btn").addEventListener("click", () => {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("active");
+        });
+
+        // Logout functionality
+        document.getElementById("logout-btn").addEventListener("click", () => {
+            localStorage.removeItem('authToken');
+            window.location.href = "index.html";
+        });
+
+        // Add message function to display chat bubbles
+        function addMessage(sender, message) {
+            const chatWindow = document.getElementById("chat-window");
+            const messageDiv = document.createElement("div");
+            messageDiv.classList.add("chat-bubble", sender === "ai" ? "ai-bubble" : "user-bubble");
+            messageDiv.innerHTML = `<p>${message}</p>`;
+            chatWindow.appendChild(messageDiv);
+            chatWindow.scrollTop = chatWindow.scrollHeight; // Scroll to the latest message
+        }
+
+        // Simulate automatic AI greeting and suggestions
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                addMessage('ai', "Hello! I'm your AI assistant. How can I help you today?");
+            }, 1000); // AI greets the user after 1 second
+        });
+
+        // Handle user input and AI responses
+        document.getElementById("send-btn").addEventListener("click", function() {
+            const userInput = document.getElementById("user-query").value;
+            if (userInput.trim()) {
+                addMessage('user', userInput);  // Display the user's message
+
+                // AI response logic based on user input
+                let aiResponse = '';
+                if (userInput.toLowerCase().includes('balance')) {
+                    aiResponse = 'Your current wallet balance is $500.00.';
+                } else if (userInput.toLowerCase().includes('transfer')) {
+                    aiResponse = 'To transfer money, please provide the amount and recipient.';
+                } else {
+                    aiResponse = 'I didn\'t quite understand that. Could you try again?';
+                }
+
+                setTimeout(function() {
+                    addMessage('ai', aiResponse);  // Display the AI's response
+                }, 1000); // AI responds after 1 second
+
+                document.getElementById("user-query").value = '';  // Clear the input field
+            }
+        });
+    </script>
+</body>
+</html>
