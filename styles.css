@@ -806,13 +806,13 @@ button:hover {
 }
 
 .user-bubble {
-    background-color: #DCF8C6;
-    align-self: flex-end; /* Client's message aligned to the right */
+    background-color: #007bff;
+    align-self: flex-end; 
 }
 
 .ai-bubble {
     background-color: #F1F0F0;
-    align-self: flex-start; /* AI's message aligned to the left */
+    align-self: flex-start; 
 }
 
 /* User Input and Button Styles */
@@ -820,7 +820,7 @@ button:hover {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #fff;
     border-top: 1px solid #ddd;
 }
 
