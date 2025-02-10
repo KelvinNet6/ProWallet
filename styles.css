@@ -778,6 +778,7 @@ button:hover {
 .ai-chat-logo .ai-chat-img {
     width: 30px;
     height: 30px;
+    border-radius: 50%;
 }
 
 /* Make the bottom navigation visible only on mobile view */
