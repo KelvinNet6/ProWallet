@@ -193,7 +193,7 @@ button:hover {
 
     .menu-btn {
         display: block;
-        position: absolute;
+        position: fixed;
         top: 10px;
         left: 10px;
         background: #2c3e50;
