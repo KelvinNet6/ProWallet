@@ -25,8 +25,7 @@
     <!-- Main Content for AI Chat -->
     <div class="main-content" id="chat">
         <header class="header">
-            <h1>AI Chat | PaySheet</h1>
-            <br>
+            <h1>AI Chat</h1>
             <p>How can I assist you today?</p>
         </header>
 
@@ -93,10 +92,48 @@
 
                 // AI response logic based on user input
                 let aiResponse = '';
-                if (userInput.toLowerCase().includes('balance')) {
-                    aiResponse = 'Your current wallet balance is $500.00.';
-                } else if (userInput.toLowerCase().includes('transfer')) {
-                    aiResponse = 'To transfer money, please provide the amount and recipient.';
+
+                // Checking for transaction rate-related questions
+                if (userInput.toLowerCase().includes('transaction fee') || userInput.toLowerCase().includes('transfer fee')) {
+                    aiResponse = 'Our standard transaction fee is 2% per transfer. For international transfers, there is an additional $5 charge.';
+                } else if (userInput.toLowerCase().includes('withdrawal fee') || userInput.toLowerCase().includes('cash out fee')) {
+                    aiResponse = 'The withdrawal fee for cashing out is $1.50 per transaction.';
+                } else if (userInput.toLowerCase().includes('currency conversion fee')) {
+                    aiResponse = 'Currency conversion is charged at a rate of 1.5% for each transaction involving different currencies.';
+                } else if (userInput.toLowerCase().includes('nearest agent') || userInput.toLowerCase().includes('find payment agent')) {
+                    // Ask the user for their location to find the nearest payment collection agent
+                    aiResponse = 'I can help you find the nearest payment collection agent. Please share your location (city or use your current location).';
+                    setTimeout(function() {
+                        addMessage('ai', aiResponse);
+                    }, 1000);
+                    return;
+                } else if (userInput.toLowerCase().includes('location')) {
+                    // Retrieve the user’s location
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function(position) {
+                            const lat = position.coords.latitude;
+                            const lon = position.coords.longitude;
+                            
+                            // Use the lat/lon to find the nearest payment collection agents (dummy data for this example)
+                            const nearestAgents = findNearestAgent(lat, lon);
+                            aiResponse = `I found the nearest agents to your location:\n` + nearestAgents.map(agent => `${agent.name} - ${agent.distance} km away`).join('\n');
+                            
+                            setTimeout(function() {
+                                addMessage('ai', aiResponse);
+                            }, 1000);
+                        }, function() {
+                            aiResponse = "Sorry, I couldn't retrieve your location. Please enter a city.";
+                            setTimeout(function() {
+                                addMessage('ai', aiResponse);
+                            }, 1000);
+                        });
+                    } else {
+                        aiResponse = "Geolocation is not supported by this browser. Please enter a city name.";
+                        setTimeout(function() {
+                            addMessage('ai', aiResponse);
+                        }, 1000);
+                    }
+                    return;
                 } else {
                     aiResponse = 'I didn\'t quite understand that. Could you try again?';
                 }
@@ -108,6 +145,17 @@
                 document.getElementById("user-query").value = '';  // Clear the input field
             }
         });
+
+        // Dummy function to simulate finding nearest payment agents based on location (latitude, longitude)
+        function findNearestAgent(lat, lon) {
+            // Simulated data for nearest agents
+            const agents = [
+                { name: "Agent 1", distance: (Math.random() * 5).toFixed(2) },
+                { name: "Agent 2", distance: (Math.random() * 10).toFixed(2) },
+                { name: "Agent 3", distance: (Math.random() * 3).toFixed(2) }
+            ];
+            return agents;
+        }
     </script>
 </body>
 </html>
