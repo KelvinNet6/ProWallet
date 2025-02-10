@@ -86,77 +86,101 @@
         });
 
         // Handle user input and AI responses
-        document.getElementById("send-btn").addEventListener("click", function() {
-            const userInput = document.getElementById("user-query").value;
-            if (userInput.trim()) {
-                addMessage('user', userInput);  // Display the user's message
+       document.getElementById("send-btn").addEventListener("click", function() {
+    const userInput = document.getElementById("user-query").value;
+    if (userInput.trim()) {
+        addMessage('user', userInput);  // Display the user's message
 
-                // AI response logic based on user input
-                let aiResponse = '';
+        // AI response logic based on user input
+        let aiResponse = '';
+        
+        if (userInput.toLowerCase().includes('balance')) {
+            // Fetch balance using the integrated API
+            aiResponse = 'Fetching your balance...';
+            setTimeout(function() {
+                fetchBalance();  // Call the function to get the balance
+            }, 1000);
+            return;
+        }
+        // Checking for transaction rate-related questions
+        else if (userInput.toLowerCase().includes('transaction fee') || userInput.toLowerCase().includes('transfer fee')) {
+            aiResponse = 'Our standard transaction fee is 2% per transfer. For international transfers, there is an additional $5 charge.';
+        } else if (userInput.toLowerCase().includes('withdrawal fee') || userInput.toLowerCase().includes('cash out fee')) {
+            aiResponse = 'The withdrawal fee for cashing out is $1.50 per transaction.';
+        } else if (userInput.toLowerCase().includes('currency conversion fee')) {
+            aiResponse = 'Currency conversion is charged at a rate of 1.5% for each transaction involving different currencies.';
+        } else if (userInput.toLowerCase().includes('nearest agent') || userInput.toLowerCase().includes('find payment agent')) {
+            // Ask the user for their location to find the nearest payment collection agent
+            aiResponse = 'I can help you find the nearest payment collection agent. Please share your location (city or use your current location).';
+            setTimeout(function() {
+                addMessage('ai', aiResponse);
+            }, 1000);
+            return;
+        } else if (userInput.toLowerCase().includes('location')) {
+            // Retrieve the user’s location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
 
-                // Checking for transaction rate-related questions
-                if (userInput.toLowerCase().includes('transaction fee') || userInput.toLowerCase().includes('transfer fee')) {
-                    aiResponse = 'Our standard transaction fee is 2% per transfer. For international transfers, there is an additional $5 charge.';
-                } else if (userInput.toLowerCase().includes('withdrawal fee') || userInput.toLowerCase().includes('cash out fee')) {
-                    aiResponse = 'The withdrawal fee for cashing out is $1.50 per transaction.';
-                } else if (userInput.toLowerCase().includes('currency conversion fee')) {
-                    aiResponse = 'Currency conversion is charged at a rate of 1.5% for each transaction involving different currencies.';
-                } else if (userInput.toLowerCase().includes('nearest agent') || userInput.toLowerCase().includes('find payment agent')) {
-                    // Ask the user for their location to find the nearest payment collection agent
-                    aiResponse = 'I can help you find the nearest payment collection agent. Please share your location (city or use your current location).';
+                    // Use the lat/lon to find the nearest payment collection agents (dummy data for this example)
+                    const nearestAgents = findNearestAgent(lat, lon);
+                    aiResponse = `I found the nearest agents to your location:\n` + nearestAgents.map(agent => `${agent.name} - ${agent.distance} km away`).join('\n');
+
                     setTimeout(function() {
                         addMessage('ai', aiResponse);
                     }, 1000);
-                    return;
-                } else if (userInput.toLowerCase().includes('location')) {
-                    // Retrieve the user’s location
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(function(position) {
-                            const lat = position.coords.latitude;
-                            const lon = position.coords.longitude;
-                            
-                            // Use the lat/lon to find the nearest payment collection agents (dummy data for this example)
-                            const nearestAgents = findNearestAgent(lat, lon);
-                            aiResponse = `I found the nearest agents to your location:\n` + nearestAgents.map(agent => `${agent.name} - ${agent.distance} km away`).join('\n');
-                            
-                            setTimeout(function() {
-                                addMessage('ai', aiResponse);
-                            }, 1000);
-                        }, function() {
-                            aiResponse = "Sorry, I couldn't retrieve your location. Please enter a city.";
-                            setTimeout(function() {
-                                addMessage('ai', aiResponse);
-                            }, 1000);
-                        });
-                    } else {
-                        aiResponse = "Geolocation is not supported by this browser. Please enter a city name.";
-                        setTimeout(function() {
-                            addMessage('ai', aiResponse);
-                        }, 1000);
-                    }
-                    return;
-                } else {
-                    aiResponse = 'I didn\'t quite understand that. Could you try again?';
-                }
-
+                }, function() {
+                    aiResponse = "Sorry, I couldn't retrieve your location. Please enter a city.";
+                    setTimeout(function() {
+                        addMessage('ai', aiResponse);
+                    }, 1000);
+                });
+            } else {
+                aiResponse = "Geolocation is not supported by this browser. Please enter a city name.";
                 setTimeout(function() {
-                    addMessage('ai', aiResponse);  // Display the AI's response
-                }, 1000); // AI responds after 1 second
-
-                document.getElementById("user-query").value = '';  // Clear the input field
+                    addMessage('ai', aiResponse);
+                }, 1000);
             }
-        });
-
-        // Dummy function to simulate finding nearest payment agents based on location (latitude, longitude)
-        function findNearestAgent(lat, lon) {
-            // Simulated data for nearest agents
-            const agents = [
-                { name: "Agent 1", distance: (Math.random() * 5).toFixed(2) },
-                { name: "Agent 2", distance: (Math.random() * 10).toFixed(2) },
-                { name: "Agent 3", distance: (Math.random() * 3).toFixed(2) }
-            ];
-            return agents;
+            return;
+        } else {
+            aiResponse = 'I didn\'t quite understand that. Could you try again?';
         }
+
+        setTimeout(function() {
+            addMessage('ai', aiResponse);  // Display the AI's response
+        }, 1000); // AI responds after 1 second
+
+        document.getElementById("user-query").value = '';  // Clear the input field
+    }
+});
+
+// Function to fetch balance from the integrated API
+function fetchBalance() {
+    // Simulating an API request for the balance
+    // Replace with your actual API request code
+    fetch('/api/getBalance')  // Assuming you have an API endpoint like '/api/getBalance'
+        .then(response => response.json())
+        .then(data => {
+            const balance = data.balance;  // Assume the response contains a 'balance' field
+            addMessage('ai', `Your current wallet balance is $${balance}.`);
+        })
+        .catch(error => {
+            addMessage('ai', 'Sorry, there was an error fetching your balance. Please try again later.');
+        });
+}
+
+// Dummy function to simulate finding nearest payment agents based on location (latitude, longitude)
+function findNearestAgent(lat, lon) {
+    // Simulated data for nearest agents
+    const agents = [
+        { name: "Agent 1", distance: (Math.random() * 5).toFixed(2) },
+        { name: "Agent 2", distance: (Math.random() * 10).toFixed(2) },
+        { name: "Agent 3", distance: (Math.random() * 3).toFixed(2) }
+    ];
+    return agents;
+}
+
     </script>
 </body>
 </html>
