@@ -799,8 +799,7 @@ button:hover {
     position: fixed;  /* Ensure the chat window has a fixed position */
 }
 
-
-
+/* Chat Bubble Styles */
 .chat-bubble {
     max-width: 60%;
     padding: 10px;
@@ -811,12 +810,12 @@ button:hover {
 
 .user-bubble {
     background-color: #007bff;
-    align-self: flex-end; 
+    align-self: flex-end;
 }
 
 .ai-bubble {
     background-color: #F1F0F0;
-    align-self: flex-start; 
+    align-self: flex-start;
 }
 
 /* User Input and Button Styles */
@@ -854,6 +853,16 @@ button:hover {
     background-color: #0056b3; /* Button hover effect */
 }
 
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    .chat-window {
+        bottom: 150px;  /* Increase bottom margin to prevent chat window from overlapping input */
+    }
+
+    .user-input {
+        bottom: 0; /* Ensure input stays at the very bottom */
+    }
+}
 
 /*------------------quick links--------------------*/
  .quick-links-container {
