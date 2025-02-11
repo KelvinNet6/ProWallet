@@ -796,7 +796,6 @@ button:hover {
     padding: 20px;
     max-height: 400px;
     overflow-y: auto;
-    position: fixed;  /* Ensure the chat window has a fixed position */
 }
 
 /* Chat Bubble Styles */
