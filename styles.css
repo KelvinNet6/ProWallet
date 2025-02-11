@@ -862,6 +862,47 @@ button:hover {
         bottom: 0; /* Ensure input stays at the very bottom */
     }
 }
+/* Desktop View: Position user input above the sidebar and to the right */
+@media (min-width: 769px) {
+    .user-input {
+        position: fixed;
+        bottom: 60px; /* Adjust to ensure it's above the bottom navigation */
+        left: 250px; /* Positioning the input right next to the sidebar */
+        width: calc(100% - 250px); /* Make the input width take the full screen minus the sidebar width */
+        z-index: 10; /* Ensure it stays above other content */
+        background-color: #fff;
+        border-top: 1px solid #ddd;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    #user-query {
+        width: 80%; /* Adjust to the correct width */
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+    }
+
+    #send-btn {
+        width: 15%;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+    }
+
+    #send-btn:hover {
+        background-color: #0056b3;
+    }
+
+    /* Positioning adjustments if sidebar is active */
+    .sidebar.active + .user-input {
+        left: 200px; /* Adjust when sidebar is collapsed */
+        width: calc(100% - 200px);
+    }
+}
 
 /*------------------quick links--------------------*/
  .quick-links-container {
