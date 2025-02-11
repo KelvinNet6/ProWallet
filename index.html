@@ -31,33 +31,46 @@
 
     <script src="app.js"></script>
 
-    <script>
+<script>
+    // API endpoint for login verification
+    const apiUrl = "https://your-api-url.com/login"; // Replace with your actual API URL
 
-        // Default credentials
-const defaultEmail = "kelvin.net6@gmail.com";
-const defaultPassword = "433677kk";
+    // Form validation and login function
+    document.getElementById("login-btn").addEventListener("click", function () {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
 
-// Form validation and login function
-document.getElementById("login-btn").addEventListener("click", function () {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+        // Prepare data to send in the API request
+        const data = {
+            email: email,
+            password: password
+        };
 
-    // Check if the entered credentials match the default ones
-    if (email === defaultEmail && password === defaultPassword) {
-        // Redirect to home.html if login is successful
-        window.location.href = "home.html";
-    } else {
-        alert("Invalid email or password. Please try again.");
-    }
-});
-
-// Simulate biometric login
-function handleBiometricLogin() {
-    // Placeholder logic for biometric authentication
-    alert("Biometric Authentication not available. Placeholder for real implementation.");
-}
-        
+        // Send a POST request to the API for login verification
+        fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Check if the response contains a successful login status
+            if (data.success) {
+                // Redirect to home.html if login is successful
+                window.location.href = "home.html";
+            } else {
+                alert("Invalid email or password. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error during login:", error);
+            alert("An error occurred while logging in. Please try again later.");
+        });
+    });
 </script>
+
 
     <script>
   if ('serviceWorker' in navigator) {
