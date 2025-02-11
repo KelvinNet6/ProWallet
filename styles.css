@@ -795,7 +795,17 @@ button:hover {
     padding: 20px;
     max-height: 400px;
     overflow-y: auto;
+    position: fixed;
+    top: 20px;  /* Adjust this value to set the distance from the top */
+    left: 20px; /* Adjust this value to set the distance from the left */
+    right: 20px; /* Adjust this value to set the distance from the right */
+    bottom: 100px; /* Adjust this value to set the distance from the bottom, above the input/button */
+    z-index: 1000; /* Ensure it's on top of other elements */
+    background-color: white; /* Optional, to give it a distinct background */
+    border-radius: 8px; /* Optional, adds rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
+
 
 .chat-bubble {
     max-width: 60%;
