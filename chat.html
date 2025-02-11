@@ -78,12 +78,24 @@
             chatWindow.scrollTop = chatWindow.scrollHeight; // Scroll to the latest message
         }
 
-        // Simulate automatic AI greeting and suggestions
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                addMessage('ai', "Hello! I'm PaySheet AI assistant. How can I help you today?");
-            }, 1000); // AI greets the user after 1 second
-        });
+       // Simulate automatic AI greeting and suggestions
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        // Construct the greeting message with available services
+        let greetingMessage = "Hello! I'm PaySheet AI assistant. How can I help you today?\n\n";
+        greetingMessage += "I can assist you with the following:\n";
+        greetingMessage += "1. Check account number\n";
+        greetingMessage += "2. Check account balance\n";
+        greetingMessage += "3. Transfer rates\n";
+        greetingMessage += "4. Cashout rates\n";
+        greetingMessage += "5. Locating nearest collection agent\n";
+        greetingMessage += "6. Transaction monitoring";
+
+        // Add the message to the chat (assuming addMessage function adds messages to a UI)
+        addMessage('ai', greetingMessage);
+    }, 1000); // AI greets the user after 1 second
+});
+
 
         // Handle user input and AI responses
        document.getElementById("send-btn").addEventListener("click", function() {
