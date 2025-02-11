@@ -66,14 +66,15 @@
 window.addEventListener('load', function() {
     setTimeout(function() {
         // Construct the greeting message with available services
-        let greetingMessage = "Hello! I'm PaySheet AI assistant. How can I help you today?\n\n";
-        greetingMessage += "I can assist you with the following:\n\n";
-        greetingMessage += "1. Check account number\n\n";
-        greetingMessage += "2. Check account balance\n\n";
-        greetingMessage += "3. Transfer rates\n\n";
-        greetingMessage += "4. Cashout rates\n\n";
-        greetingMessage += "5. Locating nearest collection agent\n\n";
-        greetingMessage += "6. Transaction monitoring";
+       let greetingMessage = "Hello! I'm PaySheet AI assistant.<br><br>";
+       greetingMessage += "I can assist you with the following:<br><br>";
+       greetingMessage += "1. Check your PaySheet Number<br><br>";
+       greetingMessage += "2. Check PaySheet Balance<br><br>";
+       greetingMessage += "3. Transfer Fee Charges<br><br>";
+       greetingMessage += "4. Cashout Fee Charges<br><br>";
+       greetingMessage += "5. Locating nearest Payment Collection Agent<br><br>";
+       greetingMessage += "6. Transaction Monitoring";
+
 
         // Add the message to the chat (assuming addMessage function adds messages to a UI)
         addMessage('ai', greetingMessage);
