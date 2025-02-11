@@ -866,7 +866,7 @@ button:hover {
 @media (min-width: 769px) {
     .user-input {
         position: fixed;
-        bottom: 80px; /* Adjust to ensure it's above the bottom navigation */
+        bottom: 0; /* Adjust to ensure it's above the bottom navigation */
         left: 250px; /* Positioning the input right next to the sidebar */
         width: calc(100% - 250px); /* Make the input width take the full screen minus the sidebar width */
         z-index: 10; /* Ensure it stays above other content */
