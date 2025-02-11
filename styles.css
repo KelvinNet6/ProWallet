@@ -841,9 +841,10 @@ button:hover {
 }
 
 /*------------------quick links--------------------*/
-   .quick-links-container {
+ .quick-links-container {
         display: flex; /* Use flexbox to align items horizontally */
         gap: 15px; /* Space between the buttons */
+        flex-wrap: wrap; /* Allow the buttons to wrap on smaller screens */
     }
 
     .quick-link-btn {
@@ -855,8 +856,21 @@ button:hover {
         border-radius: 5px;
         font-size: 16px;
         text-align: center; /* Center text inside the button */
+        flex: 1 1 auto; /* Allow buttons to grow and shrink */
     }
 
     .quick-link-btn i {
         margin-right: 8px;
+    }
+
+    /* Media query for mobile responsiveness */
+    @media (max-width: 768px) {
+        .quick-links-container {
+            flex-direction: column; /* Stack the buttons vertically */
+            gap: 10px; /* Reduce space between buttons on smaller screens */
+        }
+
+        .quick-link-btn {
+            width: 100%; /* Make buttons full width on mobile */
+        }
     }
