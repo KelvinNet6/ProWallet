@@ -96,16 +96,15 @@ window.addEventListener('load', function() {
     }, 1000); // AI greets the user after 1 second
 });
 
-
         // Handle user input and AI responses
-       document.getElementById("send-btn").addEventListener("click", function() {
+document.getElementById("send-btn").addEventListener("click", function() {
     const userInput = document.getElementById("user-query").value;
     if (userInput.trim()) {
         addMessage('user', userInput);  // Display the user's message
 
         // AI response logic based on user input
         let aiResponse = '';
-        
+
         if (userInput.toLowerCase().includes('balance')) {
             // Fetch balance using the integrated API
             aiResponse = 'Fetching your balance...';
@@ -114,14 +113,12 @@ window.addEventListener('load', function() {
             }, 1000);
             return;
         }
-        else if (userInput.toLowerCase().includes('Hi') || userInput.toLowerCase().includes('Hi')) {
-            aiResponse = 'Hello! how can i Help you today?';
-        }
-           else if (userInput.toLowerCase().includes('Hello') || userInput.toLowerCase().includes('Hello')) {
-            aiResponse = 'Hi! how can i assist you today?';
+        else if (userInput.toLowerCase().includes('hi') || userInput.toLowerCase().includes('hello')) {
+            // Respond to greetings (Hi or Hello)
+            aiResponse = 'Hello! How can I help you today?';
         }
         // Checking for transaction rate-related questions
-        else if (userInput.toLowerCase().includes('transfer fee') || userInput.toLowerCase().includes('transfer fee')) {
+        else if (userInput.toLowerCase().includes('transfer fee')) {
             aiResponse = 'Our standard transaction fee is 2% per transfer. For international transfers, there is an additional $5 charge.';
         } else if (userInput.toLowerCase().includes('withdrawal fee') || userInput.toLowerCase().includes('cash out fee')) {
             aiResponse = 'The withdrawal fee for cashing out is $1.50 per transaction.';
