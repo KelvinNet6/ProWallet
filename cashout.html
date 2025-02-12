@@ -92,18 +92,18 @@
         </section>
         
 <script>
-    
     // Toggle Sidebar for Mobile
-        document.getElementById("menu-btn").addEventListener("click", () => {
-            const sidebar = document.getElementById("sidebar");
-            sidebar.classList.toggle("active");
-        });
+    document.getElementById("menu-btn").addEventListener("click", () => {
+        const sidebar = document.getElementById("sidebar");
+        sidebar.classList.toggle("active");
+    });
 
-        // Logout functionality
-        document.getElementById("logout-btn").addEventListener("click", () => {
-            localStorage.removeItem('authToken');
-            window.location.href = "index.html";
-        });
+    // Logout functionality
+    document.getElementById("logout-btn").addEventListener("click", () => {
+        localStorage.removeItem('authToken');
+        window.location.href = "index.html";
+    });
+
     // Handle form submission
     document.getElementById("cashOutForm").addEventListener("submit", function(event) {
         event.preventDefault();
@@ -135,6 +135,37 @@
         }
 
         document.getElementById("summaryDetails").innerHTML = summaryText;
+
+        // Prepare data for API request
+        const requestData = {
+            paymentNumber: paymentNumber,
+            amount: amount,
+            paymentMethod: paymentMethod,
+            pickupLocation: paymentMethod === 'pickup' ? pickupLocation : null
+        };
+
+        // Call API to handle Cash Out request
+        fetch('API_URL', {  // Replace 'API_URL' with the actual API endpoint URL
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`  // Add your auth token if required
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Check for success in the response
+            if (data.success) {
+                document.getElementById("transactionSummary").innerHTML += `<br>Transaction Successful!`;
+            } else {
+                document.getElementById("errorMessage").innerText = "There was an error processing your transaction.";
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById("errorMessage").innerText = "An error occurred while processing the transaction.";
+        });
     });
 
     // Change transaction fee based on amount
