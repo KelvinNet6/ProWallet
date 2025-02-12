@@ -197,6 +197,107 @@
                 addMessage('ai', greetingMessage);
             }, 1000); // AI greets the user after 1 second
         });
+
+        //----------------------------------------------Function to monitor login attempts and detect fraudulent login activities------------------------------------------------//
+    function monitorLoginActivity() {
+        const apiUrl = `https://localhost:44323/Help/Api/GET-api/epaywallet/account/request/login/activity`;
+        
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (data.failedAttempts > 3) {
+                    addMessage('ai', 'Warning: Multiple failed login attempts detected. If this was not you, please secure your account immediately.');
+                }
+                if (data.unusualLoginLocation) {
+                    addMessage('ai', `Suspicious activity: A login attempt was made from a new location (IP: ${data.unusualLoginLocation}).`);
+                }
+            })
+            .catch(error => {
+                console.error('Error checking login activity:', error);
+            });
+    }
+
+    // Function to monitor transactions and detect high-value or suspicious transactions
+    function monitorTransactions(accountNumber) {
+        const apiUrl = `https://localhost:44323/Help/Api/GET-api/epaywallet/account/request/get/transaction/activity/${accountNumber}`;
+        
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Check for high-value transactions
+                data.transactions.forEach(transaction => {
+                    if (transaction.amount > 1000) {  // Assume 1000 is the threshold for high-value transactions
+                        addMessage('ai', `Alert: A high-value transaction of K${transaction.amount} was detected.`);
+                    }
+                });
+
+                // Monitor for rapid consecutive transactions (potentially suspicious)
+                if (data.transactions.length > 3) {
+                    let lastTransaction = data.transactions[data.transactions.length - 1];
+                    let secondLastTransaction = data.transactions[data.transactions.length - 2];
+
+                    if (new Date(lastTransaction.date) - new Date(secondLastTransaction.date) < 300000) { // 5 minutes
+                        addMessage('ai', 'Warning: Multiple transactions made within a short time period. This could indicate fraudulent activity.');
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error checking transaction activity:', error);
+            });
+    }
+
+    // Function to monitor account changes (like email change or password change)
+    function monitorAccountChanges(accountNumber) {
+        const apiUrl = `https://localhost:44323/Help/Api/GET-api/epaywallet/account/request/account/changes/${accountNumber}`;
+        
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (data.changedEmail) {
+                    addMessage('ai', `Alert: Your email address was recently changed to ${data.changedEmail}. If this wasn't you, please reset your password.`);
+                }
+                if (data.changedPassword) {
+                    addMessage('ai', `Alert: Your password was recently changed. If you did not do this, please secure your account.`);
+                }
+            })
+            .catch(error => {
+                console.error('Error checking account changes:', error);
+            });
+    }
+
+    // Regularly monitor account activities (you can set the interval as per your needs)
+    setInterval(() => {
+        const accountNumber = sessionStorage.getItem("paySheetAccount") ? JSON.parse(sessionStorage.getItem("paySheetAccount")).accountName : null;
+
+        if (accountNumber) {
+            monitorLoginActivity();
+            monitorTransactions(accountNumber);
+            monitorAccountChanges(accountNumber);
+        }
+    }, 60000); // Check activities every minute (you can adjust this frequency)
+
+    // Handle user input and AI responses
+    document.getElementById("send-btn").addEventListener("click", function() {
+        const userInput = document.getElementById("user-query").value.trim();
+        
+        if (!userInput) return;  // Prevent sending empty input
+
+        // Display the user's message in the chat window
+        addMessage('user', userInput);
+
+        // Clear the input field immediately after sending the message
+        document.getElementById("user-query").value = '';  // Clear the input field
+
+        // Handling fraud alerts based on the query
+        if (userInput.toLowerCase().includes('fraud alert') || userInput.toLowerCase().includes('suspicious activity')) {
+            addMessage('ai', 'Monitoring your account for any suspicious activity. You will be alerted if any unusual behavior is detected.');
+        } else {
+            // Handle other queries as usual
+            let aiResponse = 'I didn\'t quite understand that. Could you try again?';
+            addMessage('ai', aiResponse);
+        }
+    });
+        
     </script>
 </body>
 </html>
