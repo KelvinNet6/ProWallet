@@ -87,12 +87,20 @@ document.getElementById("send-btn").addEventListener("click", function() {
             isWaitingForDetails = false; // We no longer need to wait for number input
             return;
         } else if (!emailAddress) {
-            emailAddress = userInput;  // Save the email address
-            fetchBalance(accountNumber, emailAddress);  // Fetch balance after both inputs
-            isWaitingForDetails = false;  // Reset waiting flag
-            accountNumber = '';  // Clear for next query
-            emailAddress = '';  // Clear for next query
-            return;
+            // Validate email address format (simple check)
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailRegex.test(userInput)) {
+                emailAddress = userInput;  // Save the email address
+                fetchBalance(accountNumber, emailAddress);  // Fetch balance after both inputs
+                isWaitingForDetails = false;  // Reset waiting flag
+                accountNumber = '';  // Clear for next query
+                emailAddress = '';  // Clear for next query
+                return;
+            } else {
+                // If email format is invalid
+                addMessage('ai', 'Please provide a valid email address.');
+                return;
+            }
         }
     }
 
