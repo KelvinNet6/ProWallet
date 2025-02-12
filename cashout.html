@@ -145,7 +145,7 @@
         };
 
         // Call API to handle Cash Out request
-        fetch('API_URL', {  // Replace 'API_URL' with the actual API endpoint URL
+        fetch('https://localhost:44323/Help/Api/GET-api/epaywallet/account/request/get/source/accountbalance/${accountNumber}/${emailAddress}', {  
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
