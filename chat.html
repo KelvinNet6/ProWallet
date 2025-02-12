@@ -48,7 +48,7 @@
 
         // Logout functionality
         document.getElementById("logout-btn").addEventListener("click", () => {
-            localStorage.removeItem('authToken');
+            sessionStorage.removeItem('paySheetAccount'); // Remove session data
             window.location.href = "index.html";
         });
 
@@ -62,160 +62,99 @@
             chatWindow.scrollTop = chatWindow.scrollHeight; // Scroll to the latest message
         }
 
-// Flag to track whether we are expecting a PaySheet number or email address
-let isWaitingForDetails = false;
-let accountNumber = '';
-let emailAddress = '';
+        // Flag to track whether we are expecting a PaySheet number or email address
+        let isWaitingForDetails = false;
+        let accountNumber = '';
+        let emailAddress = '';
 
-// Handle user input and AI responses
-document.getElementById("send-btn").addEventListener("click", function() {
-    const userInput = document.getElementById("user-query").value.trim();
-    
-    if (!userInput) return;  // Prevent sending empty input
+        // Handle user input and AI responses
+        document.getElementById("send-btn").addEventListener("click", function() {
+            const userInput = document.getElementById("user-query").value.trim();
+            
+            if (!userInput) return;  // Prevent sending empty input
 
-    // Display the user's message in the chat window
-    addMessage('user', userInput);
+            // Display the user's message in the chat window
+            addMessage('user', userInput);
 
-    // Clear the input field immediately after sending the message
-    document.getElementById("user-query").value = '';  // Clear the input field
+            // Clear the input field immediately after sending the message
+            document.getElementById("user-query").value = '';  // Clear the input field
 
-    // If we're waiting for details (either PaySheet number or email)
-    if (isWaitingForDetails) {
-        if (!accountNumber) {
-            // Check PaySheet number via API
-            checkPaySheetNumber(userInput);
-            return;
-        }
+            // If the user asks for the PaySheet number, display it
+            if (userInput.toLowerCase().includes('paysheet number') || userInput.toLowerCase().includes('account number')) {
+                const storedAccount = sessionStorage.getItem("paySheetAccount");
+                if (storedAccount) {
+                    const accountData = JSON.parse(storedAccount);
+                    addMessage('ai', `Your PaySheet number is: ${accountData.accountName}`);  // Show the account number
+                } else {
+                    addMessage('ai', 'Sorry, I cannot find your PaySheet number. Please log in first.');
+                }
+                return;  // End the function here if PaySheet number is asked
+            }
 
-        if (!emailAddress) {
-            // Validate email address format (simple check)
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (emailRegex.test(userInput)) {
-                emailAddress = userInput;  // Save the email address
-                fetchBalance(accountNumber, emailAddress);  // Fetch balance after both inputs
-                accountNumber = '';  // Clear for next query
-                emailAddress = '';  // Clear for next query
-                isWaitingForDetails = false;  // Reset flag after both details are received
+            // Main interaction flow
+            if (userInput.toLowerCase().includes('balance')) {
+                isWaitingForDetails = true;
+                addMessage('ai', 'Please provide your PaySheet number first.');
                 return;
+            } else if (userInput.toLowerCase().includes('hi') || userInput.toLowerCase().includes('hello')) {
+                addMessage('ai', 'Hello! How can I help you today?');
             } else {
-                // If email format is invalid
-                addMessage('ai', 'Please provide a valid email address.');
-                return;
+                // Handle other inquiries (fees, agents, etc.)
+                let aiResponse = '';
+                if (userInput.toLowerCase().includes('transfer fee')) {
+                    aiResponse = 'Our standard transaction fee is 2% per transfer. For international transfers, there is an additional $5 charge.';
+                } else if (userInput.toLowerCase().includes('withdrawal fee') || userInput.toLowerCase().includes('cash out fee')) {
+                    aiResponse = 'The withdrawal fee for cashing out is $1.50 per transaction.';
+                } else if (userInput.toLowerCase().includes('nearest agent') || userInput.toLowerCase().includes('find payment agent')) {
+                    aiResponse = 'I can help you find the nearest payment collection agent. Please share your location (city or use your current location).';
+                } else {
+                    aiResponse = 'I didn\'t quite understand that. Could you try again?';
+                }
+
+                addMessage('ai', aiResponse);
             }
-        }
-    }
-
-    // Main interaction flow
-    if (userInput.toLowerCase().includes('balance')) {
-        isWaitingForDetails = true;
-        addMessage('ai', 'Please provide your PaySheet number first.');
-        return;
-    } else if (userInput.toLowerCase().includes('hi') || userInput.toLowerCase().includes('hello')) {
-        addMessage('ai', 'Hello! How can I help you today?');
-    } else {
-        // Handle other inquiries (fees, agents, etc.)
-        let aiResponse = '';
-        if (userInput.toLowerCase().includes('transfer fee')) {
-            aiResponse = 'Our standard transaction fee is 2% per transfer. For international transfers, there is an additional $5 charge.';
-        } else if (userInput.toLowerCase().includes('withdrawal fee') || userInput.toLowerCase().includes('cash out fee')) {
-            aiResponse = 'The withdrawal fee for cashing out is $1.50 per transaction.';
-        } else if (userInput.toLowerCase().includes('nearest agent') || userInput.toLowerCase().includes('find payment agent')) {
-            aiResponse = 'I can help you find the nearest payment collection agent. Please share your location (city or use your current location).';
-        } else {
-            aiResponse = 'I didn\'t quite understand that. Could you try again?';
-        }
-
-        addMessage('ai', aiResponse);
-    }
-});
-
-// Function to check PaySheet number from the integrated API
-function checkPaySheetNumber(paySheetNumber) {
-    const apiUrl = `https://localhost:44323/Help/Api/GET-api/epaywallet/account/request/check/paysheet/${paySheetNumber}`;
-    
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            if (data.isValid) {
-                // If the PaySheet number is valid
-                accountNumber = paySheetNumber;
-                addMessage('ai', 'PaySheet number verified successfully! Now, please provide your email address.');
-            } else {
-                // If the PaySheet number is invalid
-                addMessage('ai', 'Sorry, the PaySheet number you entered is invalid. Please check and try again.');
-                isWaitingForDetails = false;  // Reset the flag in case of invalid PaySheet number
-            }
-        })
-        .catch(error => {
-            addMessage('ai', 'Sorry, there was an error verifying your PaySheet number. Please try again later.');
-            console.error('Error checking PaySheet number:', error); // For debugging purposes
         });
-}
 
-// Function to fetch balance from the integrated API
-function fetchBalance(accountNumber, emailAddress) {
-    const apiUrl = `https://localhost:44323/Help/Api/GET-api/epaywallet/account/request/get/source/accountbalance/${accountNumber}/${emailAddress}`;
+        // Function to check PaySheet number from the integrated API
+        function checkPaySheetNumber(paySheetNumber) {
+            const apiUrl = `https://localhost:44323/Help/Api/GET-api/epaywallet/account/request/check/paysheet/${paySheetNumber}`;
+            
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.isValid) {
+                        // If the PaySheet number is valid
+                        accountNumber = paySheetNumber;
+                        addMessage('ai', 'PaySheet number verified successfully! Now, please provide your email address.');
+                    } else {
+                        // If the PaySheet number is invalid
+                        addMessage('ai', 'Sorry, the PaySheet number you entered is invalid. Please check and try again.');
+                        isWaitingForDetails = false;  // Reset the flag in case of invalid PaySheet number
+                    }
+                })
+                .catch(error => {
+                    addMessage('ai', 'Sorry, there was an error verifying your PaySheet number. Please try again later.');
+                    console.error('Error checking PaySheet number:', error); // For debugging purposes
+                });
+        }
 
-    fetch(apiUrl)  // Use dynamic values from the arguments
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.balance !== undefined) {
-                const balance = data.balance;  // Assume the response contains a 'balance' field
-                addMessage('ai', `Your current wallet balance is K${balance}.`);
-            } else {
-                addMessage('ai', 'Error: Unable to fetch balance. Please check your account details or try again later.');
-            }
-        })
-        .catch(error => {
-            addMessage('ai', 'Sorry, there was an error fetching your balance. Please try again later.');
-            console.error('Error fetching balance:', error); // For debugging purposes
+        // Simulate automatic AI greeting and suggestions
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                // Construct the greeting message with available services
+                let greetingMessage = "Hello! I'm PaySheet AI assistant. ";
+                greetingMessage += "I can assist you with the following:<br><br>";
+                greetingMessage += "1. Check your PaySheet Number<br>";
+                greetingMessage += "2. Check PaySheet Balance<br>";
+                greetingMessage += "3. Transfer Fee Charges<br>";
+                greetingMessage += "4. Cashout Fee Charges<br>";
+                greetingMessage += "5. Locating nearest Payment Collection Agent<br>";
+                greetingMessage += "6. Transaction Monitoring";
+
+                // Add the message to the chat
+                addMessage('ai', greetingMessage);
+            }, 1000); // AI greets the user after 1 second
         });
-}
-
-// Add message function to display chat bubbles
-function addMessage(sender, message) {
-    const chatWindow = document.getElementById("chat-window");
-    const messageDiv = document.createElement("div");
-    messageDiv.classList.add("chat-bubble", sender === "ai" ? "ai-bubble" : "user-bubble");
-    messageDiv.innerHTML = `<p>${message}</p>`;
-    chatWindow.appendChild(messageDiv);
-    chatWindow.scrollTop = chatWindow.scrollHeight; // Scroll to the latest message
-}
-
-// Simulate automatic AI greeting and suggestions
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        // Construct the greeting message with available services
-        let greetingMessage = "Hello! I'm PaySheet AI assistant. ";
-        greetingMessage += "I can assist you with the following:<br><br>";
-        greetingMessage += "1. Check your PaySheet Number<br>";
-        greetingMessage += "2. Check PaySheet Balance<br>";
-        greetingMessage += "3. Transfer Fee Charges<br>";
-        greetingMessage += "4. Cashout Fee Charges<br>";
-        greetingMessage += "5. Locating nearest Payment Collection Agent<br>";
-        greetingMessage += "6. Transaction Monitoring";
-
-        // Add the message to the chat
-        addMessage('ai', greetingMessage);
-    }, 1000); // AI greets the user after 1 second
-});
-
-// Dummy function to simulate finding nearest payment agents based on location (latitude, longitude)
-function findNearestAgent(lat, lon) {
-    // Simulated data for nearest agents
-    const agents = [
-        { name: "Agent 1", distance: (Math.random() * 5).toFixed(2) },
-        { name: "Agent 2", distance: (Math.random() * 10).toFixed(2) },
-        { name: "Agent 3", distance: (Math.random() * 3).toFixed(2) }
-    ];
-    return agents;
-}
-
     </script>
 </body>
 </html>
