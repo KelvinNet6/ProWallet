@@ -82,9 +82,8 @@ document.getElementById("send-btn").addEventListener("click", function() {
     // If we're waiting for details (either PaySheet number or email)
     if (isWaitingForDetails) {
         if (!accountNumber) {
-            // Save the PaySheet number
-            accountNumber = userInput;
-            addMessage('ai', 'Got it! Now, please provide your email address.');
+            // Check PaySheet number via API
+            checkPaySheetNumber(userInput);
             return;
         }
 
@@ -129,6 +128,29 @@ document.getElementById("send-btn").addEventListener("click", function() {
         addMessage('ai', aiResponse);
     }
 });
+
+// Function to check PaySheet number from the integrated API
+function checkPaySheetNumber(paySheetNumber) {
+    const apiUrl = `https://localhost:44323/Help/Api/GET-api/epaywallet/account/request/check/paysheet/${paySheetNumber}`;
+    
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.isValid) {
+                // If the PaySheet number is valid
+                accountNumber = paySheetNumber;
+                addMessage('ai', 'PaySheet number verified successfully! Now, please provide your email address.');
+            } else {
+                // If the PaySheet number is invalid
+                addMessage('ai', 'Sorry, the PaySheet number you entered is invalid. Please check and try again.');
+                isWaitingForDetails = false;  // Reset the flag in case of invalid PaySheet number
+            }
+        })
+        .catch(error => {
+            addMessage('ai', 'Sorry, there was an error verifying your PaySheet number. Please try again later.');
+            console.error('Error checking PaySheet number:', error); // For debugging purposes
+        });
+}
 
 // Function to fetch balance from the integrated API
 function fetchBalance(accountNumber, emailAddress) {
@@ -182,7 +204,6 @@ window.addEventListener('load', function() {
         addMessage('ai', greetingMessage);
     }, 1000); // AI greets the user after 1 second
 });
-
 
 // Dummy function to simulate finding nearest payment agents based on location (latitude, longitude)
 function findNearestAgent(lat, lon) {
