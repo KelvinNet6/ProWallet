@@ -938,3 +938,22 @@ button:hover {
             width: 100%; /* Make buttons full width on mobile */
         }
     }
+/* Style for alert messages */
+.alert-bubble {
+    background-color: #ffcc00; /* Yellow background for alerts */
+    color: #333;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px 0;
+    font-weight: bold;
+}
+
+/* Style for warning messages */
+.warning-bubble {
+    background-color: #ff6666; /* Red background for warnings */
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px 0;
+    font-weight: bold;
+}
