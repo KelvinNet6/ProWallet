@@ -20,7 +20,6 @@
             <li><a href="cashout.html"><i class="fas fa-money-check-alt"></i> Cash Out</a></li>
             <li><a href="profilesettings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
             <li><button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sign Out</button></li>
-
         </ul>
     </div>
 
@@ -29,53 +28,32 @@
             <h1>PaySheet | Dashboard</h1>
         </header>
         
-    <section class="account-info">
-    <div class="account-details">
-        <h2>PaySheet Account: Kelvin Kadzenje</h2>
-        <br>
-        <!-- Container for the buttons (links) to align them horizontally -->
-        <div class="quick-links-container">
-            <!-- Quick Link Button to Check Balance (direct to another page) -->
-            <a href="chat.html" class="quick-link-btn">
-                <i class="fas fa-wallet"></i> Check Balance
-            </a>
-
-        <br>
-            
-            <!-- Quick Link Button to Check PaySheet Number (direct to another page) -->
-            <a href="chat.html" class="quick-link-btn">
-                <i class="fas fa-id-card"></i> Check PaySheet Number
-            </a>
-        </div>
-    </div>
-</section>
+        <section class="account-info">
+            <div class="account-details">
+                <h2 id="account-name">PaySheet Account: Loading...</h2> <!-- Dynamically updated -->
+                <br>
+                <div class="quick-links-container">
+                    <a href="chat.html" class="quick-link-btn">
+                        <i class="fas fa-wallet"></i> Check Balance
+                    </a>
+                    <br>
+                    <a href="chat.html" class="quick-link-btn">
+                        <i class="fas fa-id-card"></i> Check PaySheet Number
+                    </a>
+                </div>
+            </div>
+        </section>
         
         <section class="transaction-history">
             <h3>Recent Transactions</h3>
-            <div class="transactions">
-                <div class="transaction-item">
-                    <span class="type">Payment</span>
-                    <span class="amount">k500000</span>
-                    <span class="date">02/05/2025</span>
-                </div>
-                <div class="transaction-item">
-                    <span class="type">Transfer</span>
-                    <span class="amount">K200000</span>
-                    <span class="date">01/29/2025</span>
-                </div>
-                <div class="transaction-item">
-                    <span class="type">CashOut</span>
-                    <span class="amount">K50000</span>
-                    <span class="date">01/25/2025</span>
-                </div>
+            <div class="transactions" id="recent-transactions">
+                <!-- Transactions will be dynamically populated -->
             </div>
             <br>
-            <!-- Button to open the popup -->
             <button id="view-all-transactions-btn">View All Transactions</button>
         </section>
         
         <br><br>
-        <!-- New Section with Background Video -->
         <section class="video-container">
             <div class="video-overlay">
                 <h2>PaySheet</h2>
@@ -87,70 +65,21 @@
             </video>
         </section>
 
-        <!-- New Section for Transaction Graph -->
         <section class="transaction-graph">
             <h2>Transaction Trends</h2>
             <canvas id="transactionChart" width="400" height="200"></canvas>
         </section>
     </div>
 
-    <!-- Modal Popup HTML -->
-<div id="transactions-modal" class="modal">
-    <div class="modal-content">
-        <span id="close-modal" class="close-btn">&times;</span>
-        <h2>All Transactions</h2>
-        <div class="scroll-container">
-            <!-- Example of past transactions to display -->
-            <div class="transaction-item">
-                <span class="type">PaySheet</span>
-                <span class="amount">k100000</span>
-                <span class="date">01/15/2025</span>
-            </div>
-            <div class="transaction-item">
-                <span class="type">Transfer</span>
-                <span class="amount">K150000</span>
-                <span class="date">01/10/2025</span>
-            </div>
-            <div class="transaction-item">
-                <span class="type">CashOut</span>
-                <span class="amount">K30000</span>
-                <span class="date">01/05/2025</span>
-            </div>
-             <!-- Example of past transactions to display -->
-            <div class="transaction-item">
-                <span class="type">PaySheet</span>
-                <span class="amount">k100000</span>
-                <span class="date">01/15/2025</span>
-            </div>
-            <div class="transaction-item">
-                <span class="type">Transfer</span>
-                <span class="amount">K150000</span>
-                <span class="date">01/10/2025</span>
-            </div>
-            <div class="transaction-item">
-                <span class="type">CashOut</span>
-                <span class="amount">K30000</span>
-                <span class="date">01/05/2025</span>
-            </div>
-             <!-- Example of past transactions to display -->
-            <div class="transaction-item">
-                <span class="type">PaySheet</span>
-                <span class="amount">k100000</span>
-                <span class="date">01/15/2025</span>
-            </div>
-            <div class="transaction-item">
-                <span class="type">Transfer</span>
-                <span class="amount">K150000</span>
-                <span class="date">01/10/2025</span>
-            </div>
-            <div class="transaction-item">
-                <span class="type">CashOut</span>
-                <span class="amount">K30000</span>
-                <span class="date">01/05/2025</span>
+    <div id="transactions-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-modal" class="close-btn">&times;</span>
+            <h2>All Transactions</h2>
+            <div class="scroll-container" id="all-transactions">
+                <!-- All transactions will be dynamically populated -->
             </div>
         </div>
     </div>
-</div>
 
     <script src="app.js"></script>
     <script>
@@ -162,86 +91,135 @@
 
         // Logout functionality
         document.getElementById("logout-btn").addEventListener("click", () => {
-            localStorage.removeItem('authToken');
+            sessionStorage.removeItem('paySheetAccount');
             window.location.href = "index.html";
         });
 
-   // Open and close modal for viewing all transactions
-    const viewAllTransactionsBtn = document.getElementById("view-all-transactions-btn");
-    const modal = document.getElementById("transactions-modal");
-    const closeModal = document.getElementById("close-modal");
-    const body = document.body;
+        // Open and close modal for viewing all transactions
+        const viewAllTransactionsBtn = document.getElementById("view-all-transactions-btn");
+        const modal = document.getElementById("transactions-modal");
+        const closeModal = document.getElementById("close-modal");
+        const body = document.body;
 
-    // Open the modal when "View All Transactions" button is clicked
-    viewAllTransactionsBtn.addEventListener("click", () => {
-        modal.style.display = "block"; // Show the modal
-        body.style.overflow = "hidden"; // Prevent the body from scrolling when the modal is open
-    });
+        viewAllTransactionsBtn.addEventListener("click", () => {
+            modal.style.display = "block";
+            body.style.overflow = "hidden";
+        });
 
-    // Close the modal when the close button (X) is clicked
-    closeModal.addEventListener("click", () => {
-        modal.style.display = "none"; // Hide the modal
-        body.style.overflow = "auto"; // Re-enable body scrolling
-    });
+        closeModal.addEventListener("click", () => {
+            modal.style.display = "none";
+            body.style.overflow = "auto";
+        });
 
-    // Close the modal if the user clicks outside the modal content
-    window.addEventListener("click", (event) => {
-        if (event.target === modal) {
-            modal.style.display = "none"; // Hide the modal
-            body.style.overflow = "auto"; // Re-enable body scrolling
-        }
-    });
-        //-----------------------load graph-------------------------//
-        window.addEventListener('load', function() {
-            // Log to check that the script is working
-            console.log("Page loaded, creating chart...");
+        window.addEventListener("click", (event) => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+                body.style.overflow = "auto";
+            }
+        });
 
-            // Get the canvas element
-            const canvas = document.getElementById('transactionChart');
-            
-            // Force width and height of the canvas
-            canvas.width = 400; // Set width of the canvas
-            canvas.height = 200; // Set height of the canvas
+        // Fetch data from sessionStorage and dynamically update the page
+        window.addEventListener('load', async function() {
+            const paySheetAccount = sessionStorage.getItem("paySheetAccount");
 
-            // Get the context to draw on the canvas
-            const ctx = canvas.getContext('2d');
+            if (paySheetAccount) {
+                try {
+                    // Simulating API URL (replace with your real API URL)
+                    const apiUrl = "https://your-api-endpoint.com/transactions"; 
 
-            // Initialize Chart.js
-            const transactionChart = new Chart(ctx, {
-                type: 'line', // Type of chart (line chart in this case)
-                data: {
-                    labels: ['01/25/2025', '01/29/2025', '02/05/2025'], // Transaction dates
-                    datasets: [{
-                        label: 'Transaction Amount (K)',
-                        data: [50000, 200000, 500000], // Transaction amounts
-                        borderColor: 'rgba(75, 192, 192, 1)', // Color of the line
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Background color under the line
-                        fill: true, // Fill the area under the line
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
+                    // Fetching transaction data from the API
+                    const response = await fetch(apiUrl, {
+                        method: 'GET', // HTTP method (GET in this case)
+                        headers: {
+                            'Authorization': `Bearer ${paySheetAccount.token}`, // Assuming a token-based system
                         }
+                    });
+
+                    // Check if the request was successful
+                    if (response.ok) {
+                        const userData = await response.json();
+
+                        // Update account name
+                        document.getElementById("account-name").textContent = `PaySheet Account: ${userData.accountName}`;
+
+                        // Populate recent transactions
+                        const recentTransactionsContainer = document.getElementById("recent-transactions");
+                        recentTransactionsContainer.innerHTML = ""; // Clear existing content
+                        userData.recentTransactions.forEach(transaction => {
+                            const transactionDiv = document.createElement("div");
+                            transactionDiv.classList.add("transaction-item");
+                            transactionDiv.innerHTML = `
+                                <span class="type">${transaction.type}</span>
+                                <span class="amount">${transaction.amount}</span>
+                                <span class="date">${transaction.date}</span>
+                            `;
+                            recentTransactionsContainer.appendChild(transactionDiv);
+                        });
+
+                        // Populate all transactions in the modal
+                        const allTransactionsContainer = document.getElementById("all-transactions");
+                        allTransactionsContainer.innerHTML = ""; // Clear existing content
+                        userData.allTransactions.forEach(transaction => {
+                            const transactionDiv = document.createElement("div");
+                            transactionDiv.classList.add("transaction-item");
+                            transactionDiv.innerHTML = `
+                                <span class="type">${transaction.type}</span>
+                                <span class="amount">${transaction.amount}</span>
+                                <span class="date">${transaction.date}</span>
+                            `;
+                            allTransactionsContainer.appendChild(transactionDiv);
+                        });
+
+                        // Initialize the chart (for transaction trends)
+                        const canvas = document.getElementById('transactionChart');
+                        const ctx = canvas.getContext('2d');
+                        const transactionChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: userData.recentTransactions.map(t => t.date),
+                                datasets: [{
+                                    label: 'Transaction Amount (K)',
+                                    data: userData.recentTransactions.map(t => parseInt(t.amount.replace('K', '').replace(',', ''))),
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    fill: true
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+
+                    } else {
+                        console.error('Failed to fetch transaction data', response.statusText);
+                        alert('Error fetching transaction data. Please try again later.');
                     }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again later.');
                 }
-            });
+            } else {
+                alert("Session expired. Please log in again.");
+                window.location.href = "index.html";
+            }
         });
     </script>
 
-    <!-- Bottom Navigation for Mobile View -->
-<div class="bottom-nav">
-    <a href="home.html" class="nav-item">
-        <i class="fas fa-home"></i>
-    </a>
-    <a href="FAQs.html" class="nav-item">
-        <i class="fas fa-question-circle"></i>
-    </a>
-    <a href="chat.html" class="nav-item ai-chat-logo">
-        <img src="Capture.PNG" alt="AI Chat Logo" class="ai-chat-img">
-    </a>
-</div>
+    <div class="bottom-nav">
+        <a href="home.html" class="nav-item">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="FAQs.html" class="nav-item">
+            <i class="fas fa-question-circle"></i>
+        </a>
+        <a href="chat.html" class="nav-item ai-chat-logo">
+            <img src="Capture.PNG" alt="AI Chat Logo" class="ai-chat-img">
+        </a>
+    </div>
 </body>
 </html>
