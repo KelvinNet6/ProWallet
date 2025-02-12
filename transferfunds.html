@@ -28,24 +28,21 @@
             <h1>PaySheet | <br>Transfer</h1>
         </header>
 
-        <!-- Transfer Funds Section (without the transfer-container div) -->
+        <!-- Transfer Funds Section -->
         <h2>Enter Recipient PaySheet Number!</h2>
         <br>
 
         <!-- Form -->
-        <form action="/process-transfer" method="POST" class="transfer-form" id="transfer-form">
+        <form id="transfer-form" class="transfer-form">
             <!-- Left Container (From Account) -->
             <div class="left-container">
-             <div class="form-group">
-            <label for="from-account">From Account</label>
-             <input type="text" id="from-account" name="from_account" value="460006759" readonly />
-        
-        <!-- Image below the input field -->
-                 <img src="Screenshot 2025-02-06 14.53.13.png" alt="Account Icon" class="account-icon" />
+                <div class="form-group">
+                    <label for="from-account">From Account</label>
+                    <input type="text" id="from-account" name="from_account" value="460006759" readonly />
+                    <img src="Screenshot 2025-02-06 14.53.13.png" alt="Account Icon" class="account-icon" />
                 </div>
-           </div>
+            </div>
 
-              <br>
             <!-- Right Container (Recipient, Amount, and Transfer Button) -->
             <div class="right-container">
                 <div class="form-group">
@@ -62,29 +59,25 @@
                     <i class="fas fa-paper-plane"></i> Transfer
                 </button>
                 <br>
-                  <!-- Error Message -->
-            <div id="error-message" class="error-message"></div>
+                <div id="error-message" class="error-message"></div>
             </div>
-            
         </form>
 
         <!-- Security Code Popup -->
         <div id="security-popup" class="popup">
             <div class="popup-content">
                 <h3>Enter Security Code</h3>
-                <form action="/process-security" method="POST" class="security-form">
+                <form id="security-form" class="security-form">
                     <label for="security-code">PaySheet Code</label>
                     <input type="password" id="security-code" name="security_code" placeholder="Enter your security code" required />
                     <button type="submit">Confirm</button>
                     <br>
-                    <!-- Close button to close the popup -->
-                   <span id="closePopupBtn" class="close">&times;</span>
+                    <span id="closePopupBtn" class="close">&times;</span>
                 </form>
             </div>
         </div>
     </div>
 
-    
     <script>
         // Toggle Sidebar for Mobile
         document.getElementById("menu-btn").addEventListener("click", () => {
@@ -101,20 +94,68 @@
         document.addEventListener("DOMContentLoaded", function() {
             const transferBtn = document.getElementById("transfer-btn");
             const popup = document.getElementById("security-popup");
-            const closePopupBtn = document.getElementById("closePopupBtn"); // Close button
+            const closePopupBtn = document.getElementById("closePopupBtn");
             const errorMessage = document.getElementById("error-message");
+            const transferForm = document.getElementById("transfer-form");
 
             transferBtn.addEventListener("click", () => {
                 const fromAccount = document.getElementById("from-account").value;
                 const toAccount = document.getElementById("to-account").value;
                 const amount = document.getElementById("amount").value;
 
+                // Validate input fields
                 if (!toAccount || !amount) {
                     errorMessage.textContent = "Please fill in both recipient and amount.";
                     errorMessage.style.display = "block";
                 } else {
                     errorMessage.style.display = "none";
-                    popup.style.display = "flex"; // Show security code popup (centered)
+                    popup.style.display = "flex"; // Show the security code popup
+
+                    // Now, send the transaction details to the API
+                    transferForm.addEventListener("submit", function(e) {
+                        e.preventDefault();
+
+                        const securityCode = document.getElementById("security-code").value;
+
+                        if (!securityCode) {
+                            alert("Please enter your security code.");
+                            return;
+                        }
+
+                        // Create the payload for the transfer
+                        const transferData = {
+                            from_account: fromAccount,
+                            to_account: toAccount,
+                            amount: amount,
+                            security_code: securityCode
+                        };
+
+                        // API URL to handle transfer
+                        const apiUrl = "https://your-api-url.com/transfer"; // Replace with your API endpoint
+
+                        // Send the data to the API for processing
+                        fetch(apiUrl, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${localStorage.getItem("authToken")}` // Assuming you have an auth token
+                            },
+                            body: JSON.stringify(transferData)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert("Transfer successful!");
+                                window.location.href = "home.html"; // Redirect after successful transfer
+                            } else {
+                                alert("Transfer failed: " + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error during transfer:", error);
+                            alert("An error occurred while processing the transfer.");
+                        });
+                    });
                 }
             });
 
@@ -131,17 +172,18 @@
             });
         });
     </script>
-  <!-- Bottom Navigation for Mobile View -->
-<div class="bottom-nav">
-    <a href="home.html" class="nav-item">
-        <i class="fas fa-home"></i>
-    </a>
-    <a href="FAQs.html" class="nav-item">
-        <i class="fas fa-question-circle"></i>
-    </a>
-    <a href="chat.html" class="nav-item ai-chat-logo">
-        <img src="Capture.PNG" alt="AI Chat Logo" class="ai-chat-img">
-    </a>
-    
+
+    <!-- Bottom Navigation for Mobile View -->
+    <div class="bottom-nav">
+        <a href="home.html" class="nav-item">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="FAQs.html" class="nav-item">
+            <i class="fas fa-question-circle"></i>
+        </a>
+        <a href="chat.html" class="nav-item ai-chat-logo">
+            <img src="Capture.PNG" alt="AI Chat Logo" class="ai-chat-img">
+        </a>
+    </div>
 </body>
 </html>
