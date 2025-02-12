@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat | PaySheet</title>
+    <title>AI Chat | PaySheet</title>
     <link rel="icon" href="screenshot_2025_02_06_14_53_13_QDM_icon.ico" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
@@ -62,7 +62,7 @@
             chatWindow.scrollTop = chatWindow.scrollHeight; // Scroll to the latest message
         }
 
-   // Flag to track whether we are expecting a PaySheet number or email address
+  // Flag to track whether we are expecting a PaySheet number or email address
 let isWaitingForDetails = false;
 let accountNumber = '';
 let emailAddress = '';
@@ -75,6 +75,9 @@ document.getElementById("send-btn").addEventListener("click", function() {
 
     // Display the user's message in the chat window
     addMessage('user', userInput);
+
+    // Clear the input field immediately after sending the message
+    document.getElementById("user-query").value = '';  // Clear the input field
 
     if (isWaitingForDetails) {
         // Handle the case where we're waiting for PaySheet number or email
@@ -115,8 +118,6 @@ document.getElementById("send-btn").addEventListener("click", function() {
 
         addMessage('ai', aiResponse);
     }
-
-    document.getElementById("user-query").value = '';  // Clear the input field after sending
 });
 
 // Function to fetch balance from the integrated API
