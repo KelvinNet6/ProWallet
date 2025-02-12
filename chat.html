@@ -81,85 +81,60 @@ window.addEventListener('load', function() {
     }, 1000); // AI greets the user after 1 second
 });
         
-// AI message for fetching balance
-document.getElementById("send-btn").addEventListener("click", function() {
-    const userInput = document.getElementById("user-query").value;
-    if (userInput.trim()) {
-        addMessage('user', userInput);  // Display the user's message
-
-        // AI response logic based on user input
-        let aiResponse = '';
-
-        if (userInput.toLowerCase().includes('balance')) {
-            // Ask the user for PaySheet number and email address
-            aiResponse = 'To fetch your balance, please provide your PaySheet number and email address.';
-            setTimeout(function() {
-                addMessage('ai', aiResponse);
-            }, 1000);
-            return;
-        }
-        else if (userInput.toLowerCase().includes('hi') || userInput.toLowerCase().includes('hello')) {
-            // Respond to greetings (Hi or Hello)
-            aiResponse = 'Hello! How can I help you today?';
-        }
-        else if (userInput.toLowerCase().includes('transfer fee')) {
-            aiResponse = 'Our standard transaction fee is 2% per transfer. For international transfers, there is an additional $5 charge.';
-        } else if (userInput.toLowerCase().includes('withdrawal fee') || userInput.toLowerCase().includes('cash out fee')) {
-            aiResponse = 'The withdrawal fee for cashing out is $1.50 per transaction.';
-        } else if (userInput.toLowerCase().includes('currency conversion fee')) {
-            aiResponse = 'Currency conversion is charged at a rate of 1.5% for each transaction involving different currencies.';
-        } else if (userInput.toLowerCase().includes('nearest agent') || userInput.toLowerCase().includes('find payment agent')) {
-            aiResponse = 'I can help you find the nearest payment collection agent. Please share your location (city or use your current location).';
-            setTimeout(function() {
-                addMessage('ai', aiResponse);
-            }, 1000);
-            return;
-        } else {
-            aiResponse = 'I didn\'t quite understand that. Could you try again?';
-        }
-
-        setTimeout(function() {
-            addMessage('ai', aiResponse);  // Display the AI's response
-        }, 1000); // AI responds after 1 second
-
-        document.getElementById("user-query").value = '';  // Clear the input field
-    }
-});
-
-// Handle AI response for fetching balance with PaySheet number and email
+// Flag to track whether we are expecting a PaySheet number or email address
 let isWaitingForDetails = false;
 let accountNumber = '';
 let emailAddress = '';
 
+// Handle user input and AI responses
 document.getElementById("send-btn").addEventListener("click", function() {
     const userInput = document.getElementById("user-query").value.trim();
 
     if (isWaitingForDetails) {
+        // Handle the case where we're waiting for PaySheet number or email
         if (!accountNumber) {
-            accountNumber = userInput;
+            accountNumber = userInput;  // Save the PaySheet number
             addMessage('ai', 'Got it! Now, please provide your email address.');
-            isWaitingForDetails = false;
+            isWaitingForDetails = false; // We no longer need to wait for number input
             return;
         } else if (!emailAddress) {
-            emailAddress = userInput;
-            fetchBalance(accountNumber, emailAddress);  // Fetch balance after receiving both details
-            isWaitingForDetails = false;
-            accountNumber = '';
-            emailAddress = '';  // Clear values after fetching balance
+            emailAddress = userInput;  // Save the email address
+            fetchBalance(accountNumber, emailAddress);  // Fetch balance after both inputs
+            isWaitingForDetails = false;  // Reset waiting flag
+            accountNumber = '';  // Clear for next query
+            emailAddress = '';  // Clear for next query
             return;
         }
     }
 
+    // Main interaction flow
     if (userInput.toLowerCase().includes('balance')) {
         isWaitingForDetails = true;
         addMessage('ai', 'Please provide your PaySheet number first.');
+        return;
+    } else if (userInput.toLowerCase().includes('hi') || userInput.toLowerCase().includes('hello')) {
+        addMessage('ai', 'Hello! How can I help you today?');
+    } else {
+        // Handle other inquiries (fees, agents, etc.)
+        let aiResponse = '';
+        if (userInput.toLowerCase().includes('transfer fee')) {
+            aiResponse = 'Our standard transaction fee is 2% per transfer. For international transfers, there is an additional $5 charge.';
+        } else if (userInput.toLowerCase().includes('withdrawal fee') || userInput.toLowerCase().includes('cash out fee')) {
+            aiResponse = 'The withdrawal fee for cashing out is $1.50 per transaction.';
+        } else if (userInput.toLowerCase().includes('nearest agent') || userInput.toLowerCase().includes('find payment agent')) {
+            aiResponse = 'I can help you find the nearest payment collection agent. Please share your location (city or use your current location).';
+        } else {
+            aiResponse = 'I didn\'t quite understand that. Could you try again?';
+        }
+
+        addMessage('ai', aiResponse);
     }
+
+    document.getElementById("user-query").value = '';  // Clear the input field
 });
 
 // Function to fetch balance from the integrated API
 function fetchBalance(accountNumber, emailAddress) {
-    // Simulating an API request for the balance
-    // Replace with your actual API request code
     const apiUrl = `api/epaywallet/account/request/get/source/accountbalance/${accountNumber}/${emailAddress}`;
 
     fetch(apiUrl)  // Use dynamic values from the arguments
@@ -182,7 +157,6 @@ function fetchBalance(accountNumber, emailAddress) {
             console.error('Error fetching balance:', error); // For debugging purposes
         });
 }
-
 
 // Dummy function to simulate finding nearest payment agents based on location (latitude, longitude)
 function findNearestAgent(lat, lon) {
