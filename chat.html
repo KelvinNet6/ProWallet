@@ -62,7 +62,7 @@
             chatWindow.scrollTop = chatWindow.scrollHeight; // Scroll to the latest message
         }
 
-  // Flag to track whether we are expecting a PaySheet number or email address
+// Flag to track whether we are expecting a PaySheet number or email address
 let isWaitingForDetails = false;
 let accountNumber = '';
 let emailAddress = '';
@@ -79,22 +79,24 @@ document.getElementById("send-btn").addEventListener("click", function() {
     // Clear the input field immediately after sending the message
     document.getElementById("user-query").value = '';  // Clear the input field
 
+    // If we're waiting for details (either PaySheet number or email)
     if (isWaitingForDetails) {
-        // Handle the case where we're waiting for PaySheet number or email
         if (!accountNumber) {
-            accountNumber = userInput;  // Save the PaySheet number
+            // Save the PaySheet number
+            accountNumber = userInput;
             addMessage('ai', 'Got it! Now, please provide your email address.');
-            isWaitingForDetails = false; // We no longer need to wait for number input
             return;
-        } else if (!emailAddress) {
+        }
+
+        if (!emailAddress) {
             // Validate email address format (simple check)
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (emailRegex.test(userInput)) {
                 emailAddress = userInput;  // Save the email address
                 fetchBalance(accountNumber, emailAddress);  // Fetch balance after both inputs
-                isWaitingForDetails = false;  // Reset waiting flag
                 accountNumber = '';  // Clear for next query
                 emailAddress = '';  // Clear for next query
+                isWaitingForDetails = false;  // Reset flag after both details are received
                 return;
             } else {
                 // If email format is invalid
@@ -180,6 +182,7 @@ window.addEventListener('load', function() {
         addMessage('ai', greetingMessage);
     }, 1000); // AI greets the user after 1 second
 });
+
 
 // Dummy function to simulate finding nearest payment agents based on location (latitude, longitude)
 function findNearestAgent(lat, lon) {
