@@ -132,7 +132,7 @@ document.getElementById("send-btn").addEventListener("click", function() {
 
 // Function to fetch balance from the integrated API
 function fetchBalance(accountNumber, emailAddress) {
-    const apiUrl = `api/epaywallet/account/request/get/source/accountbalance/${accountNumber}/${emailAddress}`;
+    const apiUrl = `https://localhost:44323/Help/Api/GET-api-epaywallet-account-request-get-source-accountbalance-accountNumber-emailAddress`;
 
     fetch(apiUrl)  // Use dynamic values from the arguments
         .then(response => {
