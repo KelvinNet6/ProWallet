@@ -62,26 +62,7 @@
             chatWindow.scrollTop = chatWindow.scrollHeight; // Scroll to the latest message
         }
 
-       // Simulate automatic AI greeting and suggestions
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        // Construct the greeting message with available services
-       let greetingMessage = "Hello! I'm PaySheet AI assistant. ";
-       greetingMessage += "I can assist you with the following:<br><br>";
-       greetingMessage += "1. Check your PaySheet Number<br>";
-       greetingMessage += "2. Check PaySheet Balance<br>";
-       greetingMessage += "3. Transfer Fee Charges<br>";
-       greetingMessage += "4. Cashout Fee Charges<br>";
-       greetingMessage += "5. Locating nearest Payment Collection Agent<br>";
-       greetingMessage += "6. Transaction Monitoring";
-
-
-        // Add the message to the chat (assuming addMessage function adds messages to a UI)
-        addMessage('ai', greetingMessage);
-    }, 1000); // AI greets the user after 1 second
-});
-        
-// Flag to track whether we are expecting a PaySheet number or email address
+   // Flag to track whether we are expecting a PaySheet number or email address
 let isWaitingForDetails = false;
 let accountNumber = '';
 let emailAddress = '';
@@ -89,6 +70,11 @@ let emailAddress = '';
 // Handle user input and AI responses
 document.getElementById("send-btn").addEventListener("click", function() {
     const userInput = document.getElementById("user-query").value.trim();
+    
+    if (!userInput) return;  // Prevent sending empty input
+
+    // Display the user's message in the chat window
+    addMessage('user', userInput);
 
     if (isWaitingForDetails) {
         // Handle the case where we're waiting for PaySheet number or email
@@ -130,7 +116,7 @@ document.getElementById("send-btn").addEventListener("click", function() {
         addMessage('ai', aiResponse);
     }
 
-    document.getElementById("user-query").value = '';  // Clear the input field
+    document.getElementById("user-query").value = '';  // Clear the input field after sending
 });
 
 // Function to fetch balance from the integrated API
@@ -157,6 +143,34 @@ function fetchBalance(accountNumber, emailAddress) {
             console.error('Error fetching balance:', error); // For debugging purposes
         });
 }
+
+// Add message function to display chat bubbles
+function addMessage(sender, message) {
+    const chatWindow = document.getElementById("chat-window");
+    const messageDiv = document.createElement("div");
+    messageDiv.classList.add("chat-bubble", sender === "ai" ? "ai-bubble" : "user-bubble");
+    messageDiv.innerHTML = `<p>${message}</p>`;
+    chatWindow.appendChild(messageDiv);
+    chatWindow.scrollTop = chatWindow.scrollHeight; // Scroll to the latest message
+}
+
+// Simulate automatic AI greeting and suggestions
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        // Construct the greeting message with available services
+        let greetingMessage = "Hello! I'm PaySheet AI assistant. ";
+        greetingMessage += "I can assist you with the following:<br><br>";
+        greetingMessage += "1. Check your PaySheet Number<br>";
+        greetingMessage += "2. Check PaySheet Balance<br>";
+        greetingMessage += "3. Transfer Fee Charges<br>";
+        greetingMessage += "4. Cashout Fee Charges<br>";
+        greetingMessage += "5. Locating nearest Payment Collection Agent<br>";
+        greetingMessage += "6. Transaction Monitoring";
+
+        // Add the message to the chat
+        addMessage('ai', greetingMessage);
+    }, 1000); // AI greets the user after 1 second
+});
 
 // Dummy function to simulate finding nearest payment agents based on location (latitude, longitude)
 function findNearestAgent(lat, lon) {
