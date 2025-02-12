@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EPayWallet</title>
+    <title>PaySheet</title>
       <link rel="icon" href="screenshot_2025_02_06_14_53_13_QDM_icon.ico" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
@@ -106,12 +106,13 @@
             sidebar.classList.toggle("active");
         });
 
-        // Logout functionality
-        document.getElementById("logout-btn").addEventListener("click", () => {
-            localStorage.removeItem('authToken');
-            window.location.href = "index.html";
-        });
-            // Open/Close Profile Popup
+      // Logout functionality
+document.getElementById("logout-btn").addEventListener("click", () => {
+    localStorage.removeItem('authToken');
+    window.location.href = "index.html";
+});
+
+// Open/Close Profile Popup
 document.getElementById('edit-profile-btn').addEventListener('click', function() {
     document.getElementById('profile-popup').style.display = 'flex';
 });
@@ -135,7 +136,7 @@ document.getElementById('profile-upload').addEventListener('change', function(ev
 
 // Save Profile
 document.getElementById('save-profile-btn').addEventListener('click', function() {
-    // You can handle saving the profile picture here (upload it to the server, etc.)
+    // Handle saving the profile picture here (upload it to the server, etc.)
     alert('Profile picture saved!');
     document.getElementById('profile-popup').style.display = 'none';
 });
@@ -149,20 +150,59 @@ document.getElementById('close-password-popup').addEventListener('click', functi
     document.getElementById('password-popup').style.display = 'none';
 });
 
-// Password Form Validation
-document.getElementById('password-form').addEventListener('submit', function(event) {
+// Password Form Validation and API Call
+document.getElementById('password-form').addEventListener('submit', async function(event) {
     event.preventDefault();
     const currentPassword = document.getElementById('current-password').value;
     const newPassword = document.getElementById('new-password').value;
     const confirmPassword = document.getElementById('confirm-password').value;
 
+    // Simple form validation
     if (newPassword !== confirmPassword) {
         document.getElementById('password-error').style.display = 'block';
-    } else {
-        document.getElementById('password-error').style.display = 'none';
-        // Handle password change logic here (e.g., send to server)
-        alert('Password changed successfully!');
-        document.getElementById('password-popup').style.display = 'none';
+        return;
+    }
+
+    document.getElementById('password-error').style.display = 'none';
+
+    // Get the authentication token (assumed to be stored in localStorage)
+    const authToken = localStorage.getItem('authToken');
+
+    if (!authToken) {
+        alert('User not authenticated. Please log in again.');
+        window.location.href = "index.html";
+        return;
+    }
+
+    // Prepare the payload for the API request
+    const payload = {
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+    };
+
+    try {
+        // Send the request to the API (Replace with your actual API URL)
+        const response = await fetch('https://your-api-endpoint.com/change-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`, // Sending the token for authentication
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (response.ok) {
+            // Successfully changed the password
+            alert('Password changed successfully!');
+            document.getElementById('password-popup').style.display = 'none';
+        } else {
+            // Handle API errors (e.g., incorrect current password)
+            const errorData = await response.json();
+            alert(`Error: ${errorData.message || 'An error occurred. Please try again.'}`);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again later.');
     }
 });
 
