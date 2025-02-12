@@ -115,29 +115,56 @@
             }
         });
 
-        // Function to check PaySheet number from the integrated API
-        function checkPaySheetNumber(paySheetNumber) {
-            const apiUrl = `https://localhost:44323/Help/Api/GET-api/epaywallet/account/request/check/paysheet/${paySheetNumber}`;
-            
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.isValid) {
-                        // If the PaySheet number is valid
-                        accountNumber = paySheetNumber;
-                        addMessage('ai', 'PaySheet number verified successfully! Now, please provide your email address.');
-                    } else {
-                        // If the PaySheet number is invalid
-                        addMessage('ai', 'Sorry, the PaySheet number you entered is invalid. Please check and try again.');
-                        isWaitingForDetails = false;  // Reset the flag in case of invalid PaySheet number
-                    }
-                })
-                .catch(error => {
-                    addMessage('ai', 'Sorry, there was an error verifying your PaySheet number. Please try again later.');
-                    console.error('Error checking PaySheet number:', error); // For debugging purposes
-                });
-        }
+       // Function to check PaySheet number from the integrated API
+function checkPaySheetNumber(paySheetNumber) {
+    const apiUrl = `https://localhost:44323/Help/Api/GET-api/epaywallet/account/request/check/paysheet/${paySheetNumber}`;
+    
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.isValid) {
+                // If the PaySheet number is valid
+                accountNumber = paySheetNumber;
+                addMessage('ai', 'PaySheet number verified successfully! Now, please provide your email address.');
 
+                // Update flag to expect email input
+                isWaitingForDetails = true;
+            } else {
+                // If the PaySheet number is invalid
+                addMessage('ai', 'Sorry, the PaySheet number you entered is invalid. Please check and try again.');
+                isWaitingForDetails = false;  // Reset the flag in case of invalid PaySheet number
+            }
+        })
+        .catch(error => {
+            addMessage('ai', 'Sorry, there was an error verifying your PaySheet number. Please try again later.');
+            console.error('Error checking PaySheet number:', error); // For debugging purposes
+        });
+}
+
+// Function to fetch balance using PaySheet number and email address
+function fetchBalance(accountNumber, emailAddress) {
+    const apiUrl = `https://localhost:44323/Help/Api/GET-api/epaywallet/account/request/get/source/accountbalance/${accountNumber}/${emailAddress}`;
+    
+    fetch(apiUrl)  // Use dynamic values from the arguments
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.balance !== undefined) {
+                const balance = data.balance;  // Assume the response contains a 'balance' field
+                addMessage('ai', `Your current wallet balance is K${balance}.`);
+            } else {
+                addMessage('ai', 'Error: Unable to fetch balance. Please check your account details or try again later.');
+            }
+        })
+        .catch(error => {
+            addMessage('ai', 'Sorry, there was an error fetching your balance. Please try again later.');
+            console.error('Error fetching balance:', error); // For debugging purposes
+        });
+}
         // Simulate automatic AI greeting and suggestions
         window.addEventListener('load', function() {
             setTimeout(function() {
