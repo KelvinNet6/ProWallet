@@ -123,16 +123,18 @@ document.getElementById('close-profile-popup').addEventListener('click', functio
 
 // Handle Profile Image Upload
 document.getElementById('profile-upload').addEventListener('change', function(event) {
-    const file = event.target.files[0];
+    const file = event.target.files[0];  // Get the file object
     if (file) {
-        const reader = new FileReader();
+        const reader = new FileReader();  // Create a FileReader to read the file
         reader.onload = function(e) {
+            // Apply the selected image as the new profile picture
             document.getElementById('profile-img').src = e.target.result;
-            document.getElementById('save-profile-btn').style.display = 'block';
+            document.getElementById('save-profile-btn').style.display = 'block';  // Show Save button
         };
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(file);  // Read the image file as a data URL
     }
 });
+
 
 // Save Profile
 document.getElementById('save-profile-btn').addEventListener('click', function() {
