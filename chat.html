@@ -67,6 +67,36 @@
         let isWaitingForEmail = false;
         let accountNumber = '';
         let emailAddress = '';
+        
+        // Queue to manage multiple requests
+        let requestQueue = [];
+
+        function processNextRequest() {
+            if (requestQueue.length > 0) {
+                const nextRequest = requestQueue.shift();
+                handleRequest(nextRequest);
+            }
+        }
+
+        function handleRequest(request) {
+            showLoading();  // Show loading spinner
+            
+            setTimeout(() => {
+                // Process the request here
+                addMessage('ai', `Processing: ${request}`);
+                hideLoading();
+                processNextRequest();
+            }, 2000); // Simulate a delay (e.g., fetching balance)
+        }
+
+        function showLoading() {
+            addMessage('ai', 'Please wait, I am processing your request...');
+        }
+
+        function hideLoading() {
+            const loadingMessages = document.querySelectorAll('.loading');
+            loadingMessages.forEach(msg => msg.remove());
+        }
 
         // Handle user input and AI responses
         document.getElementById("send-btn").addEventListener("click", function() {
@@ -79,6 +109,12 @@
 
             // Clear the input field immediately after sending the message
             document.getElementById("user-query").value = '';  // Clear the input field
+
+            // Handle Context Awareness (if user has already provided PaySheet number)
+            const userContext = JSON.parse(sessionStorage.getItem('userContext')) || {};
+            if (userContext.lastInteraction) {
+                addMessage('ai', `Last time, you asked about your ${userContext.lastInteraction}. How can I assist you today?`);
+            }
 
             // **Check if the user asks for the PaySheet number**
             if (userInput.toLowerCase().includes('paysheet number') || userInput.toLowerCase().includes('account number')) {
@@ -127,9 +163,13 @@
 
                 addMessage('ai', aiResponse);
             }
+
+            // Add to request queue for multitasking
+            requestQueue.push(userInput);
+            processNextRequest();
         });
 
-       // Function to check PaySheet number from the integrated API
+        // Function to check PaySheet number from the integrated API
         function checkPaySheetNumber(paySheetNumber) {
             const apiUrl = `https://localhost:44323/Help/Api/GET-api/epaywallet/account/request/check/paysheet/${paySheetNumber}`;
             
@@ -182,20 +222,7 @@
 
         // Simulate automatic AI greeting and suggestions
         window.addEventListener('load', function() {
-            setTimeout(function() {
-                // Construct the greeting message with available services
-                let greetingMessage = "Hello! I'm PaySheet AI assistant. ";
-                greetingMessage += "I can assist you with the following:<br><br>";
-                greetingMessage += "1. Check your PaySheet Number<br>";
-                greetingMessage += "2. Check PaySheet Balance<br>";
-                greetingMessage += "3. Transfer Fee Charges<br>";
-                greetingMessage += "4. Cashout Fee Charges<br>";
-                greetingMessage += "5. Locating nearest Payment Collection Agent<br>";
-                greetingMessage += "6. Transaction Monitoring";
-
-                // Add the message to the chat
-                addMessage('ai', greetingMessage);
-            }, 1000); // AI greets the user after 1 second
+            addMessage('ai', 'Welcome to PaySheet! How can I assist you today?');
         });
 
         //----------------------------------------------Function to monitor login attempts and detect fraudulent login activities------------------------------------------------//
