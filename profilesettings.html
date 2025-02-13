@@ -128,13 +128,26 @@ document.getElementById('profile-upload').addEventListener('change', function(ev
         const reader = new FileReader();  // Create a FileReader to read the file
         reader.onload = function(e) {
             // Apply the selected image as the new profile picture
-            document.getElementById('profile-img').src = e.target.result;
-            document.getElementById('save-profile-btn').style.display = 'block';  // Show Save button
+            const base64Image = e.target.result;
+            document.getElementById('profile-img').src = base64Image;
+
+            // Save the base64 string to localStorage
+            localStorage.setItem('profileImage', base64Image);
+            
+            // Show the Save button
+            document.getElementById('save-profile-btn').style.display = 'block';
         };
         reader.readAsDataURL(file);  // Read the image file as a data URL
     }
 });
 
+// On page load, retrieve the image from localStorage if available
+window.addEventListener('load', function() {
+    const savedProfileImage = localStorage.getItem('profileImage');
+    if (savedProfileImage) {
+        document.getElementById('profile-img').src = savedProfileImage;
+    }
+});
 
 // Save Profile
 document.getElementById('save-profile-btn').addEventListener('click', function() {
