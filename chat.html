@@ -220,10 +220,26 @@
                 });
         }
 
-        // Simulate automatic AI greeting and suggestions
         window.addEventListener('load', function() {
-            addMessage('ai', 'Welcome to PaySheet! How can I assist you today?');
-        });
+    setTimeout(function() {
+        greetingMessage += "I can assist you with the following:<br><br>";
+        greetingMessage += "1. Check PaySheet Number<br>"; 
+        greetingMessage += "2. Check PaySheet Balance<br>";
+        greetingMessage += "3. Transfer Fee Charges<br>";
+        greetingMessage += "4. Cashout Fee Charges<br>";
+        greetingMessage += "5. Locating nearest Agent<br>";
+        greetingMessage += "6. Stock News";
+        greetingMessage += "7. FX Trading Signals";
+        greetingMessage += "8. FX Trading Lessons";
+
+        // Add the message to the chat
+        addMessage('ai', greetingMessage);
+
+        // Additional greeting message (Welcome)
+        addMessage('ai', 'Welcome to PaySheet! How can I assist you today?');
+    }, 1000); // AI greets the user and provides services after 1 second
+});
+
 
         //----------------------------------------------Function to monitor login attempts and detect fraudulent login activities------------------------------------------------//
     function monitorLoginActivity() {
