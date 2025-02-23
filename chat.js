@@ -257,18 +257,40 @@
         });
 }
 //-------------------------
-        const fxLessons = {
-    "beginner": "Forex trading involves buying and selling currency pairs. The most traded pairs are EUR/USD, USD/JPY, and GBP/USD.<br><br>",
-    "technical_analysis": "Technical analysis involves studying price charts and indicators like Moving Averages, RSI, and MACD.<br><br>",
-    "risk_management": "Always set a Stop-Loss to limit losses. Never risk more than 2% of your capital on a single trade."
+  const fxLessons = {
+    "beginner": "### Beginner: Forex Trading Basics<br><br>Forex trading involves buying and selling currencies on the global market. The goal is to profit from the changes in the exchange rates between two currencies. The Forex market is one of the largest and most liquid financial markets in the world, with a daily trading volume of over $6 trillion.<br><br>",
+    
+    "currency_pairs": "### Currency Pairs<br><br>Forex trades always happen in pairs, such as EUR/USD (Euro/US Dollar). The first currency in the pair is the 'base currency,' and the second is the 'quote currency.' The exchange rate tells you how much of the quote currency is needed to purchase one unit of the base currency.<br><br>",
+
+    "leverage": "### Leverage<br><br>Leverage allows traders to control a larger position with a smaller amount of capital. For example, with 100:1 leverage, you can control $100,000 with just $1,000. While this amplifies potential profits, it also increases the risk of significant losses.<br><br>",
+
+    "market_participants": "### Market Participants<br><br>The Forex market is composed of various participants, including individual traders, banks, corporations, and governments. These participants all play a role in influencing market movements and providing liquidity.<br><br>",
+
+    "market_hours": "### Market Hours<br><br>The Forex market operates 24 hours a day, 5 days a week. It is divided into four major trading sessions: Sydney, Tokyo, London, and New York. This allows traders to participate at almost any time.<br><br>",
+
+    "scalping": "### Scalping: A Quick Trading Strategy<br><br>Scalping involves making small, quick trades to capture minute price changes. These trades can last from seconds to a few minutes.<br><br>**Advantages:** High frequency of trades, potential for small but consistent profits.<br>**Challenges:** Requires significant focus and fast decision-making, high transaction costs due to frequent trading.<br><br>",
+
+    "swing_trading": "### Swing Trading: Capturing Larger Price Movements<br><br>Swing traders look to capture larger price movements within a short-to-medium time frame (usually from a few hours to several days). They focus on trends and momentum.<br><br>**Advantages:** Less time-intensive than scalping, takes advantage of market trends.<br>**Challenges:** Requires good technical analysis skills, can be affected by unexpected news or market changes.<br><br>",
+
+    "day_trading": "### Day Trading: Quick Trades Within the Same Day<br><br>Day traders open and close positions within the same trading day, without holding overnight positions.<br><br>**Advantages:** No overnight risk, quick profits from small price movements.<br>**Challenges:** Requires a lot of time and attention, trading costs can add up due to frequent trades.<br><br>",
+
+    "position_trading": "### Position Trading: Long-Term Strategy<br><br>Position traders hold trades for weeks, months, or even years, based on long-term trends or fundamental analysis.<br><br>**Advantages:** Less time spent monitoring the market, potential for larger profits.<br>**Challenges:** Requires a strong understanding of fundamental analysis, exposure to longer-term market risks.<br><br>",
+
+    "risk_management": "### Risk Management: Protecting Your Capital<br><br>Effective risk management is crucial for success in Forex trading. Here are some strategies you can implement:<br><br><ul><li><strong>Stop-Loss Orders:</strong> Automatically closes a trade at a set price to limit potential losses. For example, if you're buying EUR/USD at 1.2000 and set a stop-loss at 1.1900, your position will automatically close if the price drops to 1.1900, limiting your loss to 100 pips.</li><br><li><strong>Take-Profit Orders:</strong> Closes a trade when the market reaches a certain price to lock in profits. For example, if you buy EUR/USD at 1.2000 and set a take-profit at 1.2100, the trade will close once the price reaches 1.2100.</li><br><li><strong>Risk-Reward Ratio:</strong> This ratio helps you determine whether a trade is worth taking based on its potential reward relative to the risk involved. A common ratio is 1:2, where you're willing to risk 1 unit to potentially gain 2 units.</li><br><li><strong>Risk No More Than 2% of Your Capital on a Single Trade:</strong> To ensure long-term profitability, never risk more than 2% of your account balance on one trade. For example, if you have $10,000 in your account, never risk more than $200 on a single trade.</li><br><li><strong>Diversification:</strong> Don’t place all your capital into one trade or one currency pair. Diversifying can help reduce overall risk.</li><br><li><strong>Stay Updated with News:</strong> Market conditions can change quickly due to economic news, geopolitical events, and central bank announcements. Keeping up-to-date can help you avoid unexpected losses.</li><br><li><strong>Psychological Control:</strong> Emotional control is key. Avoid trading based on fear or greed, and stick to your trading plan to minimize emotional decision-making.</li></ul><br><br>",
+
+    "additional_info": "### Additional Information: Forex Market Insights<br><br>Forex trading operates 24 hours a day, 5 days a week. It’s a highly liquid market where traders can use leverage to increase their exposure. Leverage amplifies both profits and losses, so use it wisely. Strategies like scalping, swing trading, and day trading are commonly used by more advanced traders.<br><br>"
 };
 
-function fetchFXLesson(topic) {
-    if (fxLessons[topic]) {
-        addMessage('ai', fxLessons[topic]);
-    } else {
-        addMessage('ai', "Please choose from: Beginner, Technical Analysis, or Risk Management.");
+function fetchFXLesson() {
+    let allLessons = '';
+
+    // Loop through each lesson and add it to the output string
+    for (let key in fxLessons) {
+        allLessons += fxLessons[key];
     }
+
+    // Display all lessons at once
+    addMessage('ai', allLessons);
 }
 //--------------------
         function fetchFXNews() {
