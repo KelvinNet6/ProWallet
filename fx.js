@@ -1,4 +1,6 @@
-// Simulating Forex data for EUR/USD (static for now)
+// Initialize balance
+let balance = 10000; // Starting balance
+const balanceElement = document.getElementById("balance"); // The element displaying balance
 const rateElement = document.getElementById("rate");
 let currentRate = 1.1250;
 let tradeID = 1;
@@ -97,10 +99,22 @@ function closeTrade(tradeID) {
 
         // Calculate profit or loss based on the action (Buy or Sell)
         let profitLoss = 0;
+        let resultMessage = '';
+        
         if (trade.action === 'Buy') {
-            profitLoss = (closeRate - trade.openRate) * (trade.amount);
+            profitLoss = (closeRate - trade.openRate) * trade.amount;
+            if (profitLoss > 0) {
+                resultMessage = `Profit of $${profitLoss.toFixed(2)}`;
+            } else {
+                resultMessage = `Loss of $${Math.abs(profitLoss).toFixed(2)}`;
+            }
         } else if (trade.action === 'Sell') {
-            profitLoss = (trade.openRate - closeRate) * (trade.amount);
+            profitLoss = (trade.openRate - closeRate) * trade.amount;
+            if (profitLoss > 0) {
+                resultMessage = `Profit of $${profitLoss.toFixed(2)}`;
+            } else {
+                resultMessage = `Loss of $${Math.abs(profitLoss).toFixed(2)}`;
+            }
         }
 
         // Update trade status to closed
@@ -108,8 +122,14 @@ function closeTrade(tradeID) {
         trade.closeRate = closeRate;
         trade.profitLoss = profitLoss;
 
-        // Display profit/loss
-        alert(`Trade Closed! Profit/Loss: $${profitLoss.toFixed(2)}`);
+        // Update the balance
+        balance += profitLoss; // Add profit or subtract loss
+
+        // Display updated balance
+        balanceElement.innerText = balance.toFixed(2);
+
+        // Display the result message
+        alert(`Trade Closed! ${resultMessage}`);
 
         // Update the table with the latest information
         updateTradeHistory();
