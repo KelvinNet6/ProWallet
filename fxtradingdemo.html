@@ -19,6 +19,7 @@
             <li><a href="transferfunds.html"><i class="fas fa-exchange-alt"></i> TF</a></li>
             <li><a href="cashout.html"><i class="fas fa-money-check-alt"></i> Cash Out</a></li>
             <li><a href="profilesettings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
+             <li><a href="fxtradingdemo.html"><i class="fas fa-dollar-sign"></i> Forex Trading</a></li>
             <li><button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sign Out</button></li>
         </ul>
     </div>
@@ -27,7 +28,49 @@
         <header class="header">
             <h1>FX Trading | Demo</h1>
         </header>
-        
+
+         <section class="forex-trading">
+            <!-- Currency Pair & Price -->
+            <div class="currency-info">
+                <div class="currency-pair">
+                    <h2>EUR/USD</h2>
+                    <div class="exchange-rate">
+                        <p>Current Rate: <span id="rate">1.1250</span></p>
+                    </div>
+                </div>
+                <div class="buy-sell-options">
+                    <button class="buy-btn" id="buy-btn">Buy</button>
+                    <button class="sell-btn" id="sell-btn">Sell</button>
+                </div>
+            </div>
+
+            <!-- Chart for Forex Price -->
+            <div class="chart-container">
+                <canvas id="forexChart"></canvas>
+            </div>
+
+            <!-- Active Trades Table -->
+            <div class="trade-info">
+                <h3>Active Trades</h3>
+                <table id="trade-history">
+                    <thead>
+                        <tr>
+                            <th>Trade ID</th>
+                            <th>Currency Pair</th>
+                            <th>Action</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Active trades will be listed here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="fx.js"></script>
       
 </body>
 </html>
