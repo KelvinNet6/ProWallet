@@ -1047,18 +1047,3 @@ button:hover {
     text-decoration: underline;
     margin-top: 10px;
 }
-
-#chart-container {
-    position: relative;
-    width: 100%;
-    height: 400px;
-}
-
-#close-trade-area {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: rgba(255, 255, 255, 0.7);
-    padding: 5px;
-    border-radius: 5px;
-}
