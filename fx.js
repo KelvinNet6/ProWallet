@@ -57,7 +57,8 @@ function createTrade(action) {
         pair: 'EUR/USD',
         action: action,
         amount: 1000, // Simulated trade amount
-        status: 'Active'
+        openRate: currentRate, // Record rate when trade is opened
+        status: 'Open'
     };
 }
 
@@ -68,13 +69,36 @@ function updateTradeHistory() {
 
     activeTrades.forEach(trade => {
         const row = document.createElement("tr");
+
+        // Show the action button to close a trade if the trade is open
+        let closeButton = '';
+        if (trade.status === 'Open') {
+            closeButton = `<button class="close-btn" onclick="closeTrade(${trade.id})">Close</button>`;
+        }
+
         row.innerHTML = `
             <td>${trade.id}</td>
             <td>${trade.pair}</td>
             <td>${trade.action}</td>
             <td>${trade.amount}</td>
             <td>${trade.status}</td>
+            <td>${trade.openRate.toFixed(4)}</td>
+            <td>${closeButton}</td>
         `;
         tbody.appendChild(row);
     });
+}
+
+// Close a trade (simulate profit/loss based on the current rate)
+function closeTrade(tradeID) {
+    const trade = activeTrades.find(t => t.id === tradeID);
+    if (trade && trade.status === 'Open') {
+        const closeRate = currentRate;
+        const profitLoss = (trade.action === 'Buy' ? closeRate - trade.openRate : trade.openRate - closeRate) * (trade.amount);
+
+        trade.status = 'Closed';
+        // Display profit/loss
+        alert(`Trade Closed! Profit/Loss: $${profitLoss.toFixed(2)}`);
+        updateTradeHistory();
+    }
 }
