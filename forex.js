@@ -6,15 +6,14 @@ let currentRate = 1.1250;
 let tradeID = 1;
 const activeTrades = []; // Array to store active trades
 
-// Forex chart setup for candlesticks (with chartjs-chart-financial plugin)
 const ctx = document.getElementById('forexChart').getContext('2d');
 const forexChart = new Chart(ctx, {
     type: 'candlestick', // Use 'candlestick' chart type
     data: {
         datasets: [{
             label: 'EUR/USD Price',
-            data: [],  // OHLC data for candlesticks (array of objects)
-            borderColor: 'rgba(75, 192, 192, 1)',
+            data: [],  // This will store the OHLC data
+            borderColor: 'rgba(75, 192, 192, 1)', // Line color for the candlesticks
             fill: false
         }]
     },
@@ -22,7 +21,7 @@ const forexChart = new Chart(ctx, {
         responsive: true,
         scales: {
             x: { 
-                type: 'linear', 
+                type: 'linear', // x-axis as time scale
                 position: 'bottom' 
             },
             y: { 
@@ -32,30 +31,31 @@ const forexChart = new Chart(ctx, {
     }
 });
 
-// Simulate updating Forex price and candlestick data every 3 seconds
+let currentRate = 1.1250; // Starting price
+
 setInterval(() => {
-    const open = currentRate;  // Open price
-    const close = currentRate + (Math.random() - 0.5) * 0.01;  // Random fluctuation for close price
+    const open = currentRate;
+    const close = currentRate + (Math.random() - 0.5) * 0.01;  // Random close fluctuation
     const high = Math.max(open, close) + (Math.random() * 0.002);  // Random high price
-    const low = Math.min(open, close) - (Math.random() * 0.002);  // Random low price
+    const low = Math.min(open, close) - (Math.random() * 0.002);   // Random low price
 
-    // Add OHLC data (Open, High, Low, Close) for candlestick
+    // Add OHLC data
     forexChart.data.datasets[0].data.push({
-    t: timestamp,  
-    o: openPrice,  // Open price
-    h: highPrice,  // High price
-    l: lowPrice,   // Low price
-    c: closePrice  // Close price
-});
+        t: Date.now(),  // Current timestamp in milliseconds
+        o: open,        // Open price
+        h: high,        // High price
+        l: low,         // Low price
+        c: close        // Close price
+    });
 
-    // Limit data to show only the last 100 candles
+    // Optional: Limit data to the latest 100 candles
     if (forexChart.data.datasets[0].data.length > 100) {
-        forexChart.data.datasets[0].data.shift();  // Remove the oldest candle
+        forexChart.data.datasets[0].data.shift(); // Remove the oldest data point
     }
 
     // Update the chart
     forexChart.update();
-}, 3000);
+}, 3000);  // Update every 3 seconds
 
 // Buy/Sell button interaction
 document.getElementById("buy-btn").addEventListener("click", () => {
