@@ -2,9 +2,9 @@
 const rateElement = document.getElementById("rate");
 let currentRate = 1.1250;
 let tradeID = 1;
-const activeTrades = [];
+const activeTrades = []; // Array to store active trades
 
-// Chart setup
+// Forex chart setup (as before)
 const ctx = document.getElementById('forexChart').getContext('2d');
 const forexChart = new Chart(ctx, {
     type: 'line',
@@ -53,16 +53,16 @@ document.getElementById("sell-btn").addEventListener("click", () => {
 // Create a new trade (simulation)
 function createTrade(action) {
     return {
-        id: tradeID++,
+        id: tradeID++, // Increment ID for each new trade
         pair: 'EUR/USD',
         action: action,
         amount: 1000, // Simulated trade amount
-        openRate: currentRate, // Record rate when trade is opened
-        status: 'Open'
+        openRate: currentRate, // Record the rate when the trade is opened
+        status: 'Open' // Initially, the trade is open
     };
 }
 
-// Update trade history table
+// Update the trade history table
 function updateTradeHistory() {
     const tbody = document.querySelector("#trade-history tbody");
     tbody.innerHTML = ""; // Clear previous rows
@@ -94,11 +94,24 @@ function closeTrade(tradeID) {
     const trade = activeTrades.find(t => t.id === tradeID);
     if (trade && trade.status === 'Open') {
         const closeRate = currentRate;
-        const profitLoss = (trade.action === 'Buy' ? closeRate - trade.openRate : trade.openRate - closeRate) * (trade.amount);
 
+        // Calculate profit or loss based on the action (Buy or Sell)
+        let profitLoss = 0;
+        if (trade.action === 'Buy') {
+            profitLoss = (closeRate - trade.openRate) * (trade.amount);
+        } else if (trade.action === 'Sell') {
+            profitLoss = (trade.openRate - closeRate) * (trade.amount);
+        }
+
+        // Update trade status to closed
         trade.status = 'Closed';
+        trade.closeRate = closeRate;
+        trade.profitLoss = profitLoss;
+
         // Display profit/loss
         alert(`Trade Closed! Profit/Loss: $${profitLoss.toFixed(2)}`);
+
+        // Update the table with the latest information
         updateTradeHistory();
     }
 }
