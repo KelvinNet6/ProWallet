@@ -75,7 +75,7 @@ function updateTradeHistory() {
         const row = document.createElement("tr");
 
         // Show the action button to close a trade if the trade is open
-        row.innerHTML = 
+        row.innerHTML = `
             <td>${trade.id}</td>
             <td>${trade.pair}</td>
             <td>${trade.action}</td>
@@ -83,11 +83,11 @@ function updateTradeHistory() {
             <td>${trade.status}</td>
             <td>${trade.openRate.toFixed(4)}</td>
             <td><div id="trade-${trade.id}-close" class="close-trade">X Close</div></td>
-        ;
+        `;
         tbody.appendChild(row);
 
         // Add event listener for closing trade (click X Close)
-        const closeTradeElement = document.getElementById(trade-${trade.id}-close);
+        const closeTradeElement = document.getElementById(`trade-${trade.id}-close`);
         closeTradeElement.addEventListener("click", () => {
             closeTrade(trade.id);
         });
@@ -103,7 +103,7 @@ function updateCloseArea() {
         if (trade.status === 'Open') {
             const closeText = document.createElement("div");
             closeText.className = "close-trade";
-            closeText.innerText = X Close Trade #${trade.id};
+            closeText.innerText = `X Close Trade #${trade.id}`;
             closeText.addEventListener("click", () => closeTrade(trade.id));
             closeArea.appendChild(closeText);
         }
@@ -123,16 +123,16 @@ function closeTrade(tradeID) {
         if (trade.action === 'Buy') {
             profitLoss = (closeRate - trade.openRate) * trade.amount;
             if (profitLoss > 0) {
-                resultMessage = Profit of $${profitLoss.toFixed(2)};
+                resultMessage = `Profit of $${profitLoss.toFixed(2)}`;
             } else {
-                resultMessage = Loss of $${Math.abs(profitLoss).toFixed(2)};
+                resultMessage = `Loss of $${Math.abs(profitLoss).toFixed(2)}`;
             }
         } else if (trade.action === 'Sell') {
             profitLoss = (trade.openRate - closeRate) * trade.amount;
             if (profitLoss > 0) {
-                resultMessage = Profit of $${profitLoss.toFixed(2)};
+                resultMessage = `Profit of $${profitLoss.toFixed(2)}`;
             } else {
-                resultMessage = Loss of $${Math.abs(profitLoss).toFixed(2)};
+                resultMessage = `Loss of $${Math.abs(profitLoss).toFixed(2)}`;
             }
         }
 
@@ -148,11 +148,12 @@ function closeTrade(tradeID) {
         balanceElement.innerText = balance.toFixed(2);
 
         // Display the result message
-        alert(Trade Closed! ${resultMessage});
+        alert(`Trade Closed! ${resultMessage}`);
 
         // Update the table with the latest information
         updateTradeHistory();
 
         // Update the chart area
         updateCloseArea();
+    }
 }
