@@ -44,12 +44,14 @@ document.getElementById("buy-btn").addEventListener("click", () => {
     const trade = createTrade('Buy');
     activeTrades.push(trade);
     updateTradeHistory();
+    updateCloseArea();
 });
 
 document.getElementById("sell-btn").addEventListener("click", () => {
     const trade = createTrade('Sell');
     activeTrades.push(trade);
     updateTradeHistory();
+    updateCloseArea();
 });
 
 // Create a new trade (simulation)
@@ -73,11 +75,6 @@ function updateTradeHistory() {
         const row = document.createElement("tr");
 
         // Show the action button to close a trade if the trade is open
-        let closeButton = '';
-        if (trade.status === 'Open') {
-            closeButton = `<button class="close-btn" onclick="closeTrade(${trade.id})">Close</button>`;
-        }
-
         row.innerHTML = `
             <td>${trade.id}</td>
             <td>${trade.pair}</td>
@@ -85,9 +82,31 @@ function updateTradeHistory() {
             <td>${trade.amount}</td>
             <td>${trade.status}</td>
             <td>${trade.openRate.toFixed(4)}</td>
-            <td>${closeButton}</td>
+            <td><div id="trade-${trade.id}-close" class="close-trade">X Close</div></td>
         `;
         tbody.appendChild(row);
+
+        // Add event listener for closing trade (click X Close)
+        const closeTradeElement = document.getElementById(`trade-${trade.id}-close`);
+        closeTradeElement.addEventListener("click", () => {
+            closeTrade(trade.id);
+        });
+    });
+}
+
+// Update the chart area with "X Close" link
+function updateCloseArea() {
+    const closeArea = document.getElementById("close-trade-area");
+    closeArea.innerHTML = ""; // Clear previous entries
+
+    activeTrades.forEach(trade => {
+        if (trade.status === 'Open') {
+            const closeText = document.createElement("div");
+            closeText.className = "close-trade";
+            closeText.innerText = `X Close Trade #${trade.id}`;
+            closeText.addEventListener("click", () => closeTrade(trade.id));
+            closeArea.appendChild(closeText);
+        }
     });
 }
 
@@ -133,5 +152,7 @@ function closeTrade(tradeID) {
 
         // Update the table with the latest information
         updateTradeHistory();
-    }
+
+        // Update the chart area
+        updateCloseArea();
 }
