@@ -1,10 +1,8 @@
-// Close a trade (simulate profit/loss based on the current rate)
 function closeTrade(tradeID) {
     const trade = activeTrades.find(t => t.id === tradeID);
     if (trade && trade.status === 'Open') {
         const closeRate = currentRate;
 
-        // Calculate profit or loss based on the action (Buy or Sell)
         let profitLoss = 0;
         let resultMessage = '';
         
@@ -23,8 +21,7 @@ function closeTrade(tradeID) {
                 resultMessage = `Loss of $${Math.abs(profitLoss).toFixed(2)}`;
             }
         }
-
-        // Update trade status to closed
+        
         trade.status = 'Closed';
         trade.closeRate = closeRate;
         trade.profitLoss = profitLoss;
