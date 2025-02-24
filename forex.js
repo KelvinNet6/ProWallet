@@ -6,15 +6,14 @@ let currentRate = 1.1250;
 let tradeID = 1;
 const activeTrades = []; // Array to store active trades
 
-// Forex chart setup (as before)
+// Forex chart setup for candlesticks
 const ctx = document.getElementById('forexChart').getContext('2d');
 const forexChart = new Chart(ctx, {
-    type: 'line',
+    type: 'candlestick',  // Set type to 'candlestick'
     data: {
-        labels: [],
         datasets: [{
             label: 'EUR/USD Price',
-            data: [],
+            data: [],  // This will hold OHLC data for the candlesticks
             borderColor: 'rgba(75, 192, 192, 1)',
             fill: false
         }]
@@ -22,20 +21,39 @@ const forexChart = new Chart(ctx, {
     options: {
         responsive: true,
         scales: {
-            x: { type: 'linear', position: 'bottom' },
-            y: { beginAtZero: false }
+            x: { 
+                type: 'linear', 
+                position: 'bottom' 
+            },
+            y: { 
+                beginAtZero: false 
+            }
         }
     }
 });
 
-// Simulate updating the Forex price every 3 seconds
+// Simulate updating the Forex price and candlestick data every 3 seconds
 setInterval(() => {
-    currentRate += (Math.random() - 0.5) * 0.01; // Simulate price fluctuation
-    rateElement.innerText = currentRate.toFixed(4);
+    const open = currentRate;  // Open price
+    const close = currentRate + (Math.random() - 0.5) * 0.01;  // Random fluctuation for the close price
+    const high = Math.max(open, close) + (Math.random() * 0.002);  // Random high price
+    const low = Math.min(open, close) - (Math.random() * 0.002);  // Random low price
+
+    // Add OHLC data (Open, High, Low, Close)
+    forexChart.data.datasets[0].data.push({
+        t: Date.now(),  // Time of the candle
+        o: open,        // Open price
+        h: high,        // High price
+        l: low,         // Low price
+        c: close        // Close price
+    });
+
+    // Limit data to show only the last 100 candles (optional)
+    if (forexChart.data.datasets[0].data.length > 100) {
+        forexChart.data.datasets[0].data.shift();  // Remove the oldest candle
+    }
 
     // Update chart
-    forexChart.data.labels.push(Date.now());
-    forexChart.data.datasets[0].data.push(currentRate);
     forexChart.update();
 }, 3000);
 
