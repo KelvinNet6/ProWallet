@@ -6,56 +6,38 @@ let currentRate = 1.1250;
 let tradeID = 1;
 const activeTrades = []; // Array to store active trades
 
+// Forex chart setup (as before)
 const ctx = document.getElementById('forexChart').getContext('2d');
 const forexChart = new Chart(ctx, {
-    type: 'candlestick', // Use 'candlestick' chart type
+    type: 'line',
     data: {
+        labels: [],
         datasets: [{
             label: 'EUR/USD Price',
-            data: [],  // This will store the OHLC data
-            borderColor: 'rgba(75, 192, 192, 1)', // Line color for the candlesticks
+            data: [],
+            borderColor: 'rgba(75, 192, 192, 1)',
             fill: false
         }]
     },
     options: {
         responsive: true,
         scales: {
-            x: { 
-                type: 'linear', // x-axis as time scale
-                position: 'bottom' 
-            },
-            y: { 
-                beginAtZero: false 
-            }
+            x: { type: 'linear', position: 'bottom' },
+            y: { beginAtZero: false }
         }
     }
 });
 
-let currentRate = 1.1250; // Starting price
-
+// Simulate updating the Forex price every 3 seconds
 setInterval(() => {
-    const open = currentRate;
-    const close = currentRate + (Math.random() - 0.5) * 0.01;  // Random close fluctuation
-    const high = Math.max(open, close) + (Math.random() * 0.002);  // Random high price
-    const low = Math.min(open, close) - (Math.random() * 0.002);   // Random low price
+    currentRate += (Math.random() - 0.5) * 0.01; // Simulate price fluctuation
+    rateElement.innerText = currentRate.toFixed(4);
 
-    // Add OHLC data
-    forexChart.data.datasets[0].data.push({
-        t: Date.now(),  // Current timestamp in milliseconds
-        o: open,        // Open price
-        h: high,        // High price
-        l: low,         // Low price
-        c: close        // Close price
-    });
-
-    // Optional: Limit data to the latest 100 candles
-    if (forexChart.data.datasets[0].data.length > 100) {
-        forexChart.data.datasets[0].data.shift(); // Remove the oldest data point
-    }
-
-    // Update the chart
+    // Update chart
+    forexChart.data.labels.push(Date.now());
+    forexChart.data.datasets[0].data.push(currentRate);
     forexChart.update();
-}, 3000);  // Update every 3 seconds
+}, 3000);
 
 // Buy/Sell button interaction
 document.getElementById("buy-btn").addEventListener("click", () => {
