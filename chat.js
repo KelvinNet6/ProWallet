@@ -100,7 +100,16 @@
             }
 
             // Main interaction flow
-            if (userInput.toLowerCase().includes('balance')) {
+   if (userInput.toLowerCase().includes('about paysheet') || userInput.toLowerCase().includes('what is paysheet')) {
+    aiResponse = 'PaySheet is a comprehensive payment processing platform designed to simplify your financial transactions. Whether you\'re looking to transfer funds, withdraw money, locate agents, or access the latest market insights, PaySheet offers all of this and listen Below:<br>';
+    aiResponse += '1. Stock News - Stay updated with the latest trends in the stock market.<br>';
+    aiResponse += '2. FX Trading Signals - Receive real-time trading signals to guide your forex trades.<br>';
+    aiResponse += '3. FX Trading Lessons - Learn forex trading strategies, analysis techniques, and more.<br>';
+    aiResponse += '4. Demo FX Trading - Practice trading in a risk-free demo environment to refine your skills.<br>';
+    aiResponse += 'Would you like assistance with any of these features?';
+    addMessage('ai', aiResponse);
+     }
+          else if (userInput.toLowerCase().includes('balance')) {
                 isWaitingForPaySheet = true;
                 addMessage('ai', 'Please provide your PaySheet number first.');
                 return;
