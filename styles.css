@@ -1047,3 +1047,19 @@ button:hover {
     text-decoration: underline;
     margin-top: 10px;
 }
+@media (max-width: 768px) {
+    .currency-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .buy-sell-options {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .chart-container {
+        max-width: 100%;
+    }
+}
