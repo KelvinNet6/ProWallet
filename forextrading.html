@@ -53,7 +53,89 @@
             <div class="chart-container">
                 <canvas id="forexChart"></canvas>
 
-   
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PaySheet</title>
+      <link rel="icon" href="screenshot_2025_02_06_14_53_13_QDM_icon.ico" type="image/png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <button class="menu-btn" id="menu-btn">☰</button>
+
+    <div class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="home.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="transferfunds.html"><i class="fas fa-exchange-alt"></i> TF</a></li>
+            <li><a href="cashout.html"><i class="fas fa-money-check-alt"></i> Cash Out</a></li>
+            <li><a href="profilesettings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
+             <li><a href="fxtradingdemo.html"><i class="fas fa-dollar-sign"></i> Forex Trading</a></li>
+            <li><button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sign Out</button></li>
+        </ul>
+    </div>
+
+    <div class="main-content" id="home">
+        <header class="header">
+            <h1>PaySheet | Forex Trading </h1>
+        </header>
+
+          <!-- Display the current balance -->
+    <div class="balance">
+        <h2>Balance: $<span id="balance">10000</span></h2>
+    </div>
+        
+         <section class="forex-trading">
+            <!-- Currency Pair & Price -->
+            <div class="currency-info">
+                <div class="currency-pair">
+                    <h2>EUR/USD</h2>
+                    <div class="exchange-rate">
+                        <p>Current Rate: <span id="rate">1.1250</span></p>
+                    </div>
+                </div>
+                <div class="buy-sell-options">
+                    <button class="buy-btn" id="buy-btn">Buy</button>
+                    <button class="sell-btn" id="sell-btn">Sell</button>
+                </div>
+            </div>
+
+            <!-- Chart for Forex Price -->
+            <div class="chart-container">
+                <canvas id="forexChart"></canvas>
+
+                <div id="close-trade-area"></div>
+            </div>
+
+            <!-- Active Trades Table -->
+            <div class="trade-info">
+                <h3>Active Trades</h3>
+                <table id="trade-history">
+                    <thead>
+                        <tr>
+                            <th>Trade ID</th>
+                            <th>Currency Pair</th>
+                            <th>Action</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Active trades will be listed here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="fx.js"></script>
+      
+</body>
+</html>
             </div>
 
             <!-- Active Trades Table -->
