@@ -41,12 +41,12 @@ setInterval(() => {
 
     // Add OHLC data (Open, High, Low, Close) for candlestick
     forexChart.data.datasets[0].data.push({
-        t: Date.now(),  // Time of the candle (Unix timestamp)
-        o: open,        // Open price
-        h: high,        // High price
-        l: low,         // Low price
-        c: close        // Close price
-    });
+    t: timestamp,  
+    o: openPrice,  // Open price
+    h: highPrice,  // High price
+    l: lowPrice,   // Low price
+    c: closePrice  // Close price
+});
 
     // Limit data to show only the last 100 candles
     if (forexChart.data.datasets[0].data.length > 100) {
