@@ -1,3 +1,15 @@
+ // Toggle Sidebar for Mobile
+document.getElementById("menu-btn").addEventListener("click", () => {
+const sidebar = document.getElementById("sidebar");
+sidebar.classList.toggle("active");
+});
+
+// Logout functionality
+document.getElementById("logout-btn").addEventListener("click", () => {
+ sessionStorage.removeItem('paySheetAccount'); // Remove session data
+  window.location.href = "index.html";
+});
+
 // Initialize balance
 let balance = 10000; // Starting balance
 const balanceElement = document.getElementById("balance"); // The element displaying balance
