@@ -46,13 +46,13 @@
                 <div class="buy-sell-options">
                     <button class="buy-btn" id="buy-btn">Buy</button>
                     <button class="sell-btn" id="sell-btn">Sell</button>
+                    <button class="trade-monitor-btn" id="trade-monitor-btn">Monitor Trades</button>
                 </div>
             </div>
 
             <!-- Chart for Forex Price -->
             <div class="chart-container">
-               <canvas id="forexChart" width="400" height="200"></canvas>
-
+                <canvas id="forexChart" width="400" height="200"></canvas>
                 <div id="close-trade-area"></div>
             </div>
 
@@ -75,6 +75,19 @@
                 </table>
             </div>
         </section>
+    </div>
+
+    <!-- Trade Monitor Popup -->
+    <div id="trade-popup" class="trade-popup">
+        <div class="trade-popup-content">
+            <span class="close-btn">&times;</span>
+            <h2>Trade Monitor</h2>
+            <p><strong>Balance:</strong> $<span id="popup-balance">10000</span></p>
+            <p><strong>Open Trades:</strong> <span id="popup-open-trades">0</span></p>
+            <p><strong>Profit:</strong> $<span id="popup-profit">0</span></p>
+            <p><strong>Loss:</strong> $<span id="popup-loss">0</span></p>
+            <button id="popup-close-trade-btn">Close Trade</button>
+        </div>
     </div>
 
     <script src="forex.js"></script>
