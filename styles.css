@@ -1115,3 +1115,65 @@ button:hover {
         #popup-close-trade-btn:hover {
             background-color: darkred;
         }
+@media (max-width: 768px) {
+    /* Adjust Forex Trading Section for Mobile */
+    .forex-trading {
+        padding: 20px;
+    }
+
+    .currency-info {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .buy-sell-options {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .chart-container {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    /* Make Trade Table Scrollable */
+    .trade-info {
+        overflow-x: auto;
+    }
+
+    #trade-history {
+        display: block;
+        white-space: nowrap;
+        overflow-x: auto;
+    }
+
+    /* Trade Monitor Popup Responsiveness */
+    .trade-popup {
+        width: 95%;
+        height: 90%;
+        max-width: none;
+        max-height: none;
+        padding: 15px;
+    }
+
+    .trade-popup-content {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .close-btn {
+        font-size: 25px;
+        top: 10px;
+        right: 15px;
+    }
+
+    #popup-close-trade-btn {
+        width: 90%;
+        padding: 12px;
+        font-size: 16px;
+    }
+}
