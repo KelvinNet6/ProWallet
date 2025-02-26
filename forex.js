@@ -170,15 +170,17 @@ function closeTrade(tradeID) {
     }
 }
 
-// Trade Popup Form for Active Trades and Profit/Loss
 document.addEventListener("DOMContentLoaded", function () {
     const tradeMonitorBtn = document.getElementById("trade-monitor-btn");
     const tradePopup = document.getElementById("trade-popup");
     const closeBtn = document.querySelector(".close-btn");
     const closeTradeBtn = document.getElementById("close-trade-btn");
-    const openTradesEl = document.getElementById("open-trades");
-    const profitEl = document.getElementById("profit");
-    const lossEl = document.getElementById("loss");
+
+    const balanceEl = document.getElementById("balance");
+    const popupBalanceEl = document.getElementById("popup-balance");
+    const popupOpenTradesEl = document.getElementById("popup-open-trades");
+    const popupProfitEl = document.getElementById("popup-profit");
+    const popupLossEl = document.getElementById("popup-loss");
     const tradeListEl = document.getElementById("trade-list"); // Element to display active trades
 
     let totalProfit = 0;
@@ -232,9 +234,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // Update the profit and loss displays in the popup
-        profitEl.textContent = totalProfit.toFixed(2);
-        lossEl.textContent = totalLoss.toFixed(2);
-        openTradesEl.textContent = activeTrades.filter(t => t.status === 'Open').length;
+        popupProfitEl.textContent = totalProfit.toFixed(2);
+        popupLossEl.textContent = totalLoss.toFixed(2);
+        popupOpenTradesEl.textContent = activeTrades.filter(t => t.status === 'Open').length;
+
+        // Update the balance in the popup
+        popupBalanceEl.textContent = balance.toFixed(2);
     }
 
     // Close trade from the popup
@@ -242,7 +247,4 @@ document.addEventListener("DOMContentLoaded", function () {
         closeTrade(tradeID);
         updateTradePopup();
     }
-
-    // Start a trade when page loads (for demo)
-    startTrade();
 });
