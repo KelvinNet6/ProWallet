@@ -169,27 +169,25 @@ function closeTrade(tradeID) {
         updateCloseArea();
     }
 }
-     //-------------------------------------------------trade popup-------------------------------------//   
+
+// Trade Popup Form for Active Trades and Profit/Loss
 document.addEventListener("DOMContentLoaded", function () {
     const tradeMonitorBtn = document.getElementById("trade-monitor-btn");
     const tradePopup = document.getElementById("trade-popup");
     const closeBtn = document.querySelector(".close-btn");
     const closeTradeBtn = document.getElementById("close-trade-btn");
-
-    const balanceEl = document.getElementById("balance");
     const openTradesEl = document.getElementById("open-trades");
     const profitEl = document.getElementById("profit");
     const lossEl = document.getElementById("loss");
+    const tradeListEl = document.getElementById("trade-list"); // Element to display active trades
 
-    let balance = 1000; // Starting balance
-    let openTrades = 0;
-    let profit = 0;
-    let loss = 0;
-    let tradeInterval;
+    let totalProfit = 0;
+    let totalLoss = 0;
 
     // Open trade monitor popup
     tradeMonitorBtn.addEventListener("click", function () {
         tradePopup.style.display = "block";
+        updateTradePopup();
     });
 
     // Close popup
@@ -197,41 +195,54 @@ document.addEventListener("DOMContentLoaded", function () {
         tradePopup.style.display = "none";
     });
 
-    // Start a trade when button is clicked
-    function startTrade() {
-        openTrades++;
-        openTradesEl.textContent = openTrades;
+    // Update the trade monitor popup with active trades, profit, and loss
+    function updateTradePopup() {
+        tradeListEl.innerHTML = ""; // Clear previous trades list
+        totalProfit = 0;
+        totalLoss = 0;
 
-        tradeInterval = setInterval(() => {
-            let fluctuation = (Math.random() * 2 - 1) * 50; // Simulate ±$50 change
-            if (fluctuation >= 0) {
-                profit += fluctuation;
-                profitEl.textContent = profit.toFixed(2);
-            } else {
-                loss += Math.abs(fluctuation);
-                lossEl.textContent = loss.toFixed(2);
+        activeTrades.forEach(trade => {
+            if (trade.status === 'Open') {
+                const tradeElement = document.createElement("div");
+                const closeButton = document.createElement("button");
+                closeButton.innerText = `Close Trade #${trade.id}`;
+                closeButton.addEventListener("click", () => closeTradePopupTrade(trade.id));
+
+                let profitLoss = 0;
+                let resultMessage = '';
+
+                if (trade.action === 'Buy') {
+                    profitLoss = (currentRate - trade.openRate) * trade.amount;
+                } else if (trade.action === 'Sell') {
+                    profitLoss = (trade.openRate - currentRate) * trade.amount;
+                }
+
+                if (profitLoss > 0) {
+                    resultMessage = `Profit of $${profitLoss.toFixed(2)}`;
+                    totalProfit += profitLoss;
+                } else {
+                    resultMessage = `Loss of $${Math.abs(profitLoss).toFixed(2)}`;
+                    totalLoss += Math.abs(profitLoss);
+                }
+
+                tradeElement.innerHTML = `Trade #${trade.id}: ${trade.pair} (${trade.action}) - ${resultMessage}`;
+                tradeElement.appendChild(closeButton);
+                tradeListEl.appendChild(tradeElement);
             }
-        }, 2000);
+        });
+
+        // Update the profit and loss displays in the popup
+        profitEl.textContent = totalProfit.toFixed(2);
+        lossEl.textContent = totalLoss.toFixed(2);
+        openTradesEl.textContent = activeTrades.filter(t => t.status === 'Open').length;
     }
 
-    // Close trade and update balance
-    closeTradeBtn.addEventListener("click", function () {
-        if (openTrades > 0) {
-            openTrades--;
-            openTradesEl.textContent = openTrades;
+    // Close trade from the popup
+    function closeTradePopupTrade(tradeID) {
+        closeTrade(tradeID);
+        updateTradePopup();
+    }
 
-            balance += profit - loss;
-            balanceEl.textContent = balance.toFixed(2);
-
-            profit = 0;
-            loss = 0;
-            profitEl.textContent = "0";
-            lossEl.textContent = "0";
-
-            clearInterval(tradeInterval);
-        }
-    });
-
-    // Auto-start trade when page loads (for demo)
+    // Start a trade when page loads (for demo)
     startTrade();
 });
