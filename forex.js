@@ -10,15 +10,16 @@ document.getElementById("logout-btn").addEventListener("click", () => {
   window.location.href = "index.html";
 });
 
-// Initialize balance
+// Initialize balance and forex rate
 let balance = 10000; // Starting balance
-const balanceElement = document.getElementById("balance"); // The element displaying balance
-const rateElement = document.getElementById("rate");
-let currentRate = 1.1250;
-let tradeID = 1;
+let currentRate = 1.1250; // Initial forex rate
+let tradeID = 1; // ID counter for trades
 const activeTrades = []; // Array to store active trades
 
-// Forex chart setup (as before)
+const balanceElement = document.getElementById("balance");
+const rateElement = document.getElementById("rate");
+
+// Forex chart setup (unchanged)
 const ctx = document.getElementById('forexChart').getContext('2d');
 const forexChart = new Chart(ctx, {
     type: 'line',
@@ -40,58 +41,56 @@ const forexChart = new Chart(ctx, {
     }
 });
 
-// Simulate updating the Forex price every 3 seconds
+// Simulate forex rate fluctuation every 3 seconds
 setInterval(() => {
     currentRate += (Math.random() - 0.5) * 0.01; // Simulate price fluctuation
     rateElement.innerText = currentRate.toFixed(4);
 
-    // Update chart
+    // Update the forex chart with the new rate
     forexChart.data.labels.push(Date.now());
     forexChart.data.datasets[0].data.push(currentRate);
     forexChart.update();
 
-    // Continuously update the popup with live profit/loss for open trades if popup is visible
+    // If the trade monitor popup is open, update the trade data inside the popup
     if (tradePopup.style.display === "block") {
-        updateTradePopup();
+        updateTradePopup(); // Update the trades in the popup
     }
 }, 3000);
+
+// Function to create new trade (either Buy or Sell)
+function createTrade(action) {
+    return {
+        id: tradeID++, // Increment trade ID
+        pair: 'EUR/USD',
+        action: action,
+        amount: 1000, // Simulated amount of the trade
+        openRate: currentRate, // Record the rate at the time of trade opening
+        status: 'Open' // Status is initially Open
+    };
+}
 
 // Buy/Sell button interaction
 document.getElementById("buy-btn").addEventListener("click", () => {
     const trade = createTrade('Buy');
     activeTrades.push(trade);
-    updateTradeHistory();
-    updateCloseArea();
+    updateTradeHistory(); // Update the main page trade history
+    updateCloseArea(); // Update the area with close trade options
 });
 
 document.getElementById("sell-btn").addEventListener("click", () => {
     const trade = createTrade('Sell');
     activeTrades.push(trade);
-    updateTradeHistory();
-    updateCloseArea();
+    updateTradeHistory(); // Update the main page trade history
+    updateCloseArea(); // Update the area with close trade options
 });
 
-// Create a new trade (simulation)
-function createTrade(action) {
-    return {
-        id: tradeID++, // Increment ID for each new trade
-        pair: 'EUR/USD',
-        action: action,
-        amount: 1000, // Simulated trade amount
-        openRate: currentRate, // Record the rate when the trade is opened
-        status: 'Open' // Initially, the trade is open
-    };
-}
-
-// Update the trade history table
+// Update the trade history table on the main page
 function updateTradeHistory() {
     const tbody = document.querySelector("#trade-history tbody");
     tbody.innerHTML = ""; // Clear previous rows
 
     activeTrades.forEach(trade => {
         const row = document.createElement("tr");
-
-        // Show the action button to close a trade if the trade is open
         row.innerHTML = `
             <td>${trade.id}</td>
             <td>${trade.pair}</td>
@@ -103,7 +102,7 @@ function updateTradeHistory() {
         `;
         tbody.appendChild(row);
 
-        // Add event listener for closing trade (click X Close)
+        // Add event listener for closing trade
         const closeTradeElement = document.getElementById(`trade-${trade.id}-close`);
         closeTradeElement.addEventListener("click", () => {
             closeTrade(trade.id);
@@ -111,66 +110,35 @@ function updateTradeHistory() {
     });
 }
 
-// Update the chart area with "X Close" link
-function updateCloseArea() {
-    const closeArea = document.getElementById("close-trade-area");
-    closeArea.innerHTML = ""; // Clear previous entries
-
-    activeTrades.forEach(trade => {
-        if (trade.status === 'Open') {
-            const closeText = document.createElement("div");
-            closeText.className = "close-trade";
-            closeText.innerText = `X Close Trade #${trade.id}`;
-            closeText.addEventListener("click", () => closeTrade(trade.id));
-            closeArea.appendChild(closeText);
-        }
-    });
-}
-
-// Close a trade (simulate profit/loss based on the current rate)
+// Function to close a trade (calculates profit/loss based on the current rate)
 function closeTrade(tradeID) {
     const trade = activeTrades.find(t => t.id === tradeID);
     if (trade && trade.status === 'Open') {
         const closeRate = currentRate;
-
-        // Calculate profit or loss based on the action (Buy or Sell)
         let profitLoss = 0;
         let resultMessage = '';
-        
+
+        // Profit/Loss calculation based on action (Buy or Sell)
         if (trade.action === 'Buy') {
             profitLoss = (closeRate - trade.openRate) * trade.amount;
-            if (profitLoss > 0) {
-                resultMessage = `Profit of $${profitLoss.toFixed(2)}`;
-            } else {
-                resultMessage = `Loss of $${Math.abs(profitLoss).toFixed(2)}`;
-            }
         } else if (trade.action === 'Sell') {
             profitLoss = (trade.openRate - closeRate) * trade.amount;
-            if (profitLoss > 0) {
-                resultMessage = `Profit of $${profitLoss.toFixed(2)}`;
-            } else {
-                resultMessage = `Loss of $${Math.abs(profitLoss).toFixed(2)}`;
-            }
         }
 
-        // Update trade status to closed
+        // Update trade status and record profit/loss
         trade.status = 'Closed';
         trade.closeRate = closeRate;
         trade.profitLoss = profitLoss;
 
         // Update the balance
         balance += profitLoss; // Add profit or subtract loss
+        balanceElement.innerText = balance.toFixed(2); // Update balance display
 
-        // Display updated balance
-        balanceElement.innerText = balance.toFixed(2);
+        // Alert with profit/loss message
+        alert(`Trade Closed! ${profitLoss > 0 ? `Profit of $${profitLoss.toFixed(2)}` : `Loss of $${Math.abs(profitLoss).toFixed(2)}`}`);
 
-        // Display the result message
-        alert(`Trade Closed! ${resultMessage}`);
-
-        // Update the table with the latest information
+        // Update the trade history table and close area
         updateTradeHistory();
-
-        // Update the chart area
         updateCloseArea();
     }
 }
@@ -190,18 +158,18 @@ document.addEventListener("DOMContentLoaded", function () {
     let totalProfit = 0;
     let totalLoss = 0;
 
-    // Open trade monitor popup
+    // Open the trade monitor popup
     tradeMonitorBtn.addEventListener("click", function () {
         tradePopup.style.display = "block";
         updateTradePopup(); // Initial update when the popup is opened
     });
 
-    // Close popup
+    // Close the trade monitor popup
     closeBtn.addEventListener("click", function () {
         tradePopup.style.display = "none";
     });
 
-    // Update the trade monitor popup with active trades, profit, and loss
+    // Function to update the trade monitor popup
     function updateTradePopup() {
         tradeListEl.innerHTML = ""; // Clear previous trades list
         totalProfit = 0;
@@ -217,7 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 let profitLoss = 0;
                 let resultMessage = '';
 
-                // Calculate profit or loss based on current forex rate for open trades
+                // Calculate profit/loss based on the current forex rate for open trades
                 if (trade.action === 'Buy') {
                     profitLoss = (currentRate - trade.openRate) * trade.amount;
                 } else if (trade.action === 'Sell') {
@@ -250,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Close trade from the popup
     function closeTradePopupTrade(tradeID) {
-        closeTrade(tradeID);
-        updateTradePopup(); // Recalculate and update trade data in popup after closing a trade
+        closeTrade(tradeID); // Close the trade
+        updateTradePopup(); // Recalculate and update the popup data
     }
 });
