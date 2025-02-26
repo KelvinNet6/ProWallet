@@ -175,9 +175,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const tradeMonitorBtn = document.getElementById("trade-monitor-btn");
     const tradePopup = document.getElementById("trade-popup");
     const closeBtn = document.querySelector(".close-btn");
-    const closeTradeBtn = document.getElementById("close-trade-btn");
 
-    const balanceEl = document.getElementById("balance");
     const popupBalanceEl = document.getElementById("popup-balance");
     const popupOpenTradesEl = document.getElementById("popup-open-trades");
     const popupProfitEl = document.getElementById("popup-profit");
@@ -300,21 +298,21 @@ setInterval(() => {
     rateElement.innerText = currentRate.toFixed(4);
 
     // Update the profit/loss in the popup and trade monitor
-    activeTrades.forEach(trade => {
-        if (trade.status === 'Open') {
-            let profitLoss = 0;
-
-            // Calculate live profit/loss for open trades
-            if (trade.action === 'Buy') {
-                profitLoss = (currentRate - trade.openRate) * trade.amount;
-            } else if (trade.action === 'Sell') {
-                profitLoss = (trade.openRate - currentRate) * trade.amount;
-            }
-
-            // Update the trade profit/loss in the popup
+    if (tradePopup.style.display === "block") { // Only update while the popup is visible
+        activeTrades.forEach(trade => {
             if (trade.status === 'Open') {
+                let profitLoss = 0;
+
+                // Calculate live profit/loss for open trades
+                if (trade.action === 'Buy') {
+                    profitLoss = (currentRate - trade.openRate) * trade.amount;
+                } else if (trade.action === 'Sell') {
+                    profitLoss = (trade.openRate - currentRate) * trade.amount;
+                }
+
+                // Update the trade profit/loss in the popup
                 updateTradePopup();
             }
-        }
-    });
+        });
+    }
 }, 3000);
