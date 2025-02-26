@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Open trade monitor popup
     tradeMonitorBtn.addEventListener("click", function () {
         tradePopup.style.display = "block";
-        updateTradePopup();
+        updateTradePopup(); // Initial update when the popup is opened
     });
 
     // Close popup
@@ -248,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Close trade from the popup
     function closeTradePopupTrade(tradeID) {
         closeTrade(tradeID);
-        updateTradePopup();
+        updateTradePopup(); // Recalculate and update trade data in popup after closing a trade
     }
 });
 
