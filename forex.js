@@ -170,6 +170,7 @@ function closeTrade(tradeID) {
     }
 }
 
+//--------------------Monitor Trades----------------------------//
 document.addEventListener("DOMContentLoaded", function () {
     const tradeMonitorBtn = document.getElementById("trade-monitor-btn");
     const tradePopup = document.getElementById("trade-popup");
@@ -213,6 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 let profitLoss = 0;
                 let resultMessage = '';
 
+                // Calculate profit or loss based on current forex rate
                 if (trade.action === 'Buy') {
                     profitLoss = (currentRate - trade.openRate) * trade.amount;
                 } else if (trade.action === 'Sell') {
@@ -248,3 +250,54 @@ document.addEventListener("DOMContentLoaded", function () {
         updateTradePopup();
     }
 });
+
+// Close a trade and update balance and profit/loss (as per the current forex rate)
+function closeTrade(tradeID) {
+    const trade = activeTrades.find(t => t.id === tradeID);
+    if (trade && trade.status === 'Open') {
+        const closeRate = currentRate;
+
+        let profitLoss = 0;
+        let resultMessage = '';
+
+        if (trade.action === 'Buy') {
+            profitLoss = (closeRate - trade.openRate) * trade.amount;
+        } else if (trade.action === 'Sell') {
+            profitLoss = (trade.openRate - closeRate) * trade.amount;
+        }
+
+        // Calculate profit or loss and update the trade status
+        if (profitLoss > 0) {
+            resultMessage = `Profit of $${profitLoss.toFixed(2)}`;
+        } else {
+            resultMessage = `Loss of $${Math.abs(profitLoss).toFixed(2)}`;
+        }
+
+        // Update trade status to closed
+        trade.status = 'Closed';
+        trade.closeRate = closeRate;
+        trade.profitLoss = profitLoss;
+
+        // Update the balance
+        balance += profitLoss;
+
+        // Display updated balance in the main page and popup
+        balanceElement.innerText = balance.toFixed(2);
+        updateTradePopup(); // Update popup with latest trade data
+
+        // Display the result message
+        alert(`Trade Closed! ${resultMessage}`);
+
+        // Update the chart area
+        updateCloseArea();
+    }
+}
+
+// Simulate chart and Forex price updates
+setInterval(() => {
+    currentRate += (Math.random() - 0.5) * 0.01; // Simulate price fluctuation
+    rateElement.innerText = currentRate.toFixed(4);
+
+    // Update the profit/loss in the popup and trade monitor
+    updateTradePopup();
+}, 3000);
