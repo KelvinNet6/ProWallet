@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let totalProfit = 0;
     let totalLoss = 0;
-
+    
     // Open trade monitor popup
     tradeMonitorBtn.addEventListener("click", function () {
         tradePopup.style.display = "block";
@@ -214,13 +214,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 let profitLoss = 0;
                 let resultMessage = '';
 
-                // Calculate profit or loss based on current forex rate
+                // Calculate profit or loss based on current forex rate for open trades
                 if (trade.action === 'Buy') {
                     profitLoss = (currentRate - trade.openRate) * trade.amount;
                 } else if (trade.action === 'Sell') {
                     profitLoss = (trade.openRate - currentRate) * trade.amount;
                 }
 
+                // Display live profit/loss for open trades
                 if (profitLoss > 0) {
                     resultMessage = `Profit of $${profitLoss.toFixed(2)}`;
                     totalProfit += profitLoss;
@@ -299,5 +300,21 @@ setInterval(() => {
     rateElement.innerText = currentRate.toFixed(4);
 
     // Update the profit/loss in the popup and trade monitor
-    updateTradePopup();
+    activeTrades.forEach(trade => {
+        if (trade.status === 'Open') {
+            let profitLoss = 0;
+
+            // Calculate live profit/loss for open trades
+            if (trade.action === 'Buy') {
+                profitLoss = (currentRate - trade.openRate) * trade.amount;
+            } else if (trade.action === 'Sell') {
+                profitLoss = (trade.openRate - currentRate) * trade.amount;
+            }
+
+            // Update the trade profit/loss in the popup
+            if (trade.status === 'Open') {
+                updateTradePopup();
+            }
+        }
+    });
 }, 3000);
