@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let totalProfit = 0;
     let totalLoss = 0;
-    
+
     // Open trade monitor popup
     tradeMonitorBtn.addEventListener("click", function () {
         tradePopup.style.display = "block";
@@ -297,7 +297,7 @@ setInterval(() => {
     currentRate += (Math.random() - 0.5) * 0.01; // Simulate price fluctuation
     rateElement.innerText = currentRate.toFixed(4);
 
-    // Update the profit/loss in the popup and trade monitor
+    // Update the profit/loss in the popup and trade monitor for open trades
     if (tradePopup.style.display === "block") { // Only update while the popup is visible
         activeTrades.forEach(trade => {
             if (trade.status === 'Open') {
@@ -311,7 +311,7 @@ setInterval(() => {
                 }
 
                 // Update the trade profit/loss in the popup
-                updateTradePopup();
+                updateTradePopup(); // Recalculate and update the popup with the live values
             }
         });
     }
