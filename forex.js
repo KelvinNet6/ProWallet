@@ -37,13 +37,18 @@ const forexChart = new Chart(ctx, {
 // Function to fetch live forex rate for MWK/ZAR from Alpha Vantage API
 async function fetchLiveForexRate() {
     const url = `${baseUrl}?function=FX_INTRADAY&from_symbol=MWK&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
-
     try {
         const response = await fetch(url);
         const data = await response.json();
 
+        // Check for API rate-limit error
+        if (data['Note']) {
+            console.error('API rate limit exceeded. Please wait a minute before trying again.');
+            return;
+        }
+
         if (data["Time Series FX (5min)"]) {
-            const latestData = Object.values(data["Time Series FX (5min)"])[0]; // Get the most recent data
+            const latestData = Object.values(data["Time Series FX (5min)"])[0];
             currentRateMWKtoZAR = parseFloat(latestData["4. close"]).toFixed(4); // The closing rate (ZAR/MWK)
             updateRateDisplay(); // Update the displayed rate
             updateChartData(); // Update the chart with the new data
