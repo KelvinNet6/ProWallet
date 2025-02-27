@@ -7,7 +7,7 @@ const activeTrades = []; // Array to store active trades
 let updateInterval;
 
 // Replace with your actual Alpha Vantage API key
-const apiKey = "your-api-key"; 
+const apiKey = "QZUV32Y1PXFKGEBY"; 
 
 // API endpoint for forex data (use "FX" function for forex rates)
 const baseUrl = "https://www.alphavantage.co/query";
