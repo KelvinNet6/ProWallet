@@ -36,7 +36,7 @@ const forexChart = new Chart(ctx, {
 
 // Function to fetch live forex rate for MWK/ZAR from Alpha Vantage API
 async function fetchLiveForexRate() {
- const url = `${baseUrl}?function=FX_INTRADAY&from_symbol=MWK&to_symbol=ZAR&interval=15min&apikey=${apiKey}`;
+ const url = `${baseUrl}?function=FX_INTRADAY&from_symbol=MWK&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
     try {
         const response = await fetch(url);
         const data = await response.json();
