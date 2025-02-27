@@ -1,13 +1,13 @@
- // Toggle Sidebar for Mobile
+// Toggle Sidebar for Mobile
 document.getElementById("menu-btn").addEventListener("click", () => {
-const sidebar = document.getElementById("sidebar");
-sidebar.classList.toggle("active");
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("active");
 });
 
 // Logout functionality
 document.getElementById("logout-btn").addEventListener("click", () => {
- sessionStorage.removeItem('paySheetAccount'); // Remove session data
-  window.location.href = "index.html";
+    sessionStorage.removeItem('paySheetAccount'); // Remove session data
+    window.location.href = "index.html";
 });
 
 // Initialize balance and forex rate
