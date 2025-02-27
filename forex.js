@@ -75,7 +75,7 @@ function updateChartData() {
 }
 
 // Set up live data fetch every 3 seconds (or adjust frequency)
-setInterval(fetchLiveForexRate, 3000);
+setInterval(fetchLiveForexRate, 30000);
 
 // Function to create a new trade (either Buy or Sell) for MWK/ZAR
 function createTrade(action, amount) {
