@@ -227,10 +227,10 @@ const accountNumber = sessionStorage.getItem('paySheetAccount');  // Get PayShee
 const emailAddress = sessionStorage.getItem('userEmail');  // Get user email address from session storage
 
 //if (accountNumber && emailAddress) {
-    fetchBalance(accountNumber, emailAddress);  // Fetch the balance using stored credentials
-} else {
-    alert('Account information is missing.');
-}
+   // fetchBalance(accountNumber, emailAddress);  // Fetch the balance using stored credentials
+//} else {
+//    alert('Account information is missing.');
+//}
 
 // Update the trade history table on the main page
 function updateTradeHistory() {
