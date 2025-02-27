@@ -43,6 +43,13 @@
                         <p>Current Rate: <span id="rate">1.1250</span></p>
                     </div>
                 </div>
+                
+                <!-- Input field to enter the amount for trading -->
+                <div class="trade-amount">
+                    <label for="trade-amount-input">Enter Amount to Bet: $</label>
+                    <input type="number" id="trade-amount-input" min="1" step="any" placeholder="Enter amount" />
+                </div>
+
                 <div class="buy-sell-options">
                     <button class="buy-btn" id="buy-btn">Buy</button>
                     <button class="sell-btn" id="sell-btn">Sell</button>
@@ -95,7 +102,6 @@
         <br>
     </div>
 </div>
-
 
     <script src="forex.js"></script>
 </body>
