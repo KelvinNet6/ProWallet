@@ -257,25 +257,3 @@ function updateTradeHistory() {
         updateTradeMonitorPopup();  // Keep the trade monitor popup up-to-date
     }
 }
-
-// Function to update the trade monitor popup with the latest trade data
-function updateTradeMonitorPopup() {
-    const tradePopup = document.getElementById("trade-popup");
-    const popupBalanceEl = document.getElementById("popup-balance");
-    const popupTradeDetails = document.getElementById("popup-trade-details");
-
-    if (popupBalanceEl && popupTradeDetails && tradePopup.classList.contains("active")) {
-        popupBalanceEl.innerText = `Balance: K${balance.toFixed(2)}`;
-        
-        if (activeTrades.length > 0) {
-            const trade = activeTrades[activeTrades.length - 1]; // Get the most recent trade
-            popupTradeDetails.innerHTML = `
-                <p>Trade ID: ${trade.id}</p>
-                <p>Pair: ${trade.pair}</p>
-                <p>Action: ${trade.action}</p>
-                <p>Amount: K${trade.amount}</p>
-                <p>Open Rate: ${trade.openRate}</p>
-            `;
-        }
-    }
-}
