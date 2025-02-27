@@ -129,11 +129,6 @@ document.getElementById("sell-btn").addEventListener("click", () => {
     createTrade('Sell', amount);
 });
 
-document.getElementById('trade-monitor-btn').addEventListener('click', function() {
-    document.getElementById('trade-popup').classList.toggle('active');  
-    updateTradeMonitorPopup();  // Update the popup data when it's opened
-});
-
 // Function to open the trade monitor popup
 function updateTradeMonitorPopup() {
     console.log("Updating Trade Monitor Popup..."); // Debugging line to check if this function is executing
@@ -179,7 +174,11 @@ function updateTradeMonitorPopup() {
         popupLoss.innerText = `MWK ${totalLoss.toFixed(2)}`;
     }
 }
-
+//-----------------function to open popup trade monitor--------------//
+document.getElementById('trade-monitor-btn').addEventListener('click', function() {
+    document.getElementById('trade-popup').classList.toggle('active');  
+    updateTradeMonitorPopup();  // Update the popup data when it's opened
+});
 // Function to close the trade monitor popup
 document.querySelector(".close-btn").addEventListener("click", () => {
     const tradePopup = document.getElementById("trade-popup");
