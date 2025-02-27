@@ -128,14 +128,20 @@ document.getElementById("sell-btn").addEventListener("click", () => {
     }
     createTrade('Sell', amount);
 });
+
 // Open the trade monitor popup when the "Monitor Trades" button is clicked
 document.getElementById("trade-monitor-btn").addEventListener("click", () => {
+    console.log("Trade Monitor Button Clicked!"); // Debugging line to check if the event is firing
+
     const tradePopup = document.getElementById("trade-popup");
     tradePopup.classList.add("active");  // Add "active" class to show the popup
     updateTradeMonitorPopup();  // Update the popup data when it's opened
 });
+
 // Function to open the trade monitor popup
 function updateTradeMonitorPopup() {
+    console.log("Updating Trade Monitor Popup..."); // Debugging line to check if this function is executing
+
     const tradePopup = document.getElementById("trade-popup");
     const popupBalanceEl = document.getElementById("popup-balance");
     const popupOpenTrades = document.getElementById("popup-open-trades");
@@ -177,6 +183,7 @@ function updateTradeMonitorPopup() {
         popupLoss.innerText = `MWK ${totalLoss.toFixed(2)}`;
     }
 }
+
 // Function to close the trade monitor popup
 document.querySelector(".close-btn").addEventListener("click", () => {
     const tradePopup = document.getElementById("trade-popup");
