@@ -226,7 +226,7 @@ function updateBalanceDisplay() {
 const accountNumber = sessionStorage.getItem('paySheetAccount');  // Get PaySheet account number from session storage
 const emailAddress = sessionStorage.getItem('userEmail');  // Get user email address from session storage
 
-if (accountNumber && emailAddress) {
+//if (accountNumber && emailAddress) {
     fetchBalance(accountNumber, emailAddress);  // Fetch the balance using stored credentials
 } else {
     alert('Account information is missing.');
