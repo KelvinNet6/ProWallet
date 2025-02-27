@@ -128,29 +128,55 @@ document.getElementById("sell-btn").addEventListener("click", () => {
     }
     createTrade('Sell', amount);
 });
-
+// Open the trade monitor popup when the "Monitor Trades" button is clicked
+document.getElementById("trade-monitor-btn").addEventListener("click", () => {
+    const tradePopup = document.getElementById("trade-popup");
+    tradePopup.classList.add("active");  // Add "active" class to show the popup
+    updateTradeMonitorPopup();  // Update the popup data when it's opened
+});
 // Function to open the trade monitor popup
-function openTradeMonitorPopup(trade) {
+function updateTradeMonitorPopup() {
     const tradePopup = document.getElementById("trade-popup");
     const popupBalanceEl = document.getElementById("popup-balance");
-    const popupTradeDetails = document.getElementById("popup-trade-details");
-    
-    // Set balance in the popup
-    popupBalanceEl.innerText = `Balance: K${balance.toFixed(2)}`;
-    
-    // Set trade details in the popup
-    popupTradeDetails.innerHTML = `
-        <p>Trade ID: ${trade.id}</p>
-        <p>Pair: ${trade.pair}</p>
-        <p>Action: ${trade.action}</p>
-        <p>Amount: K${trade.amount}</p>
-        <p>Open Rate: ${trade.openRate}</p>
-    `;
-    
-    // Show the popup
-    tradePopup.classList.add("active");
-}
+    const popupOpenTrades = document.getElementById("popup-open-trades");
+    const popupProfit = document.getElementById("popup-profit");
+    const popupLoss = document.getElementById("popup-loss");
+    const tradeList = document.getElementById("trade-list");
 
+    if (popupBalanceEl && popupOpenTrades && popupProfit && popupLoss && tradeList) {
+        // Update balance, open trades count, profit, and loss in the popup
+        popupBalanceEl.innerText = `MWK ${balance.toFixed(2)}`;
+        popupOpenTrades.innerText = activeTrades.length;  // Assuming activeTrades is your trade array
+        let totalProfit = 0;
+        let totalLoss = 0;
+
+        tradeList.innerHTML = "";  // Clear existing trades in the popup
+
+        activeTrades.forEach(trade => {
+            const tradeElement = document.createElement("div");
+            tradeElement.classList.add("trade-item");
+            tradeElement.innerHTML = `
+                <p><strong>Trade ID:</strong> ${trade.id}</p>
+                <p><strong>Action:</strong> ${trade.action}</p>
+                <p><strong>Amount:</strong> MWK ${trade.amount}</p>
+                <p><strong>Open Rate:</strong> ${trade.openRate}</p>
+                <p><strong>Status:</strong> ${trade.status}</p>
+                <hr>
+            `;
+            tradeList.appendChild(tradeElement);
+
+            // Calculate profit/loss based on the current rate
+            const currentRate = currentRateMWKtoZAR;
+            const profitLoss = trade.action === "Buy" ? (currentRate - trade.openRate) * trade.amount : (trade.openRate - currentRate) * trade.amount;
+            if (profitLoss >= 0) totalProfit += profitLoss;
+            else totalLoss += Math.abs(profitLoss);
+        });
+
+        // Update the profit and loss in the popup
+        popupProfit.innerText = `MWK ${totalProfit.toFixed(2)}`;
+        popupLoss.innerText = `MWK ${totalLoss.toFixed(2)}`;
+    }
+}
 // Function to close the trade monitor popup
 document.querySelector(".close-btn").addEventListener("click", () => {
     const tradePopup = document.getElementById("trade-popup");
