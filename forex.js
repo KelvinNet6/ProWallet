@@ -1,18 +1,7 @@
-// Toggle Sidebar for Mobile
-document.getElementById("menu-btn").addEventListener("click", () => {
-    const sidebar = document.getElementById("sidebar");
-    sidebar.classList.toggle("active");
-});
-
-// Logout functionality
-document.getElementById("logout-btn").addEventListener("click", () => {
-    sessionStorage.removeItem('paySheetAccount'); // Remove session data
-    window.location.href = "index.html";
-});
-
-// Initialize balance and forex rate
+// Initialize balance and forex rate for MWK/ZAR
 let balance = 10000; // Starting balance
-let currentRate = 1.1250; // Initial forex rate
+let currentRateMWKtoZAR = 1.05; // Initial forex rate for MWK/ZAR (1 MWK = 1.05 ZAR)
+let currentRateZARtoMWK = 0.011; // Initial forex rate for ZAR/MWK (1 ZAR = 0.011 MWK)
 let tradeID = 1; // ID counter for trades
 const activeTrades = []; // Array to store active trades
 let updateInterval;
@@ -20,14 +9,14 @@ let updateInterval;
 const balanceElement = document.getElementById("balance");
 const rateElement = document.getElementById("rate");
 
-// Forex chart setup (unchanged)
+// Forex chart setup (adjusted for MWK/ZAR)
 const ctx = document.getElementById('forexChart').getContext('2d');
 const forexChart = new Chart(ctx, {
     type: 'line',
     data: {
         labels: [],
         datasets: [{
-            label: 'EUR/USD Price',
+            label: 'MWK/ZAR Price',
             data: [],
             borderColor: 'rgba(75, 192, 192, 1)',
             fill: false
@@ -42,14 +31,15 @@ const forexChart = new Chart(ctx, {
     }
 });
 
-// Simulate forex rate fluctuation every 3 seconds
+// Simulate forex rate fluctuation for MWK/ZAR every 3 seconds
 setInterval(() => {
-    currentRate += (Math.random() - 0.5) * 0.01; // Simulate price fluctuation
-    rateElement.innerText = currentRate.toFixed(4);
+    // Simulate fluctuation for MWK/ZAR pair (1 MWK = 1.05 ZAR)
+    currentRateMWKtoZAR += (Math.random() - 0.5) * 0.02; // Simulate price fluctuation for MWK/ZAR
+    rateElement.innerText = currentRateMWKtoZAR.toFixed(4);
 
     // Update the forex chart with the new rate
     forexChart.data.labels.push(Date.now());
-    forexChart.data.datasets[0].data.push(currentRate);
+    forexChart.data.datasets[0].data.push(currentRateMWKtoZAR);
     forexChart.update();
 
     // If the trade monitor popup is open, simulate clicking the trade monitor button to trigger the update
@@ -61,14 +51,14 @@ setInterval(() => {
     }
 }, 3000);
 
-// Function to create new trade (either Buy or Sell)
+// Function to create a new trade (either Buy or Sell) for MWK/ZAR
 function createTrade(action, amount) {
     return {
         id: tradeID++, // Increment trade ID
-        pair: 'EUR/USD',
+        pair: 'MWK/ZAR', // Currency pair updated to MWK/ZAR
         action: action,
         amount: amount, // User-defined trade amount
-        openRate: currentRate, // Record the rate at the time of trade opening
+        openRate: currentRateMWKtoZAR, // Record the rate at the time of trade opening
         status: 'Open' // Status is initially Open
     };
 }
@@ -128,7 +118,7 @@ function updateTradeHistory() {
 function closeTrade(tradeID) {
     const trade = activeTrades.find(t => t.id === tradeID);
     if (trade && trade.status === 'Open') {
-        const closeRate = currentRate;
+        const closeRate = currentRateMWKtoZAR;
         let profitLoss = 0;
         let resultMessage = '';
 
@@ -201,9 +191,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // Calculate profit/loss based on the current forex rate for open trades
                 if (trade.action === 'Buy') {
-                    profitLoss = (currentRate - trade.openRate) * trade.amount;
+                    profitLoss = (currentRateMWKtoZAR - trade.openRate) * trade.amount;
                 } else if (trade.action === 'Sell') {
-                    profitLoss = (trade.openRate - currentRate) * trade.amount;
+                    profitLoss = (trade.openRate - currentRateMWKtoZAR) * trade.amount;
                 }
 
                 // Display live profit/loss for open trades
