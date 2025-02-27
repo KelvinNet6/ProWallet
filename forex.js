@@ -62,12 +62,12 @@ setInterval(() => {
 }, 3000);
 
 // Function to create new trade (either Buy or Sell)
-function createTrade(action) {
+function createTrade(action, amount) {
     return {
         id: tradeID++, // Increment trade ID
         pair: 'EUR/USD',
         action: action,
-        amount: 1000, // Simulated amount of the trade
+        amount: amount, // User-defined trade amount
         openRate: currentRate, // Record the rate at the time of trade opening
         status: 'Open' // Status is initially Open
     };
@@ -75,14 +75,24 @@ function createTrade(action) {
 
 // Buy/Sell button interaction
 document.getElementById("buy-btn").addEventListener("click", () => {
-    const trade = createTrade('Buy');
+    const amount = parseFloat(document.getElementById("trade-amount-input").value); // Get the amount input
+    if (isNaN(amount) || amount <= 0 || amount > balance) {
+        alert("Please enter a valid amount less than or equal to your balance.");
+        return;
+    }
+    const trade = createTrade('Buy', amount);
     activeTrades.push(trade);
     updateTradeHistory(); // Update the main page trade history
     updateCloseArea(); // Update the area with close trade options
 });
 
 document.getElementById("sell-btn").addEventListener("click", () => {
-    const trade = createTrade('Sell');
+    const amount = parseFloat(document.getElementById("trade-amount-input").value); // Get the amount input
+    if (isNaN(amount) || amount <= 0 || amount > balance) {
+        alert("Please enter a valid amount less than or equal to your balance.");
+        return;
+    }
+    const trade = createTrade('Sell', amount);
     activeTrades.push(trade);
     updateTradeHistory(); // Update the main page trade history
     updateCloseArea(); // Update the area with close trade options
