@@ -1,3 +1,15 @@
+// Toggle Sidebar for Mobile
+document.getElementById("menu-btn").addEventListener("click", () => {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("active");
+});
+
+// Logout functionality
+document.getElementById("logout-btn").addEventListener("click", () => {
+    sessionStorage.removeItem('paySheetAccount'); // Remove session data
+    window.location.href = "index.html";
+});
+
 // Initialize balance and forex rate for MWK/ZAR
 let balance = 10000; // Starting balance
 let currentRateMWKtoZAR = 1.05; // Initial forex rate for MWK/ZAR (1 MWK = 1.05 ZAR)
