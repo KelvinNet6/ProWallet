@@ -131,7 +131,7 @@ document.getElementById("sell-btn").addEventListener("click", () => {
 
 // Function to open the trade monitor popup
 function openTradeMonitorPopup(trade) {
-    const tradePopup = document.getElementById("trade-monitor-btn");
+    const tradePopup = document.getElementById("trade-popup");
     const popupBalanceEl = document.getElementById("popup-balance");
     const popupTradeDetails = document.getElementById("popup-trade-details");
     
