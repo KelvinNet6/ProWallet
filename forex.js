@@ -15,6 +15,7 @@ let balance = 10000; // Starting balance
 let currentRate = 1.1250; // Initial forex rate
 let tradeID = 1; // ID counter for trades
 const activeTrades = []; // Array to store active trades
+let updateInterval;
 
 const balanceElement = document.getElementById("balance");
 const rateElement = document.getElementById("rate");
@@ -52,6 +53,7 @@ setInterval(() => {
     forexChart.update();
 
     // If the trade monitor popup is open, update the trade data inside the popup
+    const tradePopup = document.getElementById("trade-popup");
     if (tradePopup.style.display === "block") {
         updateTradePopup(); // Update the trades in the popup whenever the forex rate changes
     }
@@ -222,4 +224,3 @@ document.addEventListener("DOMContentLoaded", function () {
         updateTradePopup(); // Recalculate and update the popup data
     }
 });
-
