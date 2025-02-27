@@ -6,8 +6,11 @@ let tradeID = 1; // ID counter for trades
 const activeTrades = []; // Array to store active trades
 let updateInterval;
 
-const balanceElement = document.getElementById("balance");
-const rateElement = document.getElementById("rate");
+// Replace with your actual Alpha Vantage API key
+const apiKey = "your-api-key"; 
+
+// API endpoint for forex data (use "FX" function for forex rates)
+const baseUrl = "https://www.alphavantage.co/query";
 
 // Forex chart setup (adjusted for MWK/ZAR)
 const ctx = document.getElementById('forexChart').getContext('2d');
@@ -31,25 +34,43 @@ const forexChart = new Chart(ctx, {
     }
 });
 
-// Simulate forex rate fluctuation for MWK/ZAR every 3 seconds
-setInterval(() => {
-    // Simulate fluctuation for MWK/ZAR pair (1 MWK = 1.05 ZAR)
-    currentRateMWKtoZAR += (Math.random() - 0.5) * 0.02; // Simulate price fluctuation for MWK/ZAR
-    rateElement.innerText = currentRateMWKtoZAR.toFixed(4);
+// Function to fetch live forex rate for MWK/ZAR from Alpha Vantage API
+async function fetchLiveForexRate() {
+    const url = `${baseUrl}?function=FX_INTRADAY&from_symbol=MWK&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
 
-    // Update the forex chart with the new rate
-    forexChart.data.labels.push(Date.now());
-    forexChart.data.datasets[0].data.push(currentRateMWKtoZAR);
-    forexChart.update();
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
 
-    // If the trade monitor popup is open, simulate clicking the trade monitor button to trigger the update
-    const tradePopup = document.getElementById("trade-popup");
-    if (tradePopup.style.display === "block") {
-        // Simulate clicking the "trade-monitor-btn" when the popup is open
-        const tradeMonitorBtn = document.getElementById("trade-monitor-btn");
-        tradeMonitorBtn.click(); // Trigger the click event programmatically
+        if (data["Time Series FX (5min)"]) {
+            const latestData = Object.values(data["Time Series FX (5min)"])[0]; // Get the most recent data
+            currentRateMWKtoZAR = parseFloat(latestData["4. close"]).toFixed(4); // The closing rate (ZAR/MWK)
+            updateRateDisplay(); // Update the displayed rate
+            updateChartData(); // Update the chart with the new data
+            updateTradePopup(); // Recalculate the open trades' profit/loss based on the new rate
+        } else {
+            console.error("Error fetching forex data:", data);
+        }
+    } catch (error) {
+        console.error("Error fetching live forex rate:", error);
     }
-}, 3000);
+}
+
+// Function to update the forex rate display on the page
+function updateRateDisplay() {
+    const rateElement = document.getElementById("rate");
+    rateElement.innerText = currentRateMWKtoZAR; // Update the displayed rate with real-time data
+}
+
+// Function to update the forex chart with the new rate
+function updateChartData() {
+    forexChart.data.labels.push(Date.now()); // Add a new timestamp
+    forexChart.data.datasets[0].data.push(currentRateMWKtoZAR); // Add the new rate data
+    forexChart.update(); // Refresh the chart
+}
+
+// Set up live data fetch every 3 seconds (or adjust frequency)
+setInterval(fetchLiveForexRate, 3000);
 
 // Function to create a new trade (either Buy or Sell) for MWK/ZAR
 function createTrade(action, amount) {
@@ -226,3 +247,4 @@ document.addEventListener("DOMContentLoaded", function () {
         updateTradePopup(); // Recalculate and update the popup data
     }
 });
+
