@@ -26,12 +26,12 @@
 
     <div class="main-content" id="home">
         <header class="header">
-            <h1>PaySheet | Forex Trading </h1>
+            <h1>PaySheet | Forex Trading</h1>
         </header>
 
         <!-- Display the current balance -->
         <div class="balance">
-            <h2>Balance: $<span id="balance">10000</span></h2>
+            <h2>Balance: MWK <span id="balance">0</span></h2>
         </div>
 
         <section class="forex-trading">
@@ -40,13 +40,13 @@
                 <div class="currency-pair">
                     <h2>MWK/ZAR</h2>
                     <div class="exchange-rate">
-                        <p>Current Rate: <span id="rate">1.1250</span></p>
+                        <p>Current Rate: <span id="rate">1.05</span></p>
                     </div>
                 </div>
                 
                 <!-- Input field to enter the amount for trading -->
                 <div class="trade-amount">
-                    <label for="trade-amount-input">Enter Amount to Bet: $</label>
+                    <label for="trade-amount-input">Enter Amount to Trade: MWK</label>
                     <input type="number" id="trade-amount-input" min="1" step="any" placeholder="Enter amount" />
                 </div>
 
@@ -84,24 +84,24 @@
         </section>
     </div>
 
-   <!-- Trade Monitor Popup -->
-<div id="trade-popup" class="trade-popup">
-    <div class="trade-popup-content">
-        <span class="close-btn">&times;</span>
-        <h2>Monitor Trades</h2>
-        <br>
-        <p><strong>Balance:</strong> $<span id="popup-balance">10000</span></p>
-        <br>
-        <p><strong>Open Trades:</strong> <span id="popup-open-trades">0</span></p>
-        <br>
-        <p><strong>Profit:</strong> $<span id="popup-profit">0</span></p>
-        <br>
-        <p><strong>Loss:</strong> $<span id="popup-loss">0</span></p>
-        <br>
-        <div id="trade-list"></div> <!-- To display the active trades in the popup -->
-        <br>
+    <!-- Trade Monitor Popup -->
+    <div id="trade-popup" class="trade-popup">
+        <div class="trade-popup-content">
+            <span class="close-btn">&times;</span>
+            <h2>Monitor Trades</h2>
+            <br>
+            <p><strong>Balance:</strong> MWK <span id="popup-balance">10000</span></p>
+            <br>
+            <p><strong>Open Trades:</strong> <span id="popup-open-trades">0</span></p>
+            <br>
+            <p><strong>Profit:</strong> MWK <span id="popup-profit">0</span></p>
+            <br>
+            <p><strong>Loss:</strong> MWK <span id="popup-loss">0</span></p>
+            <br>
+            <div id="trade-list"></div> <!-- To display the active trades in the popup -->
+            <br>
+        </div>
     </div>
-</div>
 
     <script src="forex.js"></script>
 </body>
