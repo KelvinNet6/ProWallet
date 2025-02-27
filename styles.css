@@ -1114,6 +1114,10 @@ button:hover {
         #popup-close-trade-btn:hover {
             background-color: darkred;
         }
+#trade-popup.active {
+    display: block; /* Visible when the 'active' class is added */
+}
+
 @media (max-width: 768px) {
     /* Adjust Forex Trading Section for Mobile */
     .forex-trading {
