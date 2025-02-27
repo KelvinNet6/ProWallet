@@ -129,12 +129,8 @@ document.getElementById("sell-btn").addEventListener("click", () => {
     createTrade('Sell', amount);
 });
 
-// Open the trade monitor popup when the "Monitor Trades" button is clicked
-document.getElementById("trade-monitor-btn").addEventListener("click", () => {
-    console.log("Trade Monitor Button Clicked!"); // Debugging line to check if the event is firing
-
-    const tradePopup = document.getElementById("trade-popup");
-    tradePopup.classList.add("active");  // Add "active" class to show the popup
+document.getElementById('trade-monitor-btn').addEventListener('click', function() {
+    document.getElementById('trade-popup').classList.toggle('active');  
     updateTradeMonitorPopup();  // Update the popup data when it's opened
 });
 
