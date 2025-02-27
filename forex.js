@@ -53,7 +53,7 @@ setInterval(() => {
 
     // If the trade monitor popup is open, update the trade data inside the popup
     if (tradePopup.style.display === "block") {
-        updateTradePopup(); // Update the trades in the popup
+        updateTradePopup(); // Update the trades in the popup whenever the forex rate changes
     }
 }, 3000);
 
@@ -222,3 +222,4 @@ document.addEventListener("DOMContentLoaded", function () {
         updateTradePopup(); // Recalculate and update the popup data
     }
 });
+
