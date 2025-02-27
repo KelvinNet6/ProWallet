@@ -52,10 +52,12 @@ setInterval(() => {
     forexChart.data.datasets[0].data.push(currentRate);
     forexChart.update();
 
-    // If the trade monitor popup is open, update the trade data inside the popup
+    // If the trade monitor popup is open, simulate clicking the trade monitor button to trigger the update
     const tradePopup = document.getElementById("trade-popup");
     if (tradePopup.style.display === "block") {
-        updateTradePopup(); // Update the trades in the popup whenever the forex rate changes
+        // Simulate clicking the "trade-monitor-btn" when the popup is open
+        const tradeMonitorBtn = document.getElementById("trade-monitor-btn");
+        tradeMonitorBtn.click(); // Trigger the click event programmatically
     }
 }, 3000);
 
