@@ -129,21 +129,20 @@ document.getElementById("sell-btn").addEventListener("click", () => {
     createTrade('Sell', amount);
 });
 
-// Function to open the trade monitor popup
+// Function to update the trade monitor popup with the active trades
 function updateTradeMonitorPopup() {
-    console.log("Updating Trade Monitor Popup..."); // Debugging line to check if this function is executing
-
     const tradePopup = document.getElementById("trade-popup");
+    const tradeList = document.getElementById("trade-list");
     const popupBalanceEl = document.getElementById("popup-balance");
     const popupOpenTrades = document.getElementById("popup-open-trades");
     const popupProfit = document.getElementById("popup-profit");
     const popupLoss = document.getElementById("popup-loss");
-    const tradeList = document.getElementById("trade-list");
 
     if (popupBalanceEl && popupOpenTrades && popupProfit && popupLoss && tradeList) {
-        // Update balance, open trades count, profit, and loss in the popup
+        // Update balance and open trades count in the popup
         popupBalanceEl.innerText = `MWK ${balance.toFixed(2)}`;
-        popupOpenTrades.innerText = activeTrades.length;  // Assuming activeTrades is your trade array
+        popupOpenTrades.innerText = activeTrades.length;
+
         let totalProfit = 0;
         let totalLoss = 0;
 
@@ -158,13 +157,17 @@ function updateTradeMonitorPopup() {
                 <p><strong>Amount:</strong> MWK ${trade.amount}</p>
                 <p><strong>Open Rate:</strong> ${trade.openRate}</p>
                 <p><strong>Status:</strong> ${trade.status}</p>
+                <button class="close-trade-btn" data-trade-id="${trade.id}">Close Trade</button>
                 <hr>
             `;
             tradeList.appendChild(tradeElement);
 
             // Calculate profit/loss based on the current rate
             const currentRate = currentRateMWKtoZAR;
-            const profitLoss = trade.action === "Buy" ? (currentRate - trade.openRate) * trade.amount : (trade.openRate - currentRate) * trade.amount;
+            const profitLoss = trade.action === "Buy" 
+                ? (currentRate - trade.openRate) * trade.amount 
+                : (trade.openRate - currentRate) * trade.amount;
+            
             if (profitLoss >= 0) totalProfit += profitLoss;
             else totalLoss += Math.abs(profitLoss);
         });
@@ -172,13 +175,24 @@ function updateTradeMonitorPopup() {
         // Update the profit and loss in the popup
         popupProfit.innerText = `MWK ${totalProfit.toFixed(2)}`;
         popupLoss.innerText = `MWK ${totalLoss.toFixed(2)}`;
+        
+        // Add event listeners to close trade buttons
+        const closeTradeButtons = document.querySelectorAll('.close-trade-btn');
+        closeTradeButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const tradeId = e.target.getAttribute('data-trade-id');
+                closeTrade(tradeId);
+            });
+        });
     }
 }
+
 //-----------------function to open popup trade monitor--------------//
 document.getElementById('trade-monitor-btn').addEventListener('click', function() {
     document.getElementById('trade-popup').classList.toggle('active');  
     updateTradeMonitorPopup();  // Update the popup data when it's opened
 });
+
 // Function to close the trade monitor popup
 document.querySelector(".close-btn").addEventListener("click", () => {
     const tradePopup = document.getElementById("trade-popup");
@@ -221,18 +235,38 @@ function updateBalanceDisplay() {
 const accountNumber = sessionStorage.getItem('paySheetAccount');  // Get PaySheet account number from session storage
 const emailAddress = sessionStorage.getItem('userEmail');  // Get user email address from session storage
 
-//if (accountNumber && emailAddress) {
-   // fetchBalance(accountNumber, emailAddress);  // Fetch the balance using stored credentials
-//} else {
-//    alert('Account information is missing.');
-//}
+if (accountNumber && emailAddress) {
+    fetchBalance(accountNumber, emailAddress);  // Fetch the balance using stored credentials
+} else {
+    alert('Account information is missing.');
+}
 
+// Function to close a trade
+function closeTrade(tradeId) {
+    const tradeIndex = activeTrades.findIndex(trade => trade.id === parseInt(tradeId));
+    if (tradeIndex !== -1) {
+        // Close the trade by updating its status
+        activeTrades[tradeIndex].status = "Closed";
+        
+        // Optionally, you can remove the trade from the active trades array
+        // activeTrades.splice(tradeIndex, 1);
+
+        // Update the trade history table and trade monitor popup
+        updateTradeHistory();  // This will update the trade history table on the main page
+        updateTradeMonitorPopup();  // Update the trade monitor popup with the closed trade
+
+        console.log(`Trade ${tradeId} has been closed.`);
+    }
+}
 // Update the trade history table on the main page
 function updateTradeHistory() {
     const tbody = document.querySelector("#trade-history tbody");
     tbody.innerHTML = "";  // Clear previous rows
 
-    activeTrades.forEach(trade => {
+    // Filter out closed trades (if you only want to display open trades)
+    const openTrades = activeTrades.filter(trade => trade.status === "Open");
+
+    openTrades.forEach(trade => {
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${trade.id}</td>
@@ -253,7 +287,7 @@ function updateTradeHistory() {
     });
 
     // Automatically update the trade monitor popup with the latest trade data
-    if (activeTrades.length > 0) {
+    if (openTrades.length > 0) {
         updateTradeMonitorPopup();  // Keep the trade monitor popup up-to-date
     }
 }
