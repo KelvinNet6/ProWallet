@@ -15,6 +15,7 @@ let currentRateMWKtoZAR = 1.05; // Initial forex rate for MWK/ZAR (1 MWK = 1.05 
 let currentRateZARtoMWK = 0.011; // Initial forex rate for ZAR/MWK (1 ZAR = 0.011 MWK)
 let tradeID = 1; // ID counter for trades
 const activeTrades = []; // Array to store active trades
+let balance = 1000; // Initial balance, assuming K1000
 let updateInterval;
 
 // Replace with your actual Alpha Vantage API key
@@ -90,7 +91,7 @@ setInterval(fetchLiveForexRate, 30000);
 
 // Function to create a new trade (either Buy or Sell) for MWK/ZAR
 function createTrade(action, amount) {
-    return {
+    const trade = {
         id: tradeID++, // Increment trade ID
         pair: 'MWK/ZAR', // Currency pair updated to MWK/ZAR
         action: action,
@@ -98,6 +99,11 @@ function createTrade(action, amount) {
         openRate: currentRateMWKtoZAR, // Record the rate at the time of trade opening
         status: 'Open' // Status is initially Open
     };
+    activeTrades.push(trade);
+    updateTradeHistory(); // Update the main page trade history
+    updateCloseArea(); // Update the area with close trade options
+    
+    openTradeMonitorPopup(trade); // Open the trade monitor popup when a trade is created
 }
 
 // Buy/Sell button interaction (adjusted to use the live balance)
@@ -107,10 +113,7 @@ document.getElementById("buy-btn").addEventListener("click", () => {
         alert("Please enter a valid amount less than or equal to your balance.");
         return;
     }
-    const trade = createTrade('Buy', amount);
-    activeTrades.push(trade);
-    updateTradeHistory(); // Update the main page trade history
-    updateCloseArea(); // Update the area with close trade options
+    createTrade('Buy', amount);
 });
 
 document.getElementById("sell-btn").addEventListener("click", () => {
@@ -119,10 +122,35 @@ document.getElementById("sell-btn").addEventListener("click", () => {
         alert("Please enter a valid amount less than or equal to your balance.");
         return;
     }
-    const trade = createTrade('Sell', amount);
-    activeTrades.push(trade);
-    updateTradeHistory(); // Update the main page trade history
-    updateCloseArea(); // Update the area with close trade options
+    createTrade('Sell', amount);
+});
+
+// Function to open the trade monitor popup
+function openTradeMonitorPopup(trade) {
+    const tradePopup = document.getElementById("trade-popup");
+    const popupBalanceEl = document.getElementById("popup-balance");
+    const popupTradeDetails = document.getElementById("popup-trade-details");
+    
+    // Set balance in the popup
+    popupBalanceEl.innerText = `Balance: K${balance.toFixed(2)}`;
+    
+    // Set trade details in the popup
+    popupTradeDetails.innerHTML = `
+        <p>Trade ID: ${trade.id}</p>
+        <p>Pair: ${trade.pair}</p>
+        <p>Action: ${trade.action}</p>
+        <p>Amount: K${trade.amount}</p>
+        <p>Open Rate: ${trade.openRate}</p>
+    `;
+    
+    // Show the popup
+    tradePopup.classList.add("active");
+}
+
+// Function to close the trade monitor popup
+document.querySelector(".close-btn").addEventListener("click", () => {
+    const tradePopup = document.getElementById("trade-popup");
+    tradePopup.classList.remove("active");
 });
 
 // Function to fetch balance using PaySheet number and email address
@@ -225,3 +253,4 @@ function closeTrade(tradeID) {
         updateCloseArea();
     }
 }
+
