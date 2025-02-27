@@ -84,6 +84,9 @@ function updateChartData() {
     forexChart.data.labels.push(Date.now()); // Add a new timestamp
     forexChart.data.datasets[0].data.push(currentRateMWKtoZAR); // Add the new rate data
     forexChart.update(); // Refresh the chart
+
+    // Automatically update the trade monitor popup data when the chart updates
+    updateTradeMonitorPopup();  // This will update the trade monitor data without opening the popup
 }
 
 // Set up live data fetch every 30 seconds
@@ -103,7 +106,8 @@ function createTrade(action, amount) {
     updateTradeHistory(); // Update the main page trade history
     updateCloseArea(); // Update the area with close trade options
     
-    openTradeMonitorPopup(trade); // Open the trade monitor popup when a trade is created
+    // Open the trade monitor popup when a trade is created
+    openTradeMonitorPopup(trade);  // Automatically open the trade monitor popup when a trade is created
 }
 
 // Buy/Sell button interaction (adjusted to use the live balance)
@@ -219,38 +223,31 @@ function updateTradeHistory() {
             closeTrade(trade.id);
         });
     });
-}
 
-// Function to close a trade (calculates profit/loss based on the current rate)
-function closeTrade(tradeID) {
-    const trade = activeTrades.find(t => t.id === tradeID);
-    if (trade && trade.status === 'Open') {
-        const closeRate = currentRateMWKtoZAR;
-        let profitLoss = 0;
-        let resultMessage = '';
-
-        // Profit/Loss calculation based on action (Buy or Sell)
-        if (trade.action === 'Buy') {
-            profitLoss = (closeRate - trade.openRate) * trade.amount;
-        } else if (trade.action === 'Sell') {
-            profitLoss = (trade.openRate - closeRate) * trade.amount;
-        }
-
-        // Update trade status and record profit/loss
-        trade.status = 'Closed';
-        trade.closeRate = closeRate;
-        trade.profitLoss = profitLoss;
-
-        // Update the balance
-        balance += profitLoss;  // Add profit or subtract loss
-        updateBalanceDisplay();  // Update the balance display
-
-        // Alert with profit/loss message
-        alert(`Trade Closed! ${profitLoss > 0 ? `Profit of K${profitLoss.toFixed(2)}` : `Loss of K${Math.abs(profitLoss).toFixed(2)}`}`);
-
-        // Update the trade history table and close area
-        updateTradeHistory();
-        updateCloseArea();
+    // Automatically update the trade monitor popup with the latest trade data
+    if (activeTrades.length > 0) {
+        updateTradeMonitorPopup();  // Keep the trade monitor popup up-to-date
     }
 }
 
+// Function to update the trade monitor popup with the latest trade data
+function updateTradeMonitorPopup() {
+    const tradePopup = document.getElementById("trade-popup");
+    const popupBalanceEl = document.getElementById("popup-balance");
+    const popupTradeDetails = document.getElementById("popup-trade-details");
+
+    if (popupBalanceEl && popupTradeDetails && tradePopup.classList.contains("active")) {
+        popupBalanceEl.innerText = `Balance: K${balance.toFixed(2)}`;
+        
+        if (activeTrades.length > 0) {
+            const trade = activeTrades[activeTrades.length - 1]; // Get the most recent trade
+            popupTradeDetails.innerHTML = `
+                <p>Trade ID: ${trade.id}</p>
+                <p>Pair: ${trade.pair}</p>
+                <p>Action: ${trade.action}</p>
+                <p>Amount: K${trade.amount}</p>
+                <p>Open Rate: ${trade.openRate}</p>
+            `;
+        }
+    }
+}
