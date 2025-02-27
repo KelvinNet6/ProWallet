@@ -10,8 +10,7 @@ document.getElementById("logout-btn").addEventListener("click", () => {
     window.location.href = "index.html";
 });
 
-// Initialize balance and forex rate for MWK/ZAR
-let balance = 10000; // Starting balance
+// Initialize forex rate for MWK/ZAR
 let currentRateMWKtoZAR = 1.05; // Initial forex rate for MWK/ZAR (1 MWK = 1.05 ZAR)
 let currentRateZARtoMWK = 0.011; // Initial forex rate for ZAR/MWK (1 ZAR = 0.011 MWK)
 let tradeID = 1; // ID counter for trades
@@ -48,7 +47,7 @@ const forexChart = new Chart(ctx, {
 
 // Function to fetch live forex rate for MWK/ZAR from Alpha Vantage API
 async function fetchLiveForexRate() {
- const url = `${baseUrl}?function=FX_INTRADAY&from_symbol=MWK&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
+    const url = `${baseUrl}?function=FX_INTRADAY&from_symbol=MWK&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
     try {
         const response = await fetch(url);
         const data = await response.json();
@@ -86,7 +85,7 @@ function updateChartData() {
     forexChart.update(); // Refresh the chart
 }
 
-// Set up live data fetch every 3 seconds (or adjust frequency)
+// Set up live data fetch every 30 seconds
 setInterval(fetchLiveForexRate, 30000);
 
 // Function to create a new trade (either Buy or Sell) for MWK/ZAR
@@ -101,7 +100,7 @@ function createTrade(action, amount) {
     };
 }
 
-// Buy/Sell button interaction
+// Buy/Sell button interaction (adjusted to use the live balance)
 document.getElementById("buy-btn").addEventListener("click", () => {
     const amount = parseFloat(document.getElementById("trade-amount-input").value); // Get the amount input
     if (isNaN(amount) || amount <= 0 || amount > balance) {
@@ -126,10 +125,52 @@ document.getElementById("sell-btn").addEventListener("click", () => {
     updateCloseArea(); // Update the area with close trade options
 });
 
+// Function to fetch balance using PaySheet number and email address
+function fetchBalance(accountNumber, emailAddress) {
+    const apiUrl = `https://localhost:44323/Help/Api/GET-api/epaywallet/account/request/get/source/accountbalance/${accountNumber}/${emailAddress}`;
+    
+    fetch(apiUrl)  // Use dynamic values from the arguments
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();  // Parse JSON response
+        })
+        .then(data => {
+            // Check if the balance is in the response
+            if (data.balance !== undefined) {
+                balance = data.balance;  // Update balance with the fetched value
+                updateBalanceDisplay();  // Update the balance on the UI
+            } else {
+                alert('Error: Unable to fetch balance. Please check your account details or try again later.');
+            }
+        })
+        .catch(error => {
+            alert('Sorry, there was an error fetching your balance. Please try again later.');
+            console.error('Error fetching balance:', error); // For debugging purposes
+        });
+}
+
+// Function to update the displayed balance in the forex trading interface
+function updateBalanceDisplay() {
+    const balanceElement = document.getElementById("balance");  // Ensure you have a balance element in the UI
+    balanceElement.innerText = `Current Balance: K${balance.toFixed(2)}`;  // Display balance in the format KXXXX
+}
+
+// Example to fetch the balance when the page loads or user logs in
+const accountNumber = sessionStorage.getItem('paySheetAccount');  // Get PaySheet account number from session storage
+const emailAddress = sessionStorage.getItem('userEmail');  // Get user email address from session storage
+
+if (accountNumber && emailAddress) {
+    fetchBalance(accountNumber, emailAddress);  // Fetch the balance using stored credentials
+} else {
+    alert('Account information is missing.');
+}
+
 // Update the trade history table on the main page
 function updateTradeHistory() {
     const tbody = document.querySelector("#trade-history tbody");
-    tbody.innerHTML = ""; // Clear previous rows
+    tbody.innerHTML = "";  // Clear previous rows
 
     activeTrades.forEach(trade => {
         const row = document.createElement("tr");
@@ -173,95 +214,14 @@ function closeTrade(tradeID) {
         trade.profitLoss = profitLoss;
 
         // Update the balance
-        balance += profitLoss; // Add profit or subtract loss
-        balanceElement.innerText = balance.toFixed(2); // Update balance display
+        balance += profitLoss;  // Add profit or subtract loss
+        updateBalanceDisplay();  // Update the balance display
 
         // Alert with profit/loss message
-        alert(`Trade Closed! ${profitLoss > 0 ? `Profit of $${profitLoss.toFixed(2)}` : `Loss of $${Math.abs(profitLoss).toFixed(2)}`}`);
+        alert(`Trade Closed! ${profitLoss > 0 ? `Profit of K${profitLoss.toFixed(2)}` : `Loss of K${Math.abs(profitLoss).toFixed(2)}`}`);
 
         // Update the trade history table and close area
         updateTradeHistory();
         updateCloseArea();
     }
 }
-
-// Monitor trades popup updates
-document.addEventListener("DOMContentLoaded", function () {
-    const tradeMonitorBtn = document.getElementById("trade-monitor-btn");
-    const tradePopup = document.getElementById("trade-popup");
-    const closeBtn = document.querySelector(".close-btn");
-
-    const popupBalanceEl = document.getElementById("popup-balance");
-    const popupOpenTradesEl = document.getElementById("popup-open-trades");
-    const popupProfitEl = document.getElementById("popup-profit");
-    const popupLossEl = document.getElementById("popup-loss");
-    const tradeListEl = document.getElementById("trade-list");
-
-    let totalProfit = 0;
-    let totalLoss = 0;
-
-    // Open the trade monitor popup
-    tradeMonitorBtn.addEventListener("click", function () {
-        tradePopup.style.display = "block";
-        updateTradePopup(); // Initial update when the popup is opened
-    });
-
-    // Close the trade monitor popup
-    closeBtn.addEventListener("click", function () {
-        tradePopup.style.display = "none";
-    });
-
-    // Function to update the trade monitor popup
-    function updateTradePopup() {
-        tradeListEl.innerHTML = ""; // Clear previous trades list
-        totalProfit = 0;
-        totalLoss = 0;
-
-        activeTrades.forEach(trade => {
-            if (trade.status === 'Open') {
-                const tradeElement = document.createElement("div");
-                const closeButton = document.createElement("button");
-                closeButton.innerText = `Close Trade #${trade.id}`;
-                closeButton.addEventListener("click", () => closeTradePopupTrade(trade.id));
-
-                let profitLoss = 0;
-                let resultMessage = '';
-
-                // Calculate profit/loss based on the current forex rate for open trades
-                if (trade.action === 'Buy') {
-                    profitLoss = (currentRateMWKtoZAR - trade.openRate) * trade.amount;
-                } else if (trade.action === 'Sell') {
-                    profitLoss = (trade.openRate - currentRateMWKtoZAR) * trade.amount;
-                }
-
-                // Display live profit/loss for open trades
-                if (profitLoss > 0) {
-                    resultMessage = `Profit of $${profitLoss.toFixed(2)}`;
-                    totalProfit += profitLoss;
-                } else {
-                    resultMessage = `Loss of $${Math.abs(profitLoss).toFixed(2)}`;
-                    totalLoss += Math.abs(profitLoss);
-                }
-
-                tradeElement.innerHTML = `Trade #${trade.id}: ${trade.pair} (${trade.action}) - ${resultMessage}`;
-                tradeElement.appendChild(closeButton);
-                tradeListEl.appendChild(tradeElement);
-            }
-        });
-
-        // Update the profit and loss displays in the popup
-        popupProfitEl.textContent = totalProfit.toFixed(2);
-        popupLossEl.textContent = totalLoss.toFixed(2);
-        popupOpenTradesEl.textContent = activeTrades.filter(t => t.status === 'Open').length;
-
-        // Update the balance in the popup
-        popupBalanceEl.textContent = balance.toFixed(2);
-    }
-
-    // Close trade from the popup
-    function closeTradePopupTrade(tradeID) {
-        closeTrade(tradeID); // Close the trade
-        updateTradePopup(); // Recalculate and update the popup data
-    }
-});
-
