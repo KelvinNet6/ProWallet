@@ -1261,37 +1261,45 @@ button:hover {
     z-index: 1000;
 }
 
+/* Popup content styling */
 .popup-content {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     width: 80%;
-    max-width: 800px;
+    max-width: 800px;  /* Maximum width of the popup */
     overflow-y: auto;
+    position: relative;
+    max-height: 90vh;  /* Limit the popup height on smaller screens */
 }
 
+/* Title styling inside the popup */
 .popup-content h2 {
     margin-top: 0;
+    font-size: 1.5rem; /* Larger font for title */
 }
 
+/* Trade history table styling */
 #trade-history-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
+/* Table header and cell styles */
 #trade-history-table th,
 #trade-history-table td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 12px 8px; /* Adjust padding for better spacing */
     text-align: left;
+    font-size: 1rem; /* Default font size */
 }
 
 #trade-history-table th {
     background-color: #f4f4f4;
 }
 
-/* Style for Profit (Blue) and Loss (Red) */
+/* Profit (Blue) and Loss (Red) styling */
 .profit {
     color: blue;
 }
@@ -1307,5 +1315,65 @@ button:hover {
     right: 10px;
     font-size: 24px;
     cursor: pointer;
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 768px) {
+    /* Adjust popup width for smaller screens */
+    .popup-content {
+        width: 90%;
+        max-width: 600px;
+        padding: 15px;
+    }
+
+    /* Table cells adjustments for smaller screens */
+    #trade-history-table th,
+    #trade-history-table td {
+        padding: 10px 5px;  /* Less padding on mobile */
+        font-size: 0.9rem;  /* Slightly smaller font size */
+    }
+
+    /* Adjust table for smaller screens: make it horizontally scrollable */
+    #trade-history-table {
+        overflow-x: auto;
+        display: block; /* Make the table scrollable horizontally */
+    }
+
+    /* Larger font size for header on mobile */
+    .popup-content h2 {
+        font-size: 1.25rem;
+    }
+
+    /* Close button adjustments for mobile */
+    .close-btn {
+        font-size: 20px;
+        top: 5px;
+        right: 5px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    /* Further adjustments for very small screens */
+    .popup-content {
+        width: 95%;
+        max-width: 400px;  /* Keep it narrower on extra small screens */
+    }
+
+    /* Table cells adjustments for very small screens */
+    #trade-history-table th,
+    #trade-history-table td {
+        font-size: 0.8rem;  /* Smaller font on extra small screens */
+        padding: 8px 4px;  /* Less padding */
+    }
+
+    .popup-content h2 {
+        font-size: 1.1rem;  /* Keep header readable */
+    }
+
+    .close-btn {
+        font-size: 18px;
+        top: 3px;
+        right: 3px;
+    }
 }
 
