@@ -53,18 +53,19 @@ async function fetchLiveForexRate() {
         const response = await fetch(url);
         const data = await response.json();
 
-        // Check for API rate-limit error
-        if (data['Note']) {
-            console.error('API rate limit exceeded. Please wait a minute before trying again.');
+        if (data['Information'] && data['Information'].includes('premium')) {
+            console.error('API rate limit exceeded. Switching to premium features.');
+            // Optionally, you can set a timeout to retry the request after waiting for a minute or more
+            setTimeout(fetchLiveForexRate, 60000);  // Retry after 1 minute
             return;
         }
 
         if (data["Time Series FX (5min)"]) {
             const latestData = Object.values(data["Time Series FX (5min)"])[0];
-            currentRateMWKtoZAR = parseFloat(latestData["4. close"]).toFixed(4); 
-            updateRateDisplay(); 
-            updateChartData(); 
-            updateTradePopup(); 
+            currentRateMWKtoZAR = parseFloat(latestData["4. close"]).toFixed(4); // The closing rate (ZAR/MWK)
+            updateRateDisplay();
+            updateChartData();
+            updateTradePopup();
         } else {
             console.error("Error fetching forex data:", data);
         }
