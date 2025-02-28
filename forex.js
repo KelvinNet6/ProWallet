@@ -103,9 +103,12 @@ function createTrade(action, amount) {
         status: 'Open' // Status is initially Open
     };
     activeTrades.push(trade);
+
+    // Save to localStorage
+    localStorage.setItem('activeTrades', JSON.stringify(activeTrades)); // Save trades
     updateTradeHistory(); // Update the main page trade history
     updateCloseArea(); // Update the area with close trade options
-    
+
     // Open the trade monitor popup when a trade is created
     openTradeMonitorPopup(trade);  // Automatically open the trade monitor popup when a trade is created
 }
@@ -141,7 +144,7 @@ function updateTradeMonitorPopup() {
     if (popupBalanceEl && popupOpenTrades && popupProfit && popupLoss && tradeList) {
         // Update balance and open trades count in the popup
         popupBalanceEl.innerText = `MWK ${balance.toFixed(2)}`;
-        popupOpenTrades.innerText = activeTrades.length;
+        popupOpenTrades.innerText = activeTrades.filter(trade => trade.status === 'Open').length;
 
         let totalProfit = 0;
         let totalLoss = 0;
@@ -157,9 +160,15 @@ function updateTradeMonitorPopup() {
                 <p><strong>Amount:</strong> MWK ${trade.amount}</p>
                 <p><strong>Open Rate:</strong> ${trade.openRate}</p>
                 <p><strong>Status:</strong> ${trade.status}</p>
-                <button class="close-trade-btn" data-trade-id="${trade.id}">Close Trade</button>
-                <hr>
             `;
+
+            // Only show the Close button if the trade is Open
+            if (trade.status === "Open") {
+                tradeElement.innerHTML += `
+                    <button class="close-trade-btn" data-trade-id="${trade.id}">Close Trade</button>
+                `;
+            }
+
             tradeList.appendChild(tradeElement);
 
             // Calculate profit/loss based on the current rate
@@ -167,7 +176,7 @@ function updateTradeMonitorPopup() {
             const profitLoss = trade.action === "Buy" 
                 ? (currentRate - trade.openRate) * trade.amount 
                 : (trade.openRate - currentRate) * trade.amount;
-            
+
             if (profitLoss >= 0) totalProfit += profitLoss;
             else totalLoss += Math.abs(profitLoss);
         });
@@ -175,17 +184,18 @@ function updateTradeMonitorPopup() {
         // Update the profit and loss in the popup
         popupProfit.innerText = `MWK ${totalProfit.toFixed(2)}`;
         popupLoss.innerText = `MWK ${totalLoss.toFixed(2)}`;
-        
-        // Add event listeners to close trade buttons
+
+        // Add event listeners to close trade buttons (if any)
         const closeTradeButtons = document.querySelectorAll('.close-trade-btn');
         closeTradeButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 const tradeId = e.target.getAttribute('data-trade-id');
-                closeTrade(tradeId);
+                closeTrade(tradeId);  // Close the trade and update the popup
             });
         });
     }
 }
+
 
 //-----------------function to open popup trade monitor--------------//
 document.getElementById('trade-monitor-btn').addEventListener('click', function() {
@@ -225,11 +235,24 @@ function fetchBalance(accountNumber, emailAddress) {
         });
 }
 
-// Function to update the displayed balance in the forex trading interface
+// Update the balance in the UI and save to localStorage
 function updateBalanceDisplay() {
     const balanceElement = document.getElementById("balance");  // Ensure you have a balance element in the UI
     balanceElement.innerText = `Current Balance: K${balance.toFixed(2)}`;  // Display balance in the format KXXXX
+
+    // Save the updated balance to localStorage
+    localStorage.setItem('balance', balance.toFixed(2));
 }
+
+// Fetch balance from localStorage on page load (if available)
+window.addEventListener('load', () => {
+    const savedBalance = localStorage.getItem('balance');
+    if (savedBalance) {
+        balance = parseFloat(savedBalance);  // Restore balance from localStorage
+        updateBalanceDisplay();  // Update UI with the saved balance
+    }
+});
+
 
 // Example to fetch the balance when the page loads or user logs in
 const accountNumber = sessionStorage.getItem('paySheetAccount');  // Get PaySheet account number from session storage
@@ -248,8 +271,8 @@ function closeTrade(tradeId) {
         // Close the trade by updating its status
         activeTrades[tradeIndex].status = "Closed";
         
-        // Optionally, you can remove the trade from the active trades array
-        // activeTrades.splice(tradeIndex, 1);
+        // Save updated active trades to localStorage
+        localStorage.setItem('activeTrades', JSON.stringify(activeTrades));
 
         // Update the trade history table and trade monitor popup
         updateTradeHistory();  // This will update the trade history table on the main page
@@ -258,12 +281,22 @@ function closeTrade(tradeId) {
         console.log(`Trade ${tradeId} has been closed.`);
     }
 }
+// On page load, load active trades from localStorage
+window.addEventListener('load', () => {
+    const storedTrades = localStorage.getItem('activeTrades');
+    if (storedTrades) {
+        activeTrades = JSON.parse(storedTrades); // Parse the saved trades
+        updateTradeHistory();  // Populate the table with the loaded trades
+    }
+});
+
+// function to update trade history table
 function updateTradeHistory() {
     const tbody = document.querySelector("#trade-history tbody");
     tbody.innerHTML = "";  // Clear previous rows
 
-    // Iterate over all trades (both open and closed)
-    const allTrades = activeTrades; // All trades (both open and closed)
+    // Load active trades from localStorage (if not already loaded)
+    const allTrades = activeTrades; // This should already be set from localStorage or the current session
 
     allTrades.forEach(trade => {
         let currentAmount = trade.amount; // Start with the original amount
@@ -308,4 +341,3 @@ function updateTradeHistory() {
     // Automatically update the trade monitor popup with the latest trade data
     updateTradeMonitorPopup();  // Keep the trade monitor popup up-to-date
 }
-
