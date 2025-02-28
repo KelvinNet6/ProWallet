@@ -258,36 +258,54 @@ function closeTrade(tradeId) {
         console.log(`Trade ${tradeId} has been closed.`);
     }
 }
-// Update the trade history table on the main page
 function updateTradeHistory() {
     const tbody = document.querySelector("#trade-history tbody");
     tbody.innerHTML = "";  // Clear previous rows
 
-    // Filter out closed trades (if you only want to display open trades)
-    const openTrades = activeTrades.filter(trade => trade.status === "Open");
+    // Iterate over all trades (both open and closed)
+    const allTrades = activeTrades; // All trades (both open and closed)
 
-    openTrades.forEach(trade => {
+    allTrades.forEach(trade => {
+        let currentAmount = trade.amount; // Start with the original amount
+
+        // Calculate the dynamic profit or loss based on the current rate for open trades
+        if (trade.status === "Open") {
+            const profitLoss = trade.action === "Buy" 
+                ? (currentRateMWKtoZAR - trade.openRate) * trade.amount // Buy action: if rate goes up, it's profit
+                : (trade.openRate - currentRateMWKtoZAR) * trade.amount; // Sell action: if rate goes down, it's profit
+
+            currentAmount += profitLoss; // Update amount with profit/loss
+        } else if (trade.status === "Closed") {
+            // Calculate profit/loss for closed trade based on current rate at the time of closure
+            const profitLoss = trade.action === "Buy" 
+                ? (currentRateMWKtoZAR - trade.openRate) * trade.amount // Buy action: if rate goes up, it's profit
+                : (trade.openRate - currentRateMWKtoZAR) * trade.amount; // Sell action: if rate goes down, it's profit
+
+            currentAmount += profitLoss; // Update amount with profit/loss
+        }
+
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${trade.id}</td>
             <td>${trade.pair}</td>
             <td>${trade.action}</td>
-            <td>${trade.amount}</td>
+            <td>${trade.status === "Closed" ? `MWK ${(trade.amount + currentAmount).toFixed(2)}` : `MWK ${currentAmount.toFixed(2)}`}</td>
             <td>${trade.status}</td>
             <td>${trade.openRate.toFixed(4)}</td>
-            <td><div id="trade-${trade.id}-close" class="close-trade">X Close</div></td>
+            <td><div id="trade-${trade.id}-close" class="close-trade">${trade.status === "Open" ? 'X Close' : ''}</div></td>
         `;
         tbody.appendChild(row);
 
-        // Add event listener for closing trade
-        const closeTradeElement = document.getElementById(`trade-${trade.id}-close`);
-        closeTradeElement.addEventListener("click", () => {
-            closeTrade(trade.id);
-        });
+        // Add event listener for closing trade, only if the trade is still "Open"
+        if (trade.status === "Open") {
+            const closeTradeElement = document.getElementById(`trade-${trade.id}-close`);
+            closeTradeElement.addEventListener("click", () => {
+                closeTrade(trade.id);
+            });
+        }
     });
 
     // Automatically update the trade monitor popup with the latest trade data
-    if (openTrades.length > 0) {
-        updateTradeMonitorPopup();  // Keep the trade monitor popup up-to-date
-    }
+    updateTradeMonitorPopup();  // Keep the trade monitor popup up-to-date
 }
+
