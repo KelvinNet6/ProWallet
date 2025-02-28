@@ -1180,3 +1180,71 @@ button:hover {
         font-size: 16px;
     }
 }
+
+/* Container for balance and navigation bar */
+.balance-nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between balance and nav */
+    padding: 10px 20px;
+}
+
+/* Balance section */
+.balance h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+/* Navigation links section */
+.nav-links {
+    display: flex;
+    gap: 20px; /* Space between links */
+    border-left: 2px solid #ddd; /* Vertical line separating balance and links */
+    padding-left: 20px;
+}
+
+.nav-links a {
+    color: #333;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 5px 10px;
+}
+
+.nav-links a:hover {
+    background-color: #f4f4f4;
+    border-radius: 4px;
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 768px) {
+    .balance-nav-container {
+        flex-direction: column; /* Stack balance and nav vertically on small screens */
+        align-items: flex-start; /* Align the items to the left */
+    }
+
+    .nav-links {
+        display: block; /* Stack the links vertically */
+        border-left: none; /* Remove the vertical line */
+        margin-top: 10px; /* Add some space between balance and links */
+        padding-left: 0;
+    }
+
+    .nav-links a {
+        display: block; /* Make each link take full width */
+        padding: 8px 0;
+        text-align: left; /* Align text to the left */
+    }
+}
+
+/* Additional Styling for Mobile */
+@media screen and (max-width: 480px) {
+    .balance h2 {
+        font-size: 1.2rem; /* Make the font size smaller on very small screens */
+    }
+
+    .nav-links a {
+        font-size: 0.9rem; /* Slightly smaller font for links */
+    }
+}
+
