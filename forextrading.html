@@ -37,7 +37,7 @@
     
     <!-- New Navigation Section -->
     <nav class="nav-links">
-        <a href="#trade-history">Trade History</a>
+        <a href="#" id="trade-history-link">Trade History</a>
         <a href="#alerts">Trade Alerts</a>
         <a href="#portfolio">My Portfolio</a>
         <a href="#margin-trading">Margin Trading</a>
@@ -113,6 +113,29 @@
             <br>
         </div>
     </div>
+    
+    <!-- Trade History Popup -->
+<div id="trade-history-popup" class="trade-history-popup">
+    <div class="popup-content">
+        <span class="close-btn" id="close-popup">&times;</span>
+        <h2>Trade History</h2>
+        <table id="trade-history-table">
+            <thead>
+                <tr>
+                    <th>Trade ID</th>
+                    <th>Currency Pair</th>
+                    <th>Action</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Trade history entries will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
     <script src="forex.js"></script>
 </body>
