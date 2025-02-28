@@ -339,3 +339,77 @@ function updateTradeHistory() {
     // Automatically update the trade monitor popup with the latest trade data
     updateTradeMonitorPopup(); 
 }
+//=====================================
+// Example trade history data (this could come from a database or API)
+const trades = [
+    { id: 1, currencyPair: "MWK/ZAR", action: "Buy", amount: 100, status: "Completed" },
+    { id: 2, currencyPair: "MWK/USD", action: "Sell", amount: -50, status: "Completed" },
+    { id: 3, currencyPair: "MWK/ZAR", action: "Buy", amount: 200, status: "Completed" },
+    { id: 4, currencyPair: "MWK/USD", action: "Sell", amount: -30, status: "Completed" }
+];
+
+// Function to populate the trade history table
+function populateTradeHistory() {
+    const tableBody = document.querySelector("#trade-history-table tbody");
+    tableBody.innerHTML = ""; // Clear previous data
+
+    trades.forEach(trade => {
+        const row = document.createElement("tr");
+
+        // Create the table cells
+        const idCell = document.createElement("td");
+        idCell.textContent = trade.id;
+
+        const currencyPairCell = document.createElement("td");
+        currencyPairCell.textContent = trade.currencyPair;
+
+        const actionCell = document.createElement("td");
+        actionCell.textContent = trade.action;
+
+        const amountCell = document.createElement("td");
+        amountCell.textContent = Math.abs(trade.amount); // Display absolute value of amount
+
+        // Apply color based on profit or loss
+        if (trade.amount > 0) {
+            amountCell.classList.add("profit"); // Blue for profit
+        } else if (trade.amount < 0) {
+            amountCell.classList.add("loss"); // Red for loss
+        }
+
+        const statusCell = document.createElement("td");
+        statusCell.textContent = trade.status;
+
+        // Append cells to the row
+        row.appendChild(idCell);
+        row.appendChild(currencyPairCell);
+        row.appendChild(actionCell);
+        row.appendChild(amountCell);
+        row.appendChild(statusCell);
+
+        // Append the row to the table body
+        tableBody.appendChild(row);
+    });
+}
+
+// Trigger the popup and populate trade history
+const tradeHistoryLink = document.getElementById("trade-history-link");
+const tradeHistoryPopup = document.getElementById("trade-history-popup");
+const closePopup = document.getElementById("close-popup");
+
+tradeHistoryLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    tradeHistoryPopup.style.display = "flex";
+    populateTradeHistory(); // Populate the trade history when opening the popup
+});
+
+closePopup.addEventListener("click", function () {
+    tradeHistoryPopup.style.display = "none";
+});
+
+// Close the popup if the user clicks outside of it
+window.addEventListener("click", function (event) {
+    if (event.target === tradeHistoryPopup) {
+        tradeHistoryPopup.style.display = "none";
+    }
+});
+
