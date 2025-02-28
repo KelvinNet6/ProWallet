@@ -342,10 +342,10 @@ function updateTradeHistory() {
 //=====================================
 // Example trade history data (this could come from a database or API)
 const trades = [
-    { id: 1, currencyPair: "MWK/ZAR", action: "Buy", amount: 100, status: "Completed" },
-    { id: 2, currencyPair: "MWK/USD", action: "Sell", amount: -50, status: "Completed" },
-    { id: 3, currencyPair: "MWK/ZAR", action: "Buy", amount: 200, status: "Completed" },
-    { id: 4, currencyPair: "MWK/USD", action: "Sell", amount: -30, status: "Completed" }
+    { id: 1, currencyPair: "MWK/ZAR", action: "Buy", amount: 100, status: "Profit" },
+    { id: 2, currencyPair: "MWK/USD", action: "Sell", amount: -50, status: "Loss" },
+    { id: 3, currencyPair: "MWK/ZAR", action: "Buy", amount: 200, status: "Profit" },
+    { id: 4, currencyPair: "MWK/USD", action: "Sell", amount: -30, status: "Loss" }
 ];
 
 // Function to populate the trade history table
