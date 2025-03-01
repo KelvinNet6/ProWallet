@@ -339,21 +339,16 @@ function updateTradeHistory() {
     // Automatically update the trade monitor popup with the latest trade data
     updateTradeMonitorPopup(); 
 }
-//=====================================
-// Example trade history data (this could come from a database or API)
-const trades = [
-    { id: 1, currencyPair: "MWK/ZAR", action: "Buy", amount: 100, status: "Profit" },
-    { id: 2, currencyPair: "MWK/USD", action: "Sell", amount: -50, status: "Loss" },
-    { id: 3, currencyPair: "MWK/ZAR", action: "Buy", amount: 200, status: "Profit" },
-    { id: 4, currencyPair: "MWK/USD", action: "Sell", amount: -30, status: "Loss" }
-];
 
-// Function to populate the trade history table
+// Function to populate the trade history table with the active trades data
 function populateTradeHistory() {
     const tableBody = document.querySelector("#trade-history-table tbody");
     tableBody.innerHTML = ""; // Clear previous data
 
-    trades.forEach(trade => {
+    // Use the activeTrades array (not the static trades array)
+    const allTrades = activeTrades; 
+
+    allTrades.forEach(trade => {
         const row = document.createElement("tr");
 
         // Create the table cells
@@ -361,7 +356,7 @@ function populateTradeHistory() {
         idCell.textContent = trade.id;
 
         const currencyPairCell = document.createElement("td");
-        currencyPairCell.textContent = trade.currencyPair;
+        currencyPairCell.textContent = trade.pair;
 
         const actionCell = document.createElement("td");
         actionCell.textContent = trade.action;
@@ -391,7 +386,7 @@ function populateTradeHistory() {
     });
 }
 
-// Trigger the popup and populate trade history
+// Trigger the popup and populate trade history with the updated trades data
 const tradeHistoryLink = document.getElementById("trade-history-link");
 const tradeHistoryPopup = document.getElementById("trade-history-popup");
 const closePopup = document.getElementById("close-popup");
@@ -399,7 +394,7 @@ const closePopup = document.getElementById("close-popup");
 tradeHistoryLink.addEventListener("click", function (event) {
     event.preventDefault();
     tradeHistoryPopup.style.display = "flex";
-    populateTradeHistory(); // Populate the trade history when opening the popup
+    populateTradeHistory(); // Populate the trade history when opening the popup with live data
 });
 
 closePopup.addEventListener("click", function () {
@@ -412,4 +407,13 @@ window.addEventListener("click", function (event) {
         tradeHistoryPopup.style.display = "none";
     }
 });
+
+window.addEventListener('load', () => {
+    const storedTrades = localStorage.getItem('activeTrades');
+    if (storedTrades) {
+        activeTrades = JSON.parse(storedTrades);  // Load the stored trades
+        populateTradeHistory();  // Ensure the history is up-to-date
+    }
+});
+
 
