@@ -1266,10 +1266,10 @@ button:hover {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    width: 100%;  /* Ensure the content takes up the full width of the popup */
-    max-width: 900px;  /* Max width of the content */
-    overflow-y: auto;  /* Enables scrolling when content overflows */
-    max-height: 80vh;  /* Adjust max-height so it doesn't cover the whole screen */
+    width: 100%; 
+    max-width: 900px;  
+    overflow-y: auto; 
+    max-height: 80vh;  
     position: relative;
 }
 
@@ -1389,24 +1389,6 @@ button:hover {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-}
-
-/* Common Popup Content Styling */
-.popup-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 900px;
-    max-height: 80vh;
-    overflow-y: auto;
-    position: relative;
-}
-
-/* Title Styling */
-.popup-content h2 {
-    margin-top: 0;
-    font-size: 1.75rem;
 }
 
 /* Close Button Styling */
