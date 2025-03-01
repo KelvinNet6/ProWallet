@@ -1393,7 +1393,6 @@ button:hover {
 
 /* Popup Content Styling */
 .popup-content {
-    background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     width: 100%;
@@ -1418,17 +1417,17 @@ button:hover {
     cursor: pointer;
 }
 
-/* Specific Popup Custom Styles (optional) */
-.trade-alerts-popup .popup-content {
-    background-color: #f0f8ff; /* Light blue */
+/* Specific Popup Custom Styles */
+.trade-alerts-popup-content {
+    background-color: #f0f8ff; /* Light blue for Trade Alerts */
 }
 
-.portfolio-popup .popup-content {
-    background-color: #e0ffe0; /* Light green */
+.portfolio-popup-content {
+    background-color: #e0ffe0; /* Light green for Portfolio */
 }
 
-.margin-trading-popup .popup-content {
-    background-color: #fffacd; /* Light yellow */
+.margin-trading-popup-content {
+    background-color: #fffacd; /* Light yellow for Margin Trading */
 }
 
 /* Mobile Responsiveness */
@@ -1441,17 +1440,6 @@ button:hover {
 
     .popup-content h2 {
         font-size: 1.5rem;
-    }
-
-    #trade-history-table th,
-    #trade-history-table td {
-        padding: 10px 5px;
-        font-size: 0.9rem;
-    }
-
-    #trade-history-table {
-        overflow-x: auto;
-        display: block;
     }
 
     .close-btn {
@@ -1475,12 +1463,6 @@ button:hover {
         font-size: 18px;
         top: 3px;
         right: 3px;
-    }
-
-    #trade-history-table th,
-    #trade-history-table td {
-        font-size: 0.8rem;
-        padding: 8px 4px;
     }
 }
 
