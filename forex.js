@@ -416,7 +416,7 @@ window.addEventListener('load', () => {
     }
 });
 
-
+// various popups
 document.addEventListener("DOMContentLoaded", function() {
     // Elements for Trade Alerts Popup
     const tradeAlertsLink = document.getElementById("trade-alerts-link");
@@ -433,45 +433,47 @@ document.addEventListener("DOMContentLoaded", function() {
     const marginTradingPopup = document.getElementById("margin-trading-popup");
     const closeMarginTradingPopup = document.getElementById("close-margin-trading-popup");
 
-   // Open the Trade History Popup
-document.getElementById("trade-history-link").addEventListener("click", function (event) {
-    event.preventDefault();
-    document.getElementById("trade-history-popup").style.display = "flex";
-});
+    // Open Trade Alerts Popup
+    tradeAlertsLink.addEventListener("click", function (event) {
+        event.preventDefault();
+        tradeAlertsPopup.style.display = "flex";
+    });
 
-// Open the Portfolio Popup
-document.getElementById("portfolio-link").addEventListener("click", function (event) {
-    event.preventDefault();
-    document.getElementById("portfolio-popup").style.display = "flex";
-});
+    // Open Portfolio Popup
+    portfolioLink.addEventListener("click", function (event) {
+        event.preventDefault();
+        portfolioPopup.style.display = "flex";
+    });
 
-// Open the Margin Trading Popup
-document.getElementById("margin-trading-link").addEventListener("click", function (event) {
-    event.preventDefault();
-    document.getElementById("margin-trading-popup").style.display = "flex";
-});
+    // Open Margin Trading Popup
+    marginTradingLink.addEventListener("click", function (event) {
+        event.preventDefault();
+        marginTradingPopup.style.display = "flex";
+    });
 
-// Close the Trade History Popup
-document.getElementById("close-trade-history-popup").addEventListener("click", function () {
-    document.getElementById("trade-history-popup").style.display = "none";
-});
+    // Close Popups
+    closeAlertsPopup.addEventListener("click", function () {
+        tradeAlertsPopup.style.display = "none";
+    });
 
-// Close the Portfolio Popup
-document.getElementById("close-portfolio-popup").addEventListener("click", function () {
-    document.getElementById("portfolio-popup").style.display = "none";
-});
+    closePortfolioPopup.addEventListener("click", function () {
+        portfolioPopup.style.display = "none";
+    });
 
-// Close the Margin Trading Popup
-document.getElementById("close-margin-trading-popup").addEventListener("click", function () {
-    document.getElementById("margin-trading-popup").style.display = "none";
-});
+    closeMarginTradingPopup.addEventListener("click", function () {
+        marginTradingPopup.style.display = "none";
+    });
 
-// Close Popups if clicking outside the content area
-window.addEventListener("click", function (event) {
-    if (event.target.classList.contains("popup-container")) {
-        event.target.style.display = "none";
-    }
+    // Close the popup if the user clicks outside of it
+    window.addEventListener("click", function (event) {
+        if (event.target === tradeAlertsPopup) {
+            tradeAlertsPopup.style.display = "none";
+        }
+        if (event.target === portfolioPopup) {
+            portfolioPopup.style.display = "none";
+        }
+        if (event.target === marginTradingPopup) {
+            marginTradingPopup.style.display = "none";
+        }
+    });
 });
-
-});
-
