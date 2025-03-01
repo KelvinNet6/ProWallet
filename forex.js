@@ -416,14 +416,14 @@ window.addEventListener('load', () => {
     }
 });
 
-// various popups
-document.addEventListener("DOMContentLoaded", function() {
+// trigger popup forms
+document.addEventListener("DOMContentLoaded", function () {
     // Elements for Trade Alerts Popup
     const tradeAlertsLink = document.getElementById("trade-alerts-link");
     const tradeAlertsPopup = document.getElementById("trade-alerts-popup");
     const closeAlertsPopup = document.getElementById("close-alerts-popup");
 
-    // Elements for Portfolio Popup
+    // Elements for Portfolio Popup 
     const portfolioLink = document.getElementById("portfolio-link");
     const portfolioPopup = document.getElementById("portfolio-popup");
     const closePortfolioPopup = document.getElementById("close-portfolio-popup");
