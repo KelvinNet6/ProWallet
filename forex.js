@@ -503,3 +503,57 @@ function populatePortfolio() {
         <p>Click to manage your positions, view performance, or make changes.</p>
     `;
 }
+// Elements for the Margin Trading Popup
+const marginTradingLink = document.getElementById("margin-trading-link");
+const marginTradingPopup = document.getElementById("margin-trading-popup");
+const closeMarginTradingPopup = document.getElementById("close-margin-trading-popup");
+
+// Show the Margin Trading Popup when the link is clicked
+marginTradingLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    marginTradingPopup.style.display = "flex"; // Show the margin trading popup
+    populateMarginTrading();  // Populate the popup with margin trading data
+});
+
+// Close the Margin Trading Popup when the close button is clicked
+closeMarginTradingPopup.addEventListener("click", function () {
+    marginTradingPopup.style.display = "none"; // Hide the margin trading popup
+});
+
+// Close the popup if the user clicks outside of the popup
+window.addEventListener("click", function (event) {
+    if (event.target === marginTradingPopup) {
+        marginTradingPopup.style.display = "none"; // Hide the popup if clicked outside
+    }
+});
+
+// Function to populate Margin Trading data dynamically
+function populateMarginTrading() {
+    const marginTradingContent = document.querySelector('.margin-trading-popup .popup-content');
+    marginTradingContent.innerHTML = `
+        <h2>Margin Trading Overview</h2>
+        <p>Here is your margin trading portfolio for MWK/ZAR:</p>
+
+        <h3>Current Margin Positions:</h3>
+        <ul>
+            <li><strong>Position:</strong> Long 10,000 MWK at 0.21 ZAR</li>
+            <li><strong>Leverage:</strong> 5x</li>
+            <li><strong>Margin Used:</strong> 2,000 ZAR</li>
+            <li><strong>Profit/Loss:</strong> +300 ZAR</li>
+        </ul>
+
+        <h3>Outstanding Margin:</h3>
+        <ul>
+            <li><strong>Required Margin:</strong> 1,000 ZAR</li>
+            <li><strong>Liquidation Price:</strong> 0.15 ZAR</li>
+        </ul>
+
+        <h3>Recent Margin Trades:</h3>
+        <ul>
+            <li><strong>Open:</strong> Long 5,000 MWK @ 0.18 ZAR</li>
+            <li><strong>Close:</strong> Long 5,000 MWK @ 0.19 ZAR</li>
+        </ul>
+
+        <p>Ensure to monitor your margin levels carefully to avoid liquidation.</p>
+    `;
+}
