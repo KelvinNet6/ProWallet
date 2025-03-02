@@ -451,3 +451,55 @@ function populateTradeAlerts() {
         <p>Trade alert 3: Buy LTC at $150</p>
     `;
 }
+// Elements for the Portfolio Popup
+const portfolioLink = document.getElementById("portfolio-link");
+const portfolioPopup = document.getElementById("portfolio-popup");
+const closePortfolioPopup = document.getElementById("close-portfolio-popup");
+
+// Show the Portfolio Popup when the link is clicked
+portfolioLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    portfolioPopup.style.display = "flex"; // Show the portfolio popup
+    populatePortfolio();  // Populate the popup with portfolio data
+});
+
+// Close the Portfolio Popup when the close button is clicked
+closePortfolioPopup.addEventListener("click", function () {
+    portfolioPopup.style.display = "none"; // Hide the portfolio popup
+});
+
+// Close the popup if the user clicks outside of the popup
+window.addEventListener("click", function (event) {
+    if (event.target === portfolioPopup) {
+        portfolioPopup.style.display = "none"; // Hide the popup if clicked outside
+    }
+});
+
+// Function to populate the MWK/ZAR Portfolio data dynamically
+function populatePortfolio() {
+    const portfolioContent = document.querySelector('.portfolio-popup .popup-content');
+    portfolioContent.innerHTML = `
+        <h2>My Portfolio</h2>
+        <p>Here is your portfolio for trading MWK/ZAR:</p>
+
+        <h3>Current Balances:</h3>
+        <ul>
+            <li><strong>MWK Balance:</strong> 150,000 MWK</li>
+            <li><strong>ZAR Balance:</strong> 12,000 ZAR</li>
+        </ul>
+
+        <h3>Open Positions:</h3>
+        <ul>
+            <li><strong>MWK/ZAR Position:</strong> 5,000 MWK @ 0.21 ZAR</li>
+            <li><strong>ZAR/MWK Position:</strong> 2,000 ZAR @ 45 MWK</li>
+        </ul>
+
+        <h3>Recent Trades:</h3>
+        <ul>
+            <li><strong>Buy:</strong> 10,000 MWK @ 0.20 ZAR</li>
+            <li><strong>Sell:</strong> 5,000 ZAR @ 0.21 MWK</li>
+        </ul>
+
+        <p>Click to manage your positions, view performance, or make changes.</p>
+    `;
+}
