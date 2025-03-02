@@ -448,7 +448,7 @@ function populateTradeAlerts() {
     alertContent.innerHTML = `
         <p>Trade alert 1: Buy MWK at 0.21 ZAR</p><br>
         <p>Trade alert 2: Sell MWK at 0.19 ZAR</p><br>
-        <p>Trade alert 3: Buy ZAR at 0.23 MWK</p>>br>
+        <p>Trade alert 3: Buy ZAR at 0.23 MWK</p><br>
     `;
 }
 // Elements for the Portfolio Popup
