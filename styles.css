@@ -1377,7 +1377,7 @@ button:hover {
     }
 }
 
-/* General Popup Styling */
+/* General Popup Styling (kept for other popups) */
 .popup-container {
     display: none; /* Hidden by default */
     position: fixed;
@@ -1389,32 +1389,6 @@ button:hover {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-}
-
-/* Popup Content Styling */
-.popup-content {
-    padding: 20px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 900px;
-    overflow-y: auto;
-    max-height: 80vh;
-    position: relative;
-}
-
-/* Title Styling inside the popup */
-.popup-content h2 {
-    margin-top: 0;
-    font-size: 1.75rem; /* Larger font for title */
-}
-
-/* Close Button Styling */
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    cursor: pointer;
 }
 
 /* Specific Popup Custom Styles */
@@ -1465,4 +1439,3 @@ button:hover {
         right: 3px;
     }
 }
-
