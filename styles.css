@@ -1377,68 +1377,6 @@ button:hover {
     }
 }
 
-/* General Popup Styling (kept for other popups) */
-.popup-container {
-    display: none; /* Hidden by default */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-/* Specific Popup Custom Styles */
-.trade-alerts-popup-content {
-    background-color: #f0f8ff; /* Light blue for Trade Alerts */
-}
-
-.portfolio-popup-content {
-    background-color: #e0ffe0; /* Light green for Portfolio */
-}
-
-.margin-trading-popup-content {
-    background-color: #fffacd; /* Light yellow for Margin Trading */
-}
-
-/* Mobile Responsiveness */
-@media screen and (max-width: 768px) {
-    .popup-content {
-        width: 90%;
-        max-width: 700px;
-        padding: 15px;
-    }
-
-    .popup-content h2 {
-        font-size: 1.5rem;
-    }
-
-    .close-btn {
-        font-size: 20px;
-        top: 5px;
-        right: 5px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .popup-content {
-        width: 95%;
-        max-width: 400px;
-    }
-
-    .popup-content h2 {
-        font-size: 1.2rem;
-    }
-
-    .close-btn {
-        font-size: 18px;
-        top: 3px;
-        right: 3px;
-    }
-}
 /* Specific Popup Custom Styles */
 .trade-alerts-popup {
     display: none; /* Hidden by default */
@@ -1454,7 +1392,14 @@ button:hover {
 }
 
 .trade-alerts-popup-content {
+ background-color: #fff;
     padding: 20px;
+    border-radius: 8px;
+    width: 100%; 
+    max-width: 900px;  
+    overflow-y: auto; 
+    max-height: 80vh;  
+    position: relative;
 }
 
 /* Close Button Styling */
