@@ -415,3 +415,39 @@ window.addEventListener('load', () => {
         populateTradeHistory();  // Ensure the history is up-to-date
     }
 });
+// trade alert popup
+// Elements for the Trade Alerts Popup
+const tradeAlertsLink = document.getElementById("trade-alerts-link");
+const tradeAlertsPopup = document.getElementById("trade-alerts-popup");
+const closeAlertsPopup = document.getElementById("close-alerts-popup");
+
+// Show the Trade Alerts Popup when the link is clicked
+tradeAlertsLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    tradeAlertsPopup.style.display = "flex"; // Show the popup
+    // Optional: You can populate the popup with dynamic trade alerts data here
+    populateTradeAlerts();  // Function to load dynamic content into the popup
+});
+
+// Close the Trade Alerts Popup when the close button is clicked
+closeAlertsPopup.addEventListener("click", function () {
+    tradeAlertsPopup.style.display = "none"; // Hide the popup
+});
+
+// Close the popup if the user clicks outside of the popup
+window.addEventListener("click", function (event) {
+    if (event.target === tradeAlertsPopup) {
+        tradeAlertsPopup.style.display = "none"; // Hide the popup if clicked outside
+    }
+});
+
+// Optional: Function to populate trade alerts (You can replace it with dynamic data as needed)
+function populateTradeAlerts() {
+    // Example: You can dynamically populate this popup with trade alerts from an API or local storage
+    const alertContent = document.querySelector('.trade-alerts-popup-content');
+    alertContent.innerHTML = `
+        <p>Trade alert 1: Buy BTC at $30,000</p>
+        <p>Trade alert 2: Sell ETH at $2,000</p>
+        <p>Trade alert 3: Buy LTC at $150</p>
+    `;
+}
