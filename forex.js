@@ -446,9 +446,9 @@ function populateTradeAlerts() {
     // Example: You can dynamically populate this popup with trade alerts from an API or local storage
     const alertContent = document.querySelector('.trade-alerts-popup-content');
     alertContent.innerHTML = `
-        <p>Trade alert 1: Buy BTC at $30,000</p>
-        <p>Trade alert 2: Sell ETH at $2,000</p>
-        <p>Trade alert 3: Buy LTC at $150</p>
+        <p>Trade alert 1: Buy MWK at 0.21 ZAR</p><br>
+        <p>Trade alert 2: Sell MWK at 0.19 ZAR</p><br>
+        <p>Trade alert 3: Buy ZAR at 0.23 MWK</p>>br>
     `;
 }
 // Elements for the Portfolio Popup
@@ -480,26 +480,30 @@ function populatePortfolio() {
     const portfolioContent = document.querySelector('.portfolio-popup .popup-content');
     portfolioContent.innerHTML = `
         <h2>My Portfolio</h2>
+        <br>
         <p>Here is your portfolio for trading MWK/ZAR:</p>
-
+<br>
         <h3>Current Balances:</h3>
+        <br>
         <ul>
-            <li><strong>MWK Balance:</strong> 150,000 MWK</li>
+            <li><strong>MWK Balance:</strong> 150,000 MWK</li><br>
             <li><strong>ZAR Balance:</strong> 12,000 ZAR</li>
         </ul>
-
+<br>
         <h3>Open Positions:</h3>
+        <br>
         <ul>
-            <li><strong>MWK/ZAR Position:</strong> 5,000 MWK @ 0.21 ZAR</li>
+            <li><strong>MWK/ZAR Position:</strong> 5,000 MWK @ 0.21 ZAR</li><br>
             <li><strong>ZAR/MWK Position:</strong> 2,000 ZAR @ 45 MWK</li>
         </ul>
-
+<br>
         <h3>Recent Trades:</h3>
+        <br>
         <ul>
-            <li><strong>Buy:</strong> 10,000 MWK @ 0.20 ZAR</li>
+            <li><strong>Buy:</strong> 10,000 MWK @ 0.20 ZAR</li><br>
             <li><strong>Sell:</strong> 5,000 ZAR @ 0.21 MWK</li>
         </ul>
-
+<br>
         <p>Click to manage your positions, view performance, or make changes.</p>
     `;
 }
@@ -532,28 +536,30 @@ function populateMarginTrading() {
     const marginTradingContent = document.querySelector('.margin-trading-popup .popup-content');
     marginTradingContent.innerHTML = `
         <h2>Margin Trading Overview</h2>
+        <br>
         <p>Here is your margin trading portfolio for MWK/ZAR:</p>
-
+<br>
         <h3>Current Margin Positions:</h3>
+        <br>
         <ul>
-            <li><strong>Position:</strong> Long 10,000 MWK at 0.21 ZAR</li>
-            <li><strong>Leverage:</strong> 5x</li>
-            <li><strong>Margin Used:</strong> 2,000 ZAR</li>
-            <li><strong>Profit/Loss:</strong> +300 ZAR</li>
+            <li><strong>Position:</strong> Long 10,000 MWK at 0.21 ZAR</li><br>
+            <li><strong>Leverage:</strong> 5x</li><br>
+            <li><strong>Margin Used:</strong> 2,000 ZAR</li><br>
+            <li><strong>Profit/Loss:</strong> +300 ZAR</li><br>
         </ul>
-
-        <h3>Outstanding Margin:</h3>
+<br>
+        <h3>Outstanding Margin:</h3><br>
         <ul>
-            <li><strong>Required Margin:</strong> 1,000 ZAR</li>
+            <li><strong>Required Margin:</strong> 1,000 ZAR</li><br>
             <li><strong>Liquidation Price:</strong> 0.15 ZAR</li>
         </ul>
-
-        <h3>Recent Margin Trades:</h3>
+<br>
+        <h3>Recent Margin Trades:</h3><br>
         <ul>
-            <li><strong>Open:</strong> Long 5,000 MWK @ 0.18 ZAR</li>
+            <li><strong>Open:</strong> Long 5,000 MWK @ 0.18 ZAR</li><br>
             <li><strong>Close:</strong> Long 5,000 MWK @ 0.19 ZAR</li>
         </ul>
-
+<br>
         <p>Ensure to monitor your margin levels carefully to avoid liquidation.</p>
     `;
 }
