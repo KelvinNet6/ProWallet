@@ -1439,3 +1439,66 @@ button:hover {
         right: 3px;
     }
 }
+/* Specific Popup Custom Styles */
+.trade-alerts-popup {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f0f8ff; /* Light blue for Trade Alerts */
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px; /* Set width for Trade Alerts Popup */
+    z-index: 1001;
+}
+
+.trade-alerts-popup-content {
+    padding: 20px;
+}
+
+/* Close Button Styling */
+.close-btn {
+    font-size: 20px;
+    color: #000;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+    .trade-alerts-popup {
+        width: 90%;
+        max-width: 700px;
+        padding: 15px;
+    }
+
+    .trade-alerts-popup h2 {
+        font-size: 1.5rem;
+    }
+
+    .close-btn {
+        font-size: 20px;
+        top: 5px;
+        right: 5px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .trade-alerts-popup {
+        width: 95%;
+        max-width: 400px;
+    }
+
+    .trade-alerts-popup h2 {
+        font-size: 1.2rem;
+    }
+
+    .close-btn {
+        font-size: 18px;
+        top: 3px;
+        right: 3px;
+    }
+}
