@@ -1379,16 +1379,16 @@ button:hover {
 
 /* Specific Popup Custom Styles */
 .trade-alerts-popup {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #f0f8ff; /* Light blue for Trade Alerts */
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px; /* Set width for Trade Alerts Popup */
-    z-index: 1001;
+    top: 0;  /* Start from the top of the screen */
+    left: 0;  /* Start from the left of the screen */
+    width: 100%;  /* Cover the full width of the screen */
+    height: 100%;  /* Cover the full height of the screen */
+    background-color: rgba(0, 0, 0, 0.5);  /* Semi-transparent black */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .trade-alerts-popup-content {
