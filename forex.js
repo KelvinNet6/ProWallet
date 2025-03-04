@@ -569,3 +569,20 @@ function populateMarginTrading() {
         <p>Ensure to monitor your margin levels carefully to avoid liquidation.</p>
     `;
 }
+
+function updateChartData() {
+    forexChart.data.labels.push(Date.now()); 
+    forexChart.data.datasets[0].data.push(currentRateMWKtoZAR); 
+    forexChart.update(); 
+
+    // Update balance in chart (converted to ZAR)
+    const balanceInZAR = (balance * currentRateMWKtoZAR).toFixed(2);
+    // Here you can add the balanceInZAR value to your chart data if necessary
+    forexChart.data.datasets.push({
+        label: 'Balance in ZAR',
+        data: [balanceInZAR], // Push converted balance to chart data
+        borderColor: 'rgba(255, 99, 132, 1)', 
+        fill: false
+    });
+    forexChart.update();  // Update the chart
+}
