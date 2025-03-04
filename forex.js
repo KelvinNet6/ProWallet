@@ -237,9 +237,15 @@ function fetchBalance(accountNumber, emailAddress) {
 
 // Update the balance in the UI and save to localStorage
 function updateBalanceDisplay() {
-    const balanceElement = document.getElementById("balance");  
-    balanceElement.innerText = `Current Balance: K${balance.toFixed(2)}`;  
+    const balanceElement = document.getElementById("balance");
 
+    // Convert the balance from MWK to ZAR using the current exchange rate
+    const balanceInZAR = (balance * currentRateMWKtoZAR).toFixed(2); 
+
+    // Display the balance in ZAR
+    balanceElement.innerText = `Current Balance: ZAR ${balanceInZAR}`;
+
+    // Save the balance in MWK to localStorage (if needed)
     localStorage.setItem('balance', balance.toFixed(2));
 }
 
