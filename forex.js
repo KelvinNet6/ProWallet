@@ -78,26 +78,37 @@ function convertZARtoMWK(zarAmount) {
 
 // Function to fetch live forex rates for GBP/ZAR, USD/ZAR, and AUD/ZAR
 async function fetchLiveForexRate() {
-    const url = `${baseUrl}?function=FX_INTRADAY&from_symbol=GBP&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
+    // Fetch rates for GBP/ZAR, USD/ZAR, and AUD/ZAR
+    const urlGBP = `${baseUrl}?function=FX_INTRADAY&from_symbol=GBP&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
+    const urlUSD = `${baseUrl}?function=FX_INTRADAY&from_symbol=USD&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
+    const urlAUD = `${baseUrl}?function=FX_INTRADAY&from_symbol=AUD&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
+
     try {
-        const response = await fetch(url);
-        const data = await response.json();
+        const [responseGBP, responseUSD, responseAUD] = await Promise.all([
+            fetch(urlGBP),
+            fetch(urlUSD),
+            fetch(urlAUD)
+        ]);
 
-        if (data['Information'] && data['Information'].includes('premium')) {
-            console.error('API rate limit exceeded. Switching to premium features.');
-            setTimeout(fetchLiveForexRate, 60000); // Retry after 1 minute
-            return;
+        const dataGBP = await responseGBP.json();
+        const dataUSD = await responseUSD.json();
+        const dataAUD = await responseAUD.json();
+
+        if (dataGBP["Time Series FX (5min)"]) {
+            const latestDataGBP = Object.values(dataGBP["Time Series FX (5min)"])[0];
+            currentRates.GBPtoZAR = parseFloat(latestDataGBP["4. close"]).toFixed(4);  // GBP/ZAR rate
+        }
+        if (dataUSD["Time Series FX (5min)"]) {
+            const latestDataUSD = Object.values(dataUSD["Time Series FX (5min)"])[0];
+            currentRates.USDtoZAR = parseFloat(latestDataUSD["4. close"]).toFixed(4);  // USD/ZAR rate
+        }
+        if (dataAUD["Time Series FX (5min)"]) {
+            const latestDataAUD = Object.values(dataAUD["Time Series FX (5min)"])[0];
+            currentRates.AUDtoZAR = parseFloat(latestDataAUD["4. close"]).toFixed(4);  // AUD/ZAR rate
         }
 
-        if (data["Time Series FX (5min)"]) {
-            const latestData = Object.values(data["Time Series FX (5min)"])[0];
-            currentRates.GBPtoZAR = parseFloat(latestData["4. close"]).toFixed(4);  // GBP/ZAR rate
-            updateRateDisplay();
-            updateChartData();
-            updateTradePopup();
-        } else {
-            console.error("Error fetching forex data:", data);
-        }
+        updateRateDisplay();
+        updateChartData();
     } catch (error) {
         console.error("Error fetching live forex rate:", error);
     }
@@ -116,7 +127,6 @@ function updateChartData() {
     forexChart.data.datasets[1].data.push(currentRates.USDtoZAR);
     forexChart.data.datasets[2].data.push(currentRates.AUDtoZAR);
     forexChart.update();
-    updateTradeMonitorPopup();
 }
 
 // Function to create a new trade (either Buy or Sell) for GBP/ZAR, USD/ZAR, or AUD/ZAR
@@ -126,6 +136,12 @@ function createTrade(action, amount, currencyPair = 'GBP/ZAR') {
 
     // Convert ZAR amount to MWK for tracking balance in MWK
     const tradeAmountInMWK = convertZARtoMWK(tradeAmountInZAR);
+
+    // Ensure there is enough balance
+    if (action === 'Buy' && tradeAmountInMWK > balanceMWK) {
+        alert("Insufficient balance for this trade.");
+        return;
+    }
 
     const trade = {
         id: tradeID++, 
@@ -179,6 +195,10 @@ document.getElementById("sell-btn").addEventListener("click", () => {
     }
     createTrade('Sell', amount);
 });
+
+// Initial call to fetch forex rates
+fetchLiveForexRate();
+setInterval(fetchLiveForexRate, 30000);  // Fetch new forex rates every 30 seconds
 
 // Function to update the trade monitor popup with the active trades
 function updateTradeMonitorPopup() {
