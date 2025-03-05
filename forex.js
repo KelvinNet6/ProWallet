@@ -13,9 +13,9 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 // Initialize forex rates for GBP/ZAR, USD/ZAR, and AUD/ZAR
 // Initialize forex rates for GBP/ZAR, USD/ZAR, and AUD/ZAR
 let currentRates = {
-    GBPtoZAR: 20, // Example value for GBP/ZAR
-    USDtoZAR: 15, // Example value for USD/ZAR
-    AUDtoZAR: 12  // Example value for AUD/ZAR
+    GBPtoZAR: 20, 
+    USDtoZAR: 15, 
+    AUDtoZAR: 12  
 };
 
 // Initialize balance in MWK and display in ZAR
