@@ -11,6 +11,7 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 });
 
 // Initialize forex rates for GBP/ZAR, USD/ZAR, and AUD/ZAR
+// Initialize forex rates for GBP/ZAR, USD/ZAR, and AUD/ZAR
 let currentRates = {
     GBPtoZAR: 20, // Example value for GBP/ZAR
     USDtoZAR: 15, // Example value for USD/ZAR
@@ -119,13 +120,17 @@ async function fetchLiveForexRate() {
 function updateRateDisplay() {
     const rateElement = document.getElementById("rate");
     const selectedCurrencyPair = document.getElementById("currency-pair-dropdown").value;
+    const labelElement = document.getElementById("currency-pair-label");
 
     if (selectedCurrencyPair === "GBP/ZAR") {
         rateElement.innerText = `Current Rate: GBP/ZAR: ${currentRates.GBPtoZAR}`;
+        labelElement.innerText = `Selected Pair: GBP/ZAR`;
     } else if (selectedCurrencyPair === "USD/ZAR") {
         rateElement.innerText = `Current Rate: USD/ZAR: ${currentRates.USDtoZAR}`;
+        labelElement.innerText = `Selected Pair: USD/ZAR`;
     } else if (selectedCurrencyPair === "AUD/ZAR") {
         rateElement.innerText = `Current Rate: AUD/ZAR: ${currentRates.AUDtoZAR}`;
+        labelElement.innerText = `Selected Pair: AUD/ZAR`;
     }
 }
 
@@ -156,7 +161,6 @@ setInterval(fetchLiveForexRate, 30000);
 document.getElementById("currency-pair-dropdown").addEventListener("change", (e) => {
     fetchLiveForexRate();  // Fetch new data for the selected currency pair
 });
-
 
 // Function to update the trade monitor popup with the active trades
 function updateTradeMonitorPopup() {
