@@ -135,21 +135,42 @@ function updateRateDisplay() {
 }
 
 // Function to update the forex chart with the new rates
+// Function to update the forex chart with only the selected currency pair
 function updateChartData() {
-    forexChart.data.labels.push(Date.now());  // Add timestamp for x-axis
+    forexChart.data.labels.push(new Date().toLocaleTimeString()); // Use timestamp for x-axis
 
-    // Add data only for the selected currency pair
     const selectedCurrencyPair = document.getElementById("currency-pair-dropdown").value;
+    let selectedRate = 0;
+    let selectedColor = "";
+
     if (selectedCurrencyPair === "GBP/ZAR") {
-        forexChart.data.datasets[0].data.push(currentRates.GBPtoZAR);
+        selectedRate = currentRates.GBPtoZAR;
+        selectedColor = 'rgba(75, 192, 192, 1)'; // Teal
     } else if (selectedCurrencyPair === "USD/ZAR") {
-        forexChart.data.datasets[1].data.push(currentRates.USDtoZAR);
+        selectedRate = currentRates.USDtoZAR;
+        selectedColor = 'rgba(255, 159, 64, 1)'; // Orange
     } else if (selectedCurrencyPair === "AUD/ZAR") {
-        forexChart.data.datasets[2].data.push(currentRates.AUDtoZAR);
+        selectedRate = currentRates.AUDtoZAR;
+        selectedColor = 'rgba(153, 102, 255, 1)'; // Purple
     }
 
-    forexChart.update();  // Refresh the chart
+    // Reset the dataset with only the selected currency pair
+    forexChart.data.datasets = [{
+        label: `${selectedCurrencyPair} Price`,
+        data: forexChart.data.labels.map(() => selectedRate),
+        borderColor: selectedColor,
+        fill: false
+    }];
+
+    forexChart.update(); // Refresh the chart
 }
+
+// Modify the event listener for currency selection
+document.getElementById("currency-pair-dropdown").addEventListener("change", () => {
+    updateRateDisplay();  // Update displayed rate
+    updateChartData();    // Update chart with only selected pair
+});
+
 
 // Initial call to fetch forex rates
 fetchLiveForexRate();
