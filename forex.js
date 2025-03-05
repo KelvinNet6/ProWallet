@@ -30,6 +30,12 @@ const baseUrl = "https://www.alphavantage.co/query";
 
 // Function to open a new trade
 function openTrade(action, amount, currencyPair) {
+    // Check if amount is entered
+    if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid amount.");
+        return; // Exit the function if no valid amount is entered
+    }
+
     // Get the current exchange rate based on the selected currency pair
     let openRate = 0;
     
@@ -76,6 +82,29 @@ function openTrade(action, amount, currencyPair) {
     balanceZAR -= amount;  // Deduct the amount from the balance
     updateBalanceDisplay();  // Update the displayed balance
 }
+
+// Example usage for Buy button (assuming you are calling this when the Buy button is clicked)
+document.getElementById('buy-btn').addEventListener('click', () => {
+    const amount = parseFloat(document.getElementById('amount-input').value); // Get the amount entered by the user
+    if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid amount.");
+        return;
+    }
+    const selectedCurrencyPair = document.getElementById("currency-pair-dropdown").value;
+    openTrade("Buy", amount, selectedCurrencyPair);
+});
+
+// Example usage for Sell button (assuming you are calling this when the Sell button is clicked)
+document.getElementById('sell-btn').addEventListener('click', () => {
+    const amount = parseFloat(document.getElementById('amount-input').value); // Get the amount entered by the user
+    if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid amount.");
+        return;
+    }
+    const selectedCurrencyPair = document.getElementById("currency-pair-dropdown").value;
+    openTrade("Sell", amount, selectedCurrencyPair);
+});
+
 
 // Example usage for Buy button (assuming you are calling this when the Buy button is clicked)
 document.getElementById('buy-btn').addEventListener('click', () => {
