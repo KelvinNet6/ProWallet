@@ -57,19 +57,21 @@
                 </div>
 
                 <div class="trade-amount">
-                    <label for="trade-amount-input">Enter Amount to Trade: </label>
+                    <label for="trade-amount-input">Enter Amount to Trade: MWK</label>
                     <input type="number" id="trade-amount-input" min="1" step="any" placeholder="Enter amount" />
                 </div>
 
                 <div class="buy-sell-options">
                     <button class="buy-btn" id="buy-btn">Buy</button>
                     <button class="sell-btn" id="sell-btn">Sell</button>
+                    <button class="trade-monitor-btn" id="trade-monitor-btn">Monitor Trades</button>
                 </div>
             </div>
 
             <!-- Chart for Forex Price -->
             <div class="chart-container">
                 <canvas id="forexChart" width="400" height="200"></canvas>
+                <div id="close-trade-area"></div>
             </div>
 
             <!-- Active Trades Table -->
@@ -91,6 +93,37 @@
                 </table>
             </div>
         </section>
+    </div>
+
+    <div id="trade-popup" class="trade-popup">
+        <div class="trade-popup-content">
+            <span class="close-btn">&times;</span>
+            <h2>Monitor Current Trades</h2>
+            <p><strong>Balance:</strong><span id="popup-balance">0</span></p>
+            <p><strong>Open Trades:</strong> <span id="popup-open-trades">0</span></p>
+            <p><strong>Profit:</strong><span id="popup-profit">0</span></p>
+            <p><strong>Loss:</strong><span id="popup-loss">0</span></p>
+            <div id="trade-list"></div>
+        </div>
+    </div>
+
+    <div id="trade-history-popup" class="trade-history-popup">
+        <div class="popup-content">
+            <span id="close-popup" class="close-btn">&times;</span>
+            <h2>Trade History</h2>
+            <table id="trade-history-table">
+                <thead>
+                    <tr>
+                        <th>Trade ID</th>
+                        <th>Currency Pair</th>
+                        <th>Action</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
 
     <script src="forex.js"></script>
