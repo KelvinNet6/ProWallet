@@ -10,32 +10,51 @@ document.getElementById("logout-btn").addEventListener("click", () => {
     window.location.href = "index.html";
 });
 
-// Initialize forex rate for MWK/ZAR
-let currentRateMWKtoZAR = 1.05; 
-let currentRateZARtoMWK = 0.011; 
-let tradeID = 1; 
-const activeTrades = []; 
-let balance = 0; 
-let updateInterval;
+// Initialize forex rates for GBP/ZAR, USD/ZAR, and AUD/ZAR
+let currentRates = {
+    GBPtoZAR: 20, // Example value for GBP/ZAR
+    USDtoZAR: 15, // Example value for USD/ZAR
+    AUDtoZAR: 12  // Example value for AUD/ZAR
+};
+
+// Initialize balance in MWK and display in ZAR
+let balanceMWK = 100000;  // Example MWK balance
+let balanceZAR = convertMWKtoZAR(balanceMWK);  // Convert initial balance to ZAR
+let tradeID = 1;
+const activeTrades = [];
 
 // Replace with your actual Alpha Vantage API key
-const apiKey = "QZUV32Y1PXFKGEBY"; 
+const apiKey = "QZUV32Y1PXFKGEBY";
 
 // API endpoint for forex data (use "FX" function for forex rates)
 const baseUrl = "https://www.alphavantage.co/query";
 
-// Forex chart setup (adjusted for MWK/ZAR)
+// Forex chart setup (adjusted for GBP/ZAR, USD/ZAR, AUD/ZAR)
 const ctx = document.getElementById('forexChart').getContext('2d');
 const forexChart = new Chart(ctx, {
     type: 'line',
     data: {
         labels: [],
-        datasets: [{
-            label: 'MWK/ZAR Price',
-            data: [],
-            borderColor: 'rgba(75, 192, 192, 1)',
-            fill: false
-        }]
+        datasets: [
+            {
+                label: 'GBP/ZAR Price',
+                data: [],
+                borderColor: 'rgba(75, 192, 192, 1)',
+                fill: false
+            },
+            {
+                label: 'USD/ZAR Price',
+                data: [],
+                borderColor: 'rgba(255, 159, 64, 1)',
+                fill: false
+            },
+            {
+                label: 'AUD/ZAR Price',
+                data: [],
+                borderColor: 'rgba(153, 102, 255, 1)',
+                fill: false
+            }
+        ]
     },
     options: {
         responsive: true,
@@ -46,23 +65,33 @@ const forexChart = new Chart(ctx, {
     }
 });
 
-// Function to fetch live forex rate for MWK/ZAR from Alpha Vantage API
+// Convert MWK to ZAR
+function convertMWKtoZAR(mwkAmount) {
+    // Use a fixed conversion rate (e.g., 1 MWK = 0.011 ZAR)
+    return mwkAmount * 0.011;  // Adjust conversion rate if necessary
+}
+
+// Convert ZAR to MWK
+function convertZARtoMWK(zarAmount) {
+    return zarAmount / 0.011;  // Inverse of the MWK to ZAR rate
+}
+
+// Function to fetch live forex rates for GBP/ZAR, USD/ZAR, and AUD/ZAR
 async function fetchLiveForexRate() {
-    const url = `${baseUrl}?function=FX_INTRADAY&from_symbol=MWK&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
+    const url = `${baseUrl}?function=FX_INTRADAY&from_symbol=GBP&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
     try {
         const response = await fetch(url);
         const data = await response.json();
 
         if (data['Information'] && data['Information'].includes('premium')) {
             console.error('API rate limit exceeded. Switching to premium features.');
-            // Optionally, you can set a timeout to retry the request after waiting for a minute or more
-            setTimeout(fetchLiveForexRate, 60000);  // Retry after 1 minute
+            setTimeout(fetchLiveForexRate, 60000); // Retry after 1 minute
             return;
         }
 
         if (data["Time Series FX (5min)"]) {
             const latestData = Object.values(data["Time Series FX (5min)"])[0];
-            currentRateMWKtoZAR = parseFloat(latestData["4. close"]).toFixed(4); // The closing rate (ZAR/MWK)
+            currentRates.GBPtoZAR = parseFloat(latestData["4. close"]).toFixed(4);  // GBP/ZAR rate
             updateRateDisplay();
             updateChartData();
             updateTradePopup();
@@ -77,46 +106,65 @@ async function fetchLiveForexRate() {
 // Function to update the forex rate display on the page
 function updateRateDisplay() {
     const rateElement = document.getElementById("rate");
-    rateElement.innerText = currentRateMWKtoZAR; 
+    rateElement.innerText = `GBP/ZAR: ${currentRates.GBPtoZAR}, USD/ZAR: ${currentRates.USDtoZAR}, AUD/ZAR: ${currentRates.AUDtoZAR}`;
 }
 
-// Function to update the forex chart with the new rate
+// Function to update the forex chart with the new rates
 function updateChartData() {
-    forexChart.data.labels.push(Date.now()); 
-    forexChart.data.datasets[0].data.push(currentRateMWKtoZAR); 
-    forexChart.update(); 
-
-   
-    updateTradeMonitorPopup();  
+    forexChart.data.labels.push(Date.now());
+    forexChart.data.datasets[0].data.push(currentRates.GBPtoZAR);
+    forexChart.data.datasets[1].data.push(currentRates.USDtoZAR);
+    forexChart.data.datasets[2].data.push(currentRates.AUDtoZAR);
+    forexChart.update();
+    updateTradeMonitorPopup();
 }
 
-setInterval(fetchLiveForexRate, 30000);
+// Function to create a new trade (either Buy or Sell) for GBP/ZAR, USD/ZAR, or AUD/ZAR
+function createTrade(action, amount, currencyPair = 'GBP/ZAR') {
+    const conversionRate = getConversionRateForPair(currencyPair);
+    const tradeAmountInZAR = amount * conversionRate;
 
-// Function to create a new trade (either Buy or Sell) for MWK/ZAR
-function createTrade(action, amount) {
+    // Convert ZAR amount to MWK for tracking balance in MWK
+    const tradeAmountInMWK = convertZARtoMWK(tradeAmountInZAR);
+
     const trade = {
         id: tradeID++, 
-        pair: 'MWK/ZAR', 
+        pair: currencyPair, 
         action: action,
-        amount: amount, 
-        openRate: currentRateMWKtoZAR, 
-        status: 'Open' 
+        amount: amount,
+        openRate: conversionRate,
+        status: 'Open'
     };
+
     activeTrades.push(trade);
+    balanceMWK -= tradeAmountInMWK; // Update MWK balance
 
     // Save to localStorage
-    localStorage.setItem('activeTrades', JSON.stringify(activeTrades)); 
-    updateTradeHistory(); 
+    localStorage.setItem('activeTrades', JSON.stringify(activeTrades));
+    updateTradeHistory();
     updateCloseArea();
 
-    // Open the trade monitor popup when a trade is created
-    openTradeMonitorPopup(trade);  
+    openTradeMonitorPopup(trade);
+}
+
+// Function to get conversion rate for different currency pairs (GBP/ZAR, USD/ZAR, AUD/ZAR)
+function getConversionRateForPair(pair) {
+    switch (pair) {
+        case 'GBP/ZAR':
+            return currentRates.GBPtoZAR;
+        case 'USD/ZAR':
+            return currentRates.USDtoZAR;
+        case 'AUD/ZAR':
+            return currentRates.AUDtoZAR;
+        default:
+            return 1;  // Default to 1:1 if unknown pair
+    }
 }
 
 // Buy/Sell button interaction (adjusted to use the live balance)
 document.getElementById("buy-btn").addEventListener("click", () => {
-    const amount = parseFloat(document.getElementById("trade-amount-input").value); 
-    if (isNaN(amount) || amount <= 0 || amount > balance) {
+    const amount = parseFloat(document.getElementById("trade-amount-input").value);
+    if (isNaN(amount) || amount <= 0 || amount > balanceMWK) {
         alert("Please enter a valid amount less than or equal to your balance.");
         return;
     }
@@ -124,8 +172,8 @@ document.getElementById("buy-btn").addEventListener("click", () => {
 });
 
 document.getElementById("sell-btn").addEventListener("click", () => {
-    const amount = parseFloat(document.getElementById("trade-amount-input").value); 
-    if (isNaN(amount) || amount <= 0 || amount > balance) {
+    const amount = parseFloat(document.getElementById("trade-amount-input").value);
+    if (isNaN(amount) || amount <= 0 || amount > balanceMWK) {
         alert("Please enter a valid amount less than or equal to your balance.");
         return;
     }
@@ -143,7 +191,7 @@ function updateTradeMonitorPopup() {
 
     if (popupBalanceEl && popupOpenTrades && popupProfit && popupLoss && tradeList) {
         // Update balance and open trades count in the popup
-        popupBalanceEl.innerText = `MWK ${balance.toFixed(2)}`;
+        popupBalanceEl.innerText = `MWK ${balanceMWK.toFixed(2)}`;
         popupOpenTrades.innerText = activeTrades.filter(trade => trade.status === 'Open').length;
 
         let totalProfit = 0;
@@ -157,12 +205,11 @@ function updateTradeMonitorPopup() {
             tradeElement.innerHTML = `
                 <p><strong>Trade ID:</strong> ${trade.id}</p>
                 <p><strong>Action:</strong> ${trade.action}</p>
-                <p><strong>Amount:</strong> MWK ${trade.amount}</p>
+                <p><strong>Amount:</strong> ${trade.amount}</p>
                 <p><strong>Open Rate:</strong> ${trade.openRate}</p>
                 <p><strong>Status:</strong> ${trade.status}</p>
             `;
 
-            // Only show the Close button if the trade is Open
             if (trade.status === "Open") {
                 tradeElement.innerHTML += `
                     <button class="close-trade-btn" data-trade-id="${trade.id}">Close Trade</button>
@@ -172,16 +219,15 @@ function updateTradeMonitorPopup() {
             tradeList.appendChild(tradeElement);
 
             // Calculate profit/loss based on the current rate
-            const currentRate = currentRateMWKtoZAR;
-            const profitLoss = trade.action === "Buy" 
-                ? (currentRate - trade.openRate) * trade.amount 
+            const currentRate = getConversionRateForPair(trade.pair);
+            const profitLoss = trade.action === "Buy"
+                ? (currentRate - trade.openRate) * trade.amount
                 : (trade.openRate - currentRate) * trade.amount;
 
             if (profitLoss >= 0) totalProfit += profitLoss;
             else totalLoss += Math.abs(profitLoss);
         });
 
-        // Update the profit and loss in the popup
         popupProfit.innerText = `MWK ${totalProfit.toFixed(2)}`;
         popupLoss.innerText = `MWK ${totalLoss.toFixed(2)}`;
 
@@ -294,31 +340,30 @@ window.addEventListener('load', () => {
     }
 });
 
-// function to update trade history table
+// Function to update trade history table
 function updateTradeHistory() {
     const tbody = document.querySelector("#trade-history tbody");
-    tbody.innerHTML = ""; 
+    tbody.innerHTML = ""; // Clear the existing rows
 
     // Load active trades from localStorage (if not already loaded)
     const allTrades = activeTrades; 
 
     allTrades.forEach(trade => {
-        let currentAmount = trade.amount; 
+        let currentAmount = trade.amount;
 
         // Calculate the dynamic profit or loss based on the current rate for open trades
         if (trade.status === "Open") {
             const profitLoss = trade.action === "Buy" 
-                ? (currentRateMWKtoZAR - trade.openRate) * trade.amount 
-                : (trade.openRate - currentRateMWKtoZAR) * trade.amount; 
+                ? (currentRateMWKtoZAR - trade.openRate) * trade.amount
+                : (trade.openRate - currentRateMWKtoZAR) * trade.amount;
 
-            currentAmount += profitLoss; // Update amount with profit/loss
+            currentAmount += profitLoss; // Update amount with profit/loss in MWK
         } else if (trade.status === "Closed") {
-           
             const profitLoss = trade.action === "Buy" 
-                ? (currentRateMWKtoZAR - trade.openRate) * trade.amount 
-                : (trade.openRate - currentRateMWKtoZAR) * trade.amount; 
+                ? (currentRateMWKtoZAR - trade.openRate) * trade.amount
+                : (trade.openRate - currentRateMWKtoZAR) * trade.amount;
 
-            currentAmount += profitLoss; 
+            currentAmount += profitLoss; // Update amount with profit/loss in MWK
         }
 
         const row = document.createElement("tr");
@@ -343,7 +388,7 @@ function updateTradeHistory() {
     });
 
     // Automatically update the trade monitor popup with the latest trade data
-    updateTradeMonitorPopup(); 
+    updateTradeMonitorPopup();
 }
 
 // Function to populate the trade history table with the active trades data
@@ -352,7 +397,7 @@ function populateTradeHistory() {
     tableBody.innerHTML = ""; // Clear previous data
 
     // Use the activeTrades array (not the static trades array)
-    const allTrades = activeTrades; 
+    const allTrades = activeTrades;
 
     allTrades.forEach(trade => {
         const row = document.createElement("tr");
@@ -368,12 +413,14 @@ function populateTradeHistory() {
         actionCell.textContent = trade.action;
 
         const amountCell = document.createElement("td");
-        amountCell.textContent = Math.abs(trade.amount); // Display absolute value of amount
+        const profitLoss = calculateProfitLoss(trade); // Calculate profit/loss
+        const amountInMWK = trade.amount + profitLoss;
+        amountCell.textContent = Math.abs(amountInMWK).toFixed(2); // Display absolute value of amount
 
         // Apply color based on profit or loss
-        if (trade.amount > 0) {
+        if (profitLoss > 0) {
             amountCell.classList.add("profit"); // Blue for profit
-        } else if (trade.amount < 0) {
+        } else if (profitLoss < 0) {
             amountCell.classList.add("loss"); // Red for loss
         }
 
@@ -390,6 +437,21 @@ function populateTradeHistory() {
         // Append the row to the table body
         tableBody.appendChild(row);
     });
+}
+
+// Calculate profit/loss in MWK (considering the action and current rate)
+function calculateProfitLoss(trade) {
+    let profitLoss = 0;
+
+    // Calculate profit or loss based on the current rate
+    if (trade.status === "Open") {
+        const currentRate = getConversionRateForPair(trade.pair); // Get the conversion rate for the pair
+        profitLoss = trade.action === "Buy"
+            ? (currentRate - trade.openRate) * trade.amount
+            : (trade.openRate - currentRate) * trade.amount;
+    }
+
+    return profitLoss; // Return profit or loss in MWK
 }
 
 // Trigger the popup and populate trade history with the updated trades data
