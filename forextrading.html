@@ -29,33 +29,33 @@
             <h1>PaySheet | Forex Trading</h1>
         </header>
 
-        <!-- Display the current balance and Navigation links -->
-<div class="balance-nav-container">
-    <div class="balance">
-        <h2>PaySheet Balance: ZAR <span id="balance">1550.00</span></h2>
-    </div>
-    
-    <!-- New Navigation Section -->
-    <nav class="nav-links">
-    <a href="#" id="trade-history-link">Trade History</a>
-    <a href="#" id="trade-alerts-link">View Trade Alerts</a>
-    <a href="#" id="portfolio-link">My Portfolio</a>
-    <a href="#" id="margin-trading-link">Margin Trading</a>
-       </nav>
-</div>
-
+        <div class="balance-nav-container">
+            <div class="balance">
+                <h2>PaySheet Balance: ZAR <span id="balance">1550.00</span></h2>
+            </div>
+            <nav class="nav-links">
+                <a href="#" id="trade-history-link">Trade History</a>
+                <a href="#" id="trade-alerts-link">View Trade Alerts</a>
+                <a href="#" id="portfolio-link">My Portfolio</a>
+                <a href="#" id="margin-trading-link">Margin Trading</a>
+            </nav>
+        </div>
 
         <section class="forex-trading">
             <!-- Currency Pair & Price -->
             <div class="currency-info">
                 <div class="currency-pair">
-                    <h2>MWK/ZAR</h2>
+                    <label for="currency-pair-dropdown">Select Currency Pair:</label>
+                    <select id="currency-pair-dropdown">
+                        <option value="USD/ZAR">USD/ZAR</option>
+                        <option value="GBP/ZAR">GBP/ZAR</option>
+                        <option value="AUD/ZAR">AUD/ZAR</option>
+                    </select>
                     <div class="exchange-rate">
                         <p>Current Rate: <span id="rate">1.05</span></p>
                     </div>
                 </div>
-                
-                <!-- Input field to enter the amount for trading -->
+
                 <div class="trade-amount">
                     <label for="trade-amount-input">Enter Amount to Trade: MWK</label>
                     <input type="number" id="trade-amount-input" min="1" step="any" placeholder="Enter amount" />
@@ -95,77 +95,38 @@
         </section>
     </div>
 
-    <!-- Trade Monitor Popup -->
     <div id="trade-popup" class="trade-popup">
         <div class="trade-popup-content">
             <span class="close-btn">&times;</span>
             <h2>Monitor Current Trades</h2>
-            <br>
             <p><strong>Balance:</strong><span id="popup-balance">0</span></p>
-            <br>
             <p><strong>Open Trades:</strong> <span id="popup-open-trades">0</span></p>
-            <br>
             <p><strong>Profit:</strong><span id="popup-profit">0</span></p>
-            <br>
             <p><strong>Loss:</strong><span id="popup-loss">0</span></p>
-            <br>
-            <div id="trade-list"></div> <!-- To display the active trades in the popup -->
-            <br>
-        </div>
-    </div>
-    
-    <!-- Trade History Popup -->
-<div id="trade-history-popup" class="trade-history-popup">
-    <div class="popup-content">
-      <span id="close-popup" class="close-btn">&times;</span>
-        <h2>Trade History</h2>
-        <table id="trade-history-table">
-            <thead>
-                <tr>
-                    <th>Trade ID</th>
-                    <th>Currency Pair</th>
-                    <th>Action</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Trade history entries will be dynamically added here -->
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<!-- Trade Alerts Popup -->
-<div id="trade-alerts-popup" class="trade-alerts-popup">
-    <div class="popup-content trade-alerts-popup-content">
-        <span id="close-alerts-popup" class="close-btn">&times;</span>
-        <h2>Trade Alerts</h2>
-        <p>Manage and view your trade alerts here.</p>
-        <!-- Dynamic content for trade alerts will be inserted here -->
-    </div>
-</div>
-
-    <!-- Portfolio Popup -->
-    <div id="portfolio-popup" class="portfolio-popup">
-        <div class="popup-content portfolio-popup-content">
-            <span id="close-portfolio-popup" class="close-btn">&times;</span>
-            <h2>My Portfolio</h2>
-            <p>View and manage your portfolio here.</p>
-            <!-- Add dynamic content for portfolio -->
+            <div id="trade-list"></div>
         </div>
     </div>
 
-    <!-- Margin Trading Popup -->
-    <div id="margin-trading-popup" class="margin-trading-popup">
-        <div class="popup-content margin-trading-popup-content">
-            <span id="close-margin-trading-popup" class="close-btn">&times;</span>
-            <h2>Margin Trading</h2>
-            <p>Learn and manage your margin trading strategies here.</p>
-            <!-- Add dynamic content for margin trading -->
+    <div id="trade-history-popup" class="trade-history-popup">
+        <div class="popup-content">
+            <span id="close-popup" class="close-btn">&times;</span>
+            <h2>Trade History</h2>
+            <table id="trade-history-table">
+                <thead>
+                    <tr>
+                        <th>Trade ID</th>
+                        <th>Currency Pair</th>
+                        <th>Action</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
     </div>
 
     <script src="forex.js"></script>
 </body>
 </html>
+
