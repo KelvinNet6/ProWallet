@@ -172,6 +172,58 @@ const forexChart = new Chart(ctx, {
     }
 });
 
+// Function to change chart color based on selected currency pair
+function changeChartColor(currencyPair) {
+    const chartElement = document.getElementById('chart'); // Assuming your chart has this ID
+    
+    // Define colors for different currency pairs
+    const chartColors = {
+        "GBP/ZAR": "#4CAF50", // Green for GBP/ZAR
+        "USD/ZAR": "#FF5733", // Red for USD/ZAR
+        "AUD/ZAR": "#3399FF"  // Blue for AUD/ZAR
+    };
+
+    // Set the chart background color based on the selected currency pair
+    if (chartColors[currencyPair]) {
+        chartElement.style.backgroundColor = chartColors[currencyPair];
+    } else {
+        chartElement.style.backgroundColor = "#FFFFFF"; // Default to white if no match
+    }
+
+    // Optionally change other chart-related colors (e.g., axis, line color) here
+    // chartElement.style.color = chartColors[currencyPair]; // Example for changing text color
+}
+
+// Example usage: Listen for changes in the currency pair dropdown
+document.getElementById('currency-pair-dropdown').addEventListener('change', function() {
+    const selectedCurrencyPair = this.value; // Get selected currency pair
+    changeChartColor(selectedCurrencyPair); // Update the chart color
+});
+
+// Example usage for Buy button (assuming you are calling this when the Buy button is clicked)
+document.getElementById('buy-btn').addEventListener('click', () => {
+    const amount = parseFloat(document.getElementById('amount-input').value); // Get the amount entered by the user
+    if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid amount.");
+        return;
+    }
+    const selectedCurrencyPair = document.getElementById("currency-pair-dropdown").value;
+    openTrade("Buy", amount, selectedCurrencyPair);
+    changeChartColor(selectedCurrencyPair); // Change the chart color when trade is opened
+});
+
+// Example usage for Sell button (assuming you are calling this when the Sell button is clicked)
+document.getElementById('sell-btn').addEventListener('click', () => {
+    const amount = parseFloat(document.getElementById('amount-input').value); // Get the amount entered by the user
+    if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid amount.");
+        return;
+    }
+    const selectedCurrencyPair = document.getElementById("currency-pair-dropdown").value;
+    openTrade("Sell", amount, selectedCurrencyPair);
+    changeChartColor(selectedCurrencyPair); // Change the chart color when trade is opened
+});
+
 // Convert MWK to ZAR
 function convertMWKtoZAR(mwkAmount) {
     return mwkAmount * 0.011;  // Adjust conversion rate if necessary
