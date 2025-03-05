@@ -174,7 +174,7 @@ const forexChart = new Chart(ctx, {
 
 // Function to change chart color based on selected currency pair
 function changeChartColor(currencyPair) {
-    const chartElement = document.getElementById('chart'); // Assuming your chart has this ID
+    const chartElement = document.getElementById('forexChart'); // Assuming your chart has this ID
     
     // Define colors for different currency pairs
     const chartColors = {
