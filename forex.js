@@ -67,7 +67,6 @@ const forexChart = new Chart(ctx, {
 
 // Convert MWK to ZAR
 function convertMWKtoZAR(mwkAmount) {
-    // Use a fixed conversion rate (e.g., 1 MWK = 0.011 ZAR)
     return mwkAmount * 0.011;  // Adjust conversion rate if necessary
 }
 
@@ -78,37 +77,39 @@ function convertZARtoMWK(zarAmount) {
 
 // Function to fetch live forex rates for GBP/ZAR, USD/ZAR, and AUD/ZAR
 async function fetchLiveForexRate() {
-    // Fetch rates for GBP/ZAR, USD/ZAR, and AUD/ZAR
-    const urlGBP = `${baseUrl}?function=FX_INTRADAY&from_symbol=GBP&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
-    const urlUSD = `${baseUrl}?function=FX_INTRADAY&from_symbol=USD&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
-    const urlAUD = `${baseUrl}?function=FX_INTRADAY&from_symbol=AUD&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
+    let url;
+    
+    // Determine the URL based on the selected currency pair
+    const selectedCurrencyPair = document.getElementById("currency-pair-dropdown").value;
+    if (selectedCurrencyPair === "GBP/ZAR") {
+        url = `${baseUrl}?function=FX_INTRADAY&from_symbol=GBP&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
+    } else if (selectedCurrencyPair === "USD/ZAR") {
+        url = `${baseUrl}?function=FX_INTRADAY&from_symbol=USD&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
+    } else if (selectedCurrencyPair === "AUD/ZAR") {
+        url = `${baseUrl}?function=FX_INTRADAY&from_symbol=AUD&to_symbol=ZAR&interval=5min&apikey=${apiKey}`;
+    }
 
     try {
-        const [responseGBP, responseUSD, responseAUD] = await Promise.all([
-            fetch(urlGBP),
-            fetch(urlUSD),
-            fetch(urlAUD)
-        ]);
+        const response = await fetch(url);
+        const data = await response.json();
 
-        const dataGBP = await responseGBP.json();
-        const dataUSD = await responseUSD.json();
-        const dataAUD = await responseAUD.json();
+        if (data["Time Series FX (5min)"]) {
+            const latestData = Object.values(data["Time Series FX (5min)"])[0];
+            const latestRate = parseFloat(latestData["4. close"]).toFixed(4);  // Get the latest exchange rate
 
-        if (dataGBP["Time Series FX (5min)"]) {
-            const latestDataGBP = Object.values(dataGBP["Time Series FX (5min)"])[0];
-            currentRates.GBPtoZAR = parseFloat(latestDataGBP["4. close"]).toFixed(4);  // GBP/ZAR rate
-        }
-        if (dataUSD["Time Series FX (5min)"]) {
-            const latestDataUSD = Object.values(dataUSD["Time Series FX (5min)"])[0];
-            currentRates.USDtoZAR = parseFloat(latestDataUSD["4. close"]).toFixed(4);  // USD/ZAR rate
-        }
-        if (dataAUD["Time Series FX (5min)"]) {
-            const latestDataAUD = Object.values(dataAUD["Time Series FX (5min)"])[0];
-            currentRates.AUDtoZAR = parseFloat(latestDataAUD["4. close"]).toFixed(4);  // AUD/ZAR rate
+            // Update the rate for the selected currency pair
+            if (selectedCurrencyPair === "GBP/ZAR") {
+                currentRates.GBPtoZAR = latestRate;
+            } else if (selectedCurrencyPair === "USD/ZAR") {
+                currentRates.USDtoZAR = latestRate;
+            } else if (selectedCurrencyPair === "AUD/ZAR") {
+                currentRates.AUDtoZAR = latestRate;
+            }
+
+            updateRateDisplay();  // Update the displayed rate on the page
         }
 
-        updateRateDisplay();
-        updateChartData();
+        updateChartData();  // Update chart data after fetching the rate
     } catch (error) {
         console.error("Error fetching live forex rate:", error);
     }
@@ -117,88 +118,45 @@ async function fetchLiveForexRate() {
 // Function to update the forex rate display on the page
 function updateRateDisplay() {
     const rateElement = document.getElementById("rate");
-    rateElement.innerText = `GBP/ZAR: ${currentRates.GBPtoZAR}, USD/ZAR: ${currentRates.USDtoZAR}, AUD/ZAR: ${currentRates.AUDtoZAR}`;
+    const selectedCurrencyPair = document.getElementById("currency-pair-dropdown").value;
+
+    if (selectedCurrencyPair === "GBP/ZAR") {
+        rateElement.innerText = `Current Rate: GBP/ZAR: ${currentRates.GBPtoZAR}`;
+    } else if (selectedCurrencyPair === "USD/ZAR") {
+        rateElement.innerText = `Current Rate: USD/ZAR: ${currentRates.USDtoZAR}`;
+    } else if (selectedCurrencyPair === "AUD/ZAR") {
+        rateElement.innerText = `Current Rate: AUD/ZAR: ${currentRates.AUDtoZAR}`;
+    }
 }
 
 // Function to update the forex chart with the new rates
 function updateChartData() {
-    forexChart.data.labels.push(Date.now());
-    forexChart.data.datasets[0].data.push(currentRates.GBPtoZAR);
-    forexChart.data.datasets[1].data.push(currentRates.USDtoZAR);
-    forexChart.data.datasets[2].data.push(currentRates.AUDtoZAR);
-    forexChart.update();
+    forexChart.data.labels.push(Date.now());  // Add timestamp for x-axis
+
+    // Add data only for the selected currency pair
+    const selectedCurrencyPair = document.getElementById("currency-pair-dropdown").value;
+    if (selectedCurrencyPair === "GBP/ZAR") {
+        forexChart.data.datasets[0].data.push(currentRates.GBPtoZAR);
+    } else if (selectedCurrencyPair === "USD/ZAR") {
+        forexChart.data.datasets[1].data.push(currentRates.USDtoZAR);
+    } else if (selectedCurrencyPair === "AUD/ZAR") {
+        forexChart.data.datasets[2].data.push(currentRates.AUDtoZAR);
+    }
+
+    forexChart.update();  // Refresh the chart
 }
-
-// Function to create a new trade (either Buy or Sell) for GBP/ZAR, USD/ZAR, or AUD/ZAR
-function createTrade(action, amount, currencyPair = 'GBP/ZAR') {
-    const conversionRate = getConversionRateForPair(currencyPair);
-    const tradeAmountInZAR = amount * conversionRate;
-
-    // Convert ZAR amount to MWK for tracking balance in MWK
-    const tradeAmountInMWK = convertZARtoMWK(tradeAmountInZAR);
-
-    // Ensure there is enough balance
-    if (action === 'Buy' && tradeAmountInMWK > balanceMWK) {
-        alert("Insufficient balance for this trade.");
-        return;
-    }
-
-    const trade = {
-        id: tradeID++, 
-        pair: currencyPair, 
-        action: action,
-        amount: amount,
-        openRate: conversionRate,
-        status: 'Open'
-    };
-
-    activeTrades.push(trade);
-    balanceMWK -= tradeAmountInMWK; // Update MWK balance
-
-    // Save to localStorage
-    localStorage.setItem('activeTrades', JSON.stringify(activeTrades));
-    updateTradeHistory();
-    updateCloseArea();
-
-    openTradeMonitorPopup(trade);
-}
-
-// Function to get conversion rate for different currency pairs (GBP/ZAR, USD/ZAR, AUD/ZAR)
-function getConversionRateForPair(pair) {
-    switch (pair) {
-        case 'GBP/ZAR':
-            return currentRates.GBPtoZAR;
-        case 'USD/ZAR':
-            return currentRates.USDtoZAR;
-        case 'AUD/ZAR':
-            return currentRates.AUDtoZAR;
-        default:
-            return 1;  // Default to 1:1 if unknown pair
-    }
-}
-
-// Buy/Sell button interaction (adjusted to use the live balance)
-document.getElementById("buy-btn").addEventListener("click", () => {
-    const amount = parseFloat(document.getElementById("trade-amount-input").value);
-    if (isNaN(amount) || amount <= 0 || amount > balanceMWK) {
-        alert("Please enter a valid amount less than or equal to your balance.");
-        return;
-    }
-    createTrade('Buy', amount);
-});
-
-document.getElementById("sell-btn").addEventListener("click", () => {
-    const amount = parseFloat(document.getElementById("trade-amount-input").value);
-    if (isNaN(amount) || amount <= 0 || amount > balanceMWK) {
-        alert("Please enter a valid amount less than or equal to your balance.");
-        return;
-    }
-    createTrade('Sell', amount);
-});
 
 // Initial call to fetch forex rates
 fetchLiveForexRate();
-setInterval(fetchLiveForexRate, 30000);  // Fetch new forex rates every 30 seconds
+
+// Fetch forex rates every 30 seconds to update live data
+setInterval(fetchLiveForexRate, 30000);
+
+// Event listener for currency pair selection
+document.getElementById("currency-pair-dropdown").addEventListener("change", (e) => {
+    fetchLiveForexRate();  // Fetch new data for the selected currency pair
+});
+
 
 // Function to update the trade monitor popup with the active trades
 function updateTradeMonitorPopup() {
