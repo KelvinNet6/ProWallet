@@ -26,9 +26,61 @@ const activeTrades = [];
 
 // Replace with your actual Alpha Vantage API key
 const apiKey = "QZUV32Y1PXFKGEBY";
-
-// API endpoint for forex data (use "FX" function for forex rates)
 const baseUrl = "https://www.alphavantage.co/query";
+
+// Function to open a new trade
+function openTrade(action, amount, currencyPair) {
+    // Get the current exchange rate based on the selected currency pair
+    let openRate = 0;
+    
+    if (currencyPair === "GBP/ZAR") {
+        openRate = currentRates.GBPtoZAR;
+    } else if (currencyPair === "USD/ZAR") {
+        openRate = currentRates.USDtoZAR;
+    } else if (currencyPair === "AUD/ZAR") {
+        openRate = currentRates.AUDtoZAR;
+    }
+
+    // Create a new trade object
+    const newTrade = {
+        id: tradeID++, // Increment the trade ID for each new trade
+        action: action, // "Buy" or "Sell"
+        amount: amount, // Amount of currency
+        pair: currencyPair, // Currency pair (e.g., "GBP/ZAR")
+        openRate: openRate, // Rate at which the trade was opened
+        status: "Open" // Trade status (open when it is just created)
+    };
+
+    // Add the new trade to the active trades array
+    activeTrades.push(newTrade);
+
+    // Save the active trades in localStorage for persistence
+    localStorage.setItem('activeTrades', JSON.stringify(activeTrades));
+
+    // Update the trade monitor popup to display the new trade
+    updateTradeMonitorPopup();
+
+    // Update the trade history (if you have a trade history table or section)
+    updateTradeHistory();
+
+    // Optionally log the trade for debugging
+    console.log(`Trade opened: ${action} ${amount} ${currencyPair} at rate ${openRate}`);
+}
+
+// Example usage for Buy button (assuming you are calling this when the Buy button is clicked)
+document.getElementById('buy-btn').addEventListener('click', () => {
+    const amount = 100; // Example amount for the trade (can be dynamic based on user input)
+    const selectedCurrencyPair = document.getElementById("currency-pair-dropdown").value;
+    openTrade("Buy", amount, selectedCurrencyPair);
+});
+
+// Example usage for Sell button (assuming you are calling this when the Sell button is clicked)
+document.getElementById('sell-btn').addEventListener('click', () => {
+    const amount = 50; // Example amount for the trade (can be dynamic based on user input)
+    const selectedCurrencyPair = document.getElementById("currency-pair-dropdown").value;
+    openTrade("Sell", amount, selectedCurrencyPair);
+});
+
 
 // Forex chart setup (adjusted for GBP/ZAR, USD/ZAR, AUD/ZAR)
 const ctx = document.getElementById('forexChart').getContext('2d');
