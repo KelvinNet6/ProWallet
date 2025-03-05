@@ -83,7 +83,6 @@ function openTrade(action, amount, currencyPair) {
     updateBalanceDisplay();  // Update the displayed balance
 }
 
-// Example usage for Buy button (assuming you are calling this when the Buy button is clicked)
 document.getElementById('buy-btn').addEventListener('click', () => {
     const amount = parseFloat(document.getElementById('amount-input').value); // Get the amount entered by the user
     if (isNaN(amount) || amount <= 0) {
@@ -94,7 +93,6 @@ document.getElementById('buy-btn').addEventListener('click', () => {
     openTrade("Buy", amount, selectedCurrencyPair);
 });
 
-// Example usage for Sell button (assuming you are calling this when the Sell button is clicked)
 document.getElementById('sell-btn').addEventListener('click', () => {
     const amount = parseFloat(document.getElementById('amount-input').value); // Get the amount entered by the user
     if (isNaN(amount) || amount <= 0) {
@@ -108,14 +106,14 @@ document.getElementById('sell-btn').addEventListener('click', () => {
 
 // Example usage for Buy button (assuming you are calling this when the Buy button is clicked)
 document.getElementById('buy-btn').addEventListener('click', () => {
-    const amount = 100; // Example amount for the trade (can be dynamic based on user input)
+    const amount = 100;
     const selectedCurrencyPair = document.getElementById("currency-pair-dropdown").value;
     openTrade("Buy", amount, selectedCurrencyPair);
 });
 
 // Example usage for Sell button (assuming you are calling this when the Sell button is clicked)
 document.getElementById('sell-btn').addEventListener('click', () => {
-    const amount = 50; // Example amount for the trade (can be dynamic based on user input)
+    const amount = 50;
     const selectedCurrencyPair = document.getElementById("currency-pair-dropdown").value;
     openTrade("Sell", amount, selectedCurrencyPair);
 });
