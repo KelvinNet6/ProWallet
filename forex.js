@@ -117,24 +117,40 @@ async function fetchLiveForexRate() {
 }
 
 // Function to update the forex rate display on the page
+// Function to update the forex rate display and show selected currency pair in a rectangle
 function updateRateDisplay() {
     const rateElement = document.getElementById("rate");
+    const currencyBox = document.getElementById("currency-box");
     const selectedCurrencyPair = document.getElementById("currency-pair-dropdown").value;
-    const labelElement = document.getElementById("currency-pair-label");
+
+    let selectedRate = "";
+    let selectedColor = "";
 
     if (selectedCurrencyPair === "GBP/ZAR") {
-        rateElement.innerText = `Current Rate: GBP/ZAR: ${currentRates.GBPtoZAR}`;
-        labelElement.innerText = `Selected Pair: GBP/ZAR`;
+        selectedRate = currentRates.GBPtoZAR;
+        selectedColor = '#4bc0c0'; // Teal
     } else if (selectedCurrencyPair === "USD/ZAR") {
-        rateElement.innerText = `Current Rate: USD/ZAR: ${currentRates.USDtoZAR}`;
-        labelElement.innerText = `Selected Pair: USD/ZAR`;
+        selectedRate = currentRates.USDtoZAR;
+        selectedColor = '#ff9f40'; // Orange
     } else if (selectedCurrencyPair === "AUD/ZAR") {
-        rateElement.innerText = `Current Rate: AUD/ZAR: ${currentRates.AUDtoZAR}`;
-        labelElement.innerText = `Selected Pair: AUD/ZAR`;
+        selectedRate = currentRates.AUDtoZAR;
+        selectedColor = '#9966ff'; // Purple
     }
+
+    // Update rate display
+    rateElement.innerText = `Current Rate: ${selectedCurrencyPair} ${selectedRate}`;
+
+    // Update currency box display
+    currencyBox.innerHTML = `<span>${selectedCurrencyPair}</span>`;
+    currencyBox.style.backgroundColor = selectedColor;
+    currencyBox.style.color = "#fff"; // White text for contrast
 }
 
-// Function to update the forex chart with the new rates
+// Add event listener for dropdown selection
+document.getElementById("currency-pair-dropdown").addEventListener("change", () => {
+    updateRateDisplay();  // Update the rate and currency box
+});
+
 // Function to update the forex chart with only the selected currency pair
 function updateChartData() {
     forexChart.data.labels.push(new Date().toLocaleTimeString()); // Use timestamp for x-axis
