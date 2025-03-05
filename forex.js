@@ -447,16 +447,39 @@ window.addEventListener("click", function (event) {
     }
 });
 
-// Optional: Function to populate trade alerts (You can replace it with dynamic data as needed)
+// Optional: Function to populate trade alerts dynamically from an API
 function populateTradeAlerts() {
-    // Example: You can dynamically populate this popup with trade alerts from an API or local storage
-    const alertContent = document.querySelector('.trade-alerts-popup-content');
-    alertContent.innerHTML = `
-        <p>Trade alert 1: Buy MWK at 0.21 ZAR</p><br>
-        <p>Trade alert 2: Sell MWK at 0.19 ZAR</p><br>
-        <p>Trade alert 3: Buy ZAR at 0.23 MWK</p><br>
-    `;
+    // Example: Replace this URL with the real API endpoint
+    const apiUrl = 'https://api.yourtradingplatform.com/alerts'; // Replace with your real API URL
+    
+    // Make an API request to fetch trade alerts
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const alertContent = document.querySelector('.trade-alerts-popup-content');
+            
+            // Clear previous alerts
+            alertContent.innerHTML = '';
+            
+            // Loop through the alerts and populate the popup with new data
+            data.alerts.forEach(alert => {
+                const alertMessage = `
+                    <p>${alert.type} ${alert.asset} at ${alert.price} ${alert.currency}</p><br>
+                `;
+                alertContent.innerHTML += alertMessage;
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching trade alerts:', error);
+            // Optionally, display a fallback message if there's an error
+            const alertContent = document.querySelector('.trade-alerts-popup-content');
+            alertContent.innerHTML = '<p>Failed to load trade alerts.</p>';
+        });
 }
+
+// Call the function periodically to keep the alerts updated
+setInterval(populateTradeAlerts, 5000); // Fetch alerts every 5 seconds (adjust as needed)
+
 // Elements for the Portfolio Popup
 const portfolioLink = document.getElementById("portfolio-link");
 const portfolioPopup = document.getElementById("portfolio-popup");
