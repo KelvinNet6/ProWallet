@@ -10,7 +10,18 @@ document.getElementById("logout-btn").addEventListener("click", () => {
     window.location.href = "index.html";
 });
 
-// Initialize forex rates for GBP/ZAR, USD/ZAR, and AUD/ZAR
+// Convert MWK to ZAR
+function convertMWKtoZAR(mwkAmount) {
+    const conversionRate = 0.011; // Example conversion rate, adjust if necessary
+    return mwkAmount * conversionRate;
+}
+
+// Convert ZAR to MWK
+function convertZARtoMWK(zarAmount) {
+    const conversionRate = 0.011; // Example conversion rate, adjust if necessary
+    return zarAmount / conversionRate;
+}
+
 // Initialize forex rates for GBP/ZAR, USD/ZAR, and AUD/ZAR
 let currentRates = {
     GBPtoZAR: 20, 
