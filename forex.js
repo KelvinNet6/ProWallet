@@ -176,9 +176,9 @@ function changeChartColor(currencyPair) {
     
     // Define colors for different currency pairs
     const chartColors = {
-        "GBP/ZAR": "#4bc0c0", // Green for GBP/ZAR
-        "USD/ZAR": "#ff9f40", // Red for USD/ZAR
-        "AUD/ZAR": "#9966ff"  // Blue for AUD/ZAR
+        "GBP/ZAR": "#4bc0c0", 
+        "USD/ZAR": "#ff9f40", 
+        "AUD/ZAR": "#9966ff"  
     };
 
     // Set the chart background color based on the selected currency pair
