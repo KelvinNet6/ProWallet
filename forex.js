@@ -183,6 +183,7 @@ function changeChartColor(currencyPair) {
 
     // Set the chart background color based on the selected currency pair
     if (chartColors[currencyPair]) {
+        // Update chart background color (ensure the correct canvas or chart area)
         chartElement.style.backgroundColor = chartColors[currencyPair];
     } else {
         chartElement.style.backgroundColor = "#FFFFFF"; // Default to white if no match
@@ -198,7 +199,7 @@ document.getElementById('currency-pair-dropdown').addEventListener('change', fun
     changeChartColor(selectedCurrencyPair); // Update the chart color
 });
 
-// Example usage for Buy button (assuming you are calling this when the Buy button is clicked)
+// Event listeners for Buy and Sell buttons
 document.getElementById('buy-btn').addEventListener('click', () => {
     const amount = parseFloat(document.getElementById('amount-input').value); // Get the amount entered by the user
     if (isNaN(amount) || amount <= 0) {
@@ -210,7 +211,6 @@ document.getElementById('buy-btn').addEventListener('click', () => {
     changeChartColor(selectedCurrencyPair); // Change the chart color when trade is opened
 });
 
-// Example usage for Sell button (assuming you are calling this when the Sell button is clicked)
 document.getElementById('sell-btn').addEventListener('click', () => {
     const amount = parseFloat(document.getElementById('amount-input').value); // Get the amount entered by the user
     if (isNaN(amount) || amount <= 0) {
@@ -221,16 +221,6 @@ document.getElementById('sell-btn').addEventListener('click', () => {
     openTrade("Sell", amount, selectedCurrencyPair);
     changeChartColor(selectedCurrencyPair); // Change the chart color when trade is opened
 });
-
-// Convert MWK to ZAR
-function convertMWKtoZAR(mwkAmount) {
-    return mwkAmount * 0.011;  // Adjust conversion rate if necessary
-}
-
-// Convert ZAR to MWK
-function convertZARtoMWK(zarAmount) {
-    return zarAmount / 0.011;  // Inverse of the MWK to ZAR rate
-}
 
 // Function to fetch live forex rates for GBP/ZAR, USD/ZAR, and AUD/ZAR
 async function fetchLiveForexRate() {
@@ -273,7 +263,6 @@ async function fetchLiveForexRate() {
 }
 
 // Function to update the forex rate display on the page
-// Function to update the forex rate display and show selected currency pair in a rectangle
 function updateRateDisplay() {
     const rateElement = document.getElementById("rate");
     const currencyBox = document.getElementById("currency-box");
@@ -305,6 +294,8 @@ function updateRateDisplay() {
 // Add event listener for dropdown selection
 document.getElementById("currency-pair-dropdown").addEventListener("change", () => {
     updateRateDisplay();  // Update the rate and currency box
+    changeChartColor(document.getElementById("currency-pair-dropdown").value); // Update the chart color
+    fetchLiveForexRate();  // Fetch new data for the selected currency pair
 });
 
 // Function to update the forex chart with only the selected currency pair
@@ -337,23 +328,11 @@ function updateChartData() {
     forexChart.update(); // Refresh the chart
 }
 
-// Modify the event listener for currency selection
-document.getElementById("currency-pair-dropdown").addEventListener("change", () => {
-    updateRateDisplay();  // Update displayed rate
-    updateChartData();    // Update chart with only selected pair
-});
-
-
 // Initial call to fetch forex rates
 fetchLiveForexRate();
 
 // Fetch forex rates every 30 seconds to update live data
 setInterval(fetchLiveForexRate, 30000);
-
-// Event listener for currency pair selection
-document.getElementById("currency-pair-dropdown").addEventListener("change", (e) => {
-    fetchLiveForexRate();  // Fetch new data for the selected currency pair
-});
 
 // Function to update the trade monitor popup with the active trades
 function updateTradeMonitorPopup() {
