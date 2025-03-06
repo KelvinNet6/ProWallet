@@ -186,7 +186,7 @@ function changeChartColor(currencyPair) {
         // Update chart background color (ensure the correct canvas or chart area)
         chartElement.style.backgroundColor = chartColors[currencyPair];
     } else {
-        chartElement.style.backgroundColor = "#ff9f40"; 
+        chartElement.style.backgroundColor = "#FFFFFF"; 
     }
 
     // Optionally change other chart-related colors (e.g., axis, line color) here
