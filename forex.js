@@ -176,9 +176,9 @@ function changeChartColor(currencyPair) {
     
     // Define colors for different currency pairs
     const chartColors = {
-        "GBP/ZAR": "#4CAF50", // Green for GBP/ZAR
-        "USD/ZAR": "#FF5733", // Red for USD/ZAR
-        "AUD/ZAR": "#3399FF"  // Blue for AUD/ZAR
+        "GBP/ZAR": "#4bc0c0", // Green for GBP/ZAR
+        "USD/ZAR": "#ff9f40", // Red for USD/ZAR
+        "AUD/ZAR": "#9966ff"  // Blue for AUD/ZAR
     };
 
     // Set the chart background color based on the selected currency pair
@@ -186,7 +186,7 @@ function changeChartColor(currencyPair) {
         // Update chart background color (ensure the correct canvas or chart area)
         chartElement.style.backgroundColor = chartColors[currencyPair];
     } else {
-        chartElement.style.backgroundColor = "#FFFFFF"; // Default to white if no match
+        chartElement.style.backgroundColor = "#ff9f40"; 
     }
 
     // Optionally change other chart-related colors (e.g., axis, line color) here
