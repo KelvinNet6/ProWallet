@@ -317,6 +317,7 @@ function updateChartData() {
     let selectedRate = 0;
     let selectedColor = "";
 
+    // Set the rate and color for selected currency pair
     if (selectedCurrencyPair === "GBP/ZAR") {
         selectedRate = currentRates.GBPtoZAR;
         selectedColor = 'rgba(75, 192, 192, 1)'; // Teal
@@ -336,6 +337,18 @@ function updateChartData() {
         fill: false
     }];
 
+    // Add a dynamic trading demo line
+    const dynamicDemoLine = Math.random() * (20 - 10) + 10;  // Random dynamic value between 10 and 20
+
+    // Add or update the demo line dataset
+    forexChart.data.datasets.push({
+        label: 'Demo Trading Line',
+        data: forexChart.data.labels.map(() => dynamicDemoLine),  // Dynamic value
+        borderColor: 'rgba(0, 0, 255, 0.6)',  // Blue color for the demo line
+        borderDash: [5, 5],  // Dashed line style
+        fill: false
+    });
+
     forexChart.update(); // Refresh the chart
 }
 
@@ -344,6 +357,11 @@ fetchLiveForexRate();
 
 // Fetch forex rates every 30 seconds to update live data
 setInterval(fetchLiveForexRate, 30000);
+
+// Update the demo line value every 5 seconds to make it dynamic
+setInterval(() => {
+    updateChartData();  // Refresh chart and update demo line
+}, 5000);
 
 // Function to update the trade monitor popup with the active trades
 function updateTradeMonitorPopup() {
