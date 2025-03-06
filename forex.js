@@ -12,13 +12,13 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 
 // Convert MWK to ZAR
 function convertMWKtoZAR(mwkAmount) {
-    const conversionRate = 0.011; // Example conversion rate, adjust if necessary
+    const conversionRate = 0.011; 
     return mwkAmount * conversionRate;
 }
 
 // Convert ZAR to MWK
 function convertZARtoMWK(zarAmount) {
-    const conversionRate = 0.011; // Example conversion rate, adjust if necessary
+    const conversionRate = 0.011; 
     return zarAmount / conversionRate;
 }
 
