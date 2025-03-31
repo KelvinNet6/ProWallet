@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PaySheet</title>
-      <link rel="icon" href="screenshot_2025_02_06_14_53_13_QDM_icon.ico" type="image/png">
+    <link rel="icon" href="screenshot_2025_02_06_14_53_13_QDM_icon.ico" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
@@ -23,7 +22,6 @@
             <li><a href="https://kelvinnet6.github.io/PSTMARKET/"><i class="fas fa-chart-line"></i> PST MARKET</a></li>
             <li><a href="https://kelvinnet6.github.io/HENDClothings/"><i class="fas fa-tshirt"></i> HEND CLOTHINGS</a></li>
             <li><button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sign Out</button></li>
-
         </ul>
     </div>
 
@@ -31,57 +29,47 @@
         <header class="header">
             <h1>PaySheet | <br>CashOut</h1>
         </header>
-        
-    <div class="container">
-    <div class="form-container">
-        <h1>Cash Collection</h1>
-        <form id="cashOutForm">
-            <div class="form-row">
-                <!-- Left Container -->
-                <div class="container-left">
-                    <label for="paymentNumber">Payment Collection Number:</label>
-                    <input type="text" id="paymentNumber" name="paymentNumber" value="460006759" readonly>
-                    <!-- Image Below Payment Number -->
-                    <img src="Screenshot 2025-02-06 14.53.13.png" alt="Cash Out Image" class="cashout-image">
-                </div>
-                 <br>
-                <!-- Right Container -->
-                <div class="container-right">
-                    <!-- Amount to Cash Out -->
-                    <label for="amount">Amount to Cash Out:</label>
-                    <input type="number" id="amount" name="amount" placeholder="Amount" required>
 
-                    <div class="fee-info" id="feeInfo">Transaction Fee: $0.00</div>
+        <div class="container">
+            <div class="form-container">
+                <h1>Cash Collection</h1>
+                <form id="cashOutForm">
+                    <div class="form-row">
+                        <div class="container-left">
+                            <label for="paymentNumber">Payment Collection Number:</label>
+                            <input type="text" id="paymentNumber" name="paymentNumber" value="460006759" readonly>
+                            <img src="Screenshot 2025-02-06 14.53.13.png" alt="Cash Out Image" class="cashout-image">
+                        </div>
+                        <br>
+                        <div class="container-right">
+                            <label for="amount">Amount to Cash Out:</label>
+                            <input type="number" id="amount" name="amount" placeholder="Amount" required>
 
-                    <!-- Payment Method -->
-                    <label for="paymentMethod">Payment Method:</label>
-                    <select id="paymentMethod" name="paymentMethod" required>
-                        <option value="bank">None</option>
-                        <option value="pickup">Cash Pickup</option>
-                    </select>
+                            <div class="fee-info" id="feeInfo">Transaction Fee: $0.00</div>
 
-                    <!-- Cash Pickup Location (if selected) -->
-                    <label for="pickupLocation" id="pickupLocationLabel" style="display: none;">Cash Pickup Location:</label>
-                    <input type="text" id="pickupLocation" name="pickupLocation" placeholder="Enter Pickup Location" style="display: none;">
+                            <label for="paymentMethod">Payment Method:</label>
+                            <select id="paymentMethod" name="paymentMethod" required>
+                                <option value="bank">None</option>
+                                <option value="pickup">Cash Pickup</option>
+                            </select>
+
+                            <label for="pickupLocation" id="pickupLocationLabel" style="display: none;">Cash Pickup Location:</label>
+                            <input type="text" id="pickupLocation" name="pickupLocation" placeholder="Enter Pickup Location" style="display: none;">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn">Confirm Cash-Out</button>
+                </form>
+
+                <div id="errorMessage" class="error"></div>
+
+                <div id="transactionSummary" class="transaction-summary" style="display: none;">
+                    <h3>Transaction Summary</h3>
+                    <p id="summaryDetails"></p>
                 </div>
             </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="btn">Confirm Cash-Out</button>
-        </form>
-
-        <!-- Error Message -->
-        <div id="errorMessage" class="error"></div>
-
-        <!-- Transaction Summary -->
-        <div id="transactionSummary" class="transaction-summary" style="display: none;">
-            <h3>Transaction Summary</h3>
-            <p id="summaryDetails"></p>
         </div>
-    </div>
-</div>
 
-<!-- New Section with Background Video -->
         <section class="video-container">
             <div class="video-overlay">
                 <h2>PaySheet</h2>
@@ -92,101 +80,20 @@
                 Your browser does not support the video tag.
             </video>
         </section>
-        
-<script src="js/cashout.js"></script>
-        event.preventDefault();
 
-        const paymentNumber = document.getElementById("paymentNumber").value.trim();
-        const amount = parseFloat(document.getElementById("amount").value.trim());
-        const paymentMethod = document.getElementById("paymentMethod").value;
-        const pickupLocation = document.getElementById("pickupLocation").value.trim();
+        <script src="js/cashout.js"></script>
 
-        // Validate inputs
-        if (!paymentNumber || !amount || isNaN(amount) || amount <= 0) {
-            document.getElementById("errorMessage").innerText = "Please fill in all fields with valid information.";
-            return;
-        }
-
-        // Hide the form and show transaction summary
-        document.querySelector(".form-container").style.display = "none";
-        document.getElementById("transactionSummary").style.display = "block";
-
-        // Display summary
-        let summaryText = `Payment Collection Number: ${paymentNumber}<br>Amount: $${amount.toFixed(2)}<br>Payment Method: ${paymentMethod}`;
-        
-        if (paymentMethod === 'pickup') {
-            if (!pickupLocation) {
-                document.getElementById("errorMessage").innerText = "Please enter a valid pickup location.";
-                return;
-            }
-            summaryText += `<br>Pickup Location: ${pickupLocation}`;
-        }
-
-        document.getElementById("summaryDetails").innerHTML = summaryText;
-
-        // Prepare data for API request
-        const requestData = {
-            paymentNumber: paymentNumber,
-            amount: amount,
-            paymentMethod: paymentMethod,
-            pickupLocation: paymentMethod === 'pickup' ? pickupLocation : null
-        };
-
-        // Call API to handle Cash Out request
-        fetch('https://0.0.0.0:5000/api/epaywallet/account/request/get/source/accountbalance/${accountNumber}/${emailAddress}', {  
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('authToken')}`  // Add your auth token if required
-            },
-            body: JSON.stringify(requestData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Check for success in the response
-            if (data.success) {
-                document.getElementById("transactionSummary").innerHTML += `<br>Transaction Successful!`;
-            } else {
-                document.getElementById("errorMessage").innerText = "There was an error processing your transaction.";
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            document.getElementById("errorMessage").innerText = "An error occurred while processing the transaction.";
-        });
-    });
-
-    // Change transaction fee based on amount
-    document.getElementById("amount").addEventListener("input", function() {
-        const amount = parseFloat(document.getElementById("amount").value.trim());
-        const fee = amount * 0.02; // 2% fee
-        document.getElementById("feeInfo").innerText = `Transaction Fee: $${fee.toFixed(2)}`;
-    });
-
-    // Toggle Cash Pickup Location visibility
-    document.getElementById("paymentMethod").addEventListener("change", function() {
-        if (this.value === 'pickup') {
-            document.getElementById("pickupLocationLabel").style.display = "block";
-            document.getElementById("pickupLocation").style.display = "block";
-        } else {
-            document.getElementById("pickupLocationLabel").style.display = "none";
-            document.getElementById("pickupLocation").style.display = "none";
-        }
-    });
-</script>
-
-          <!-- Bottom Navigation for Mobile View -->
-<div class="bottom-nav">
-    <a href="home.html" class="nav-item">
-        <i class="fas fa-home"></i>
-    </a>
-    <a href="FAQs.html" class="nav-item">
-        <i class="fas fa-question-circle"></i>
-    </a>
-    <a href="chat.html" class="nav-item ai-chat-logo">
-        <img src="Capture.PNG" alt="AI Chat Logo" class="ai-chat-img">
-    </a>
- 
+        <div class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <i class="fas fa-home"></i>
+            </a>
+            <a href="FAQs.html" class="nav-item">
+                <i class="fas fa-question-circle"></i>
+            </a>
+            <a href="chat.html" class="nav-item ai-chat-logo">
+                <img src="Capture.PNG" alt="AI Chat Logo" class="ai-chat-img">
+            </a>
+        </div>
+    </div>
 </body>
 </html>
-
