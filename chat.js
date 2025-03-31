@@ -122,7 +122,7 @@ document.getElementById("send-btn").addEventListener("click", function() {
 
 // Function to check PaySheet number from the integrated API
 function checkPaySheetNumber(paySheetNumber) {
-    const apiUrl = `https://0.0.0.0:44323/Help/Api/GET-api/epaywallet/account/request/check/paysheet/${paySheetNumber}`;
+    const apiUrl = `https://0.0.0.0:5000/api/epaywallet/account/request/check/paysheet/${paySheetNumber}`;
 
     fetch(apiUrl)
         .then(response => response.json())
