@@ -105,6 +105,21 @@ document.getElementById("send-btn").addEventListener("click", function() {
         case "5":
             addMessage('ai', 'About PaySheet: PaySheet is a comprehensive payment processing platform designed to simplify your financial transactions.');
             break;
+        case "6":
+            addMessage('ai', 'To transfer funds, please visit the Transfer Funds page or click the TF option in the menu.');
+            break;
+        case "7":
+            addMessage('ai', 'For cash withdrawals, please visit the Cash Out page or click the Cash Out option in the menu.');
+            break;
+        case "8":
+            addMessage('ai', 'For account security tips:\n- Keep your PaySheet number private\n- Enable two-factor authentication\n- Monitor your transactions regularly\n- Report suspicious activity immediately');
+            break;
+        case "9":
+            addMessage('ai', 'Customer Support is available 24/7. You can reach us through:\n- Email: support@paysheet.com\n- Phone: 1-800-PAYSHEET\n- Live Chat: Available on website');
+            break;
+        case "10":
+            addMessage('ai', 'Transaction Limits:\n- Daily Transfer: Up to $10,000\n- Weekly Withdrawal: Up to $25,000\n- Monthly Transaction: Up to $50,000');
+            break;
         default:
             let helpMessage = "Please select an option by entering its number:\n";
             helpMessage += "1. Check Balance\n";
@@ -112,6 +127,11 @@ document.getElementById("send-btn").addEventListener("click", function() {
             helpMessage += "3. Withdrawal Fee Information\n";
             helpMessage += "4. Find Nearest Agent\n";
             helpMessage += "5. About PaySheet\n";
+            helpMessage += "6. Transfer Funds Guide\n";
+            helpMessage += "7. Cash Out Guide\n";
+            helpMessage += "8. Security Tips\n";
+            helpMessage += "9. Customer Support\n";
+            helpMessage += "10. Transaction Limits\n";
             addMessage('ai', helpMessage);
     }
 
