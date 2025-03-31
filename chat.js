@@ -37,14 +37,8 @@ function processNextRequest() {
 }
 
 function handleRequest(request) {
-    showLoading();  // Show loading spinner
-
-    setTimeout(() => {
-        // Process the request here
-        addMessage('ai', `Processing: ${request}`);
-        hideLoading();
-        processNextRequest();
-    }, 2000);
+    // Don't need to show loading here since the main switch statement handles responses
+    processNextRequest();
 }
 
 function showLoading() {
