@@ -118,7 +118,7 @@ document.getElementById("send-btn").addEventListener("click", function() {
             addMessage('ai', 'Customer Support is available 24/7. You can reach us through:\n- Email: support@paysheet.com\n- Phone: 1-800-PAYSHEET\n- Live Chat: Available on website');
             break;
         case "10":
-            addMessage('ai', 'Transaction Limits:\n- Daily Transfer: Up to $10,000\n- Weekly Withdrawal: Up to $25,000\n- Monthly Transaction: Up to $50,000');
+            addMessage('ai', 'Transaction Limits:\n- Daily Transfer: Up to MWK 10,000,000\n- Weekly Withdrawal: Up to MWK 25,000,000\n- Monthly Transaction: Up to MWK 50,000,000');
             break;
         default:
             let helpMessage = "Please select an option by entering its number:\n";
@@ -177,7 +177,11 @@ function fetchBalance(accountNumber, emailAddress) {
         .then(data => {
             if (data.balance !== undefined) {
                 const balance = data.balance;
-                addMessage('ai', `Your current wallet balance is K${balance}.`);
+                const formattedBalance = new Intl.NumberFormat('en-MW', {
+                    style: 'currency',
+                    currency: 'MWK'
+                }).format(balance);
+                addMessage('ai', `Your current wallet balance is ${formattedBalance}`);
             } else {
                 addMessage('ai', 'Error: Unable to fetch balance. Please check your account details or try again later.');
             }
