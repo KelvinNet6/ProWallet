@@ -151,7 +151,7 @@
 
         // Function to check PaySheet number from the integrated API
         function checkPaySheetNumber(paySheetNumber) {
-            const apiUrl = `https://localhost:44323/Help/Api/GET-api/epaywallet/account/request/check/paysheet/${paySheetNumber}`;
+            const apiUrl = `https://0.0.0.0:44323/Help/Api/GET-api/epaywallet/account/request/check/paysheet/${paySheetNumber}`;
             
             fetch(apiUrl)
                 .then(response => response.json())
@@ -177,7 +177,7 @@
 
         // Function to fetch balance using PaySheet number and email address
         function fetchBalance(accountNumber, emailAddress) {
-            const apiUrl = `https://localhost:44323/Help/Api/GET-api/epaywallet/account/request/get/source/accountbalance/${accountNumber}/${emailAddress}`;
+            const apiUrl = `https://0.0.0.0:44323/Help/Api/GET-api/epaywallet/account/request/get/source/accountbalance/${accountNumber}/${emailAddress}`;
             
             fetch(apiUrl)  // Use dynamic values from the arguments
                 .then(response => {
@@ -326,7 +326,7 @@ function fetchFXLesson() {
 
 //----------------------------------------------Function to monitor login attempts and detect fraudulent login activities------------------------------------------------//
     function monitorLoginActivity() {
-        const apiUrl = `https://localhost:44323/Help/Api/GET-api/epaywallet/account/request/login/activity`;
+        const apiUrl = `https://0.0.0.0:44323/Help/Api/GET-api/epaywallet/account/request/login/activity`;
         
         fetch(apiUrl)
             .then(response => response.json())
@@ -402,24 +402,4 @@ function fetchFXLesson() {
         }
     }, 60000); // Check activities every minute (you can adjust this frequency)
 
-    // Handle user input and AI responses
-    document.getElementById("send-btn").addEventListener("click", function() {
-        const userInput = document.getElementById("user-query").value.trim();
-        
-        if (!userInput) return;  // Prevent sending empty input
-
-        // Display the user's message in the chat window
-        addMessage('user', userInput);
-
-        // Clear the input field immediately after sending the message
-        document.getElementById("user-query").value = '';  // Clear the input field
-
-        // Handling fraud alerts based on the query
-        if (userInput.toLowerCase().includes('fraud alert') || userInput.toLowerCase().includes('suspicious activity')) {
-            addMessage('ai', 'Monitoring your account for any suspicious activity. You will be alerted if any unusual behavior is detected.');
-        } else {
-            // Handle other queries as usual
-            let aiResponse = 'I didn\'t quite understand that. Could you try again?';
-            addMessage('ai', aiResponse);
-        }
-    });
+    // The duplicate event listener has been removed as it's already handled above
