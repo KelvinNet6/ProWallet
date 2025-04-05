@@ -20,10 +20,22 @@ function addMessage(sender, message, loading = false) {
         messageDiv.innerHTML = `<p>${message} <span class="dots">...</span></p>`;
     } else {
         messageDiv.innerHTML = `<p>${message}</p>`;
+        // Save message to localStorage
+        const chatHistory = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+        chatHistory.push({ sender, message });
+        localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
     }
     chatWindow.appendChild(messageDiv);
-    chatWindow.scrollTop = chatWindow.scrollHeight; // Scroll to the latest message
+    chatWindow.scrollTop = chatWindow.scrollHeight;
 }
+
+// Load chat history on page load
+window.addEventListener('load', function() {
+    const chatHistory = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+    chatHistory.forEach(msg => {
+        addMessage(msg.sender, msg.message);
+    });
+});
 
 // Flag to track whether we are expecting a PaySheet number or email address
 let isWaitingForPaySheet = false;
