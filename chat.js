@@ -6,7 +6,7 @@ document.getElementById("menu-btn").addEventListener("click", () => {
 
 // Logout functionality
 document.getElementById("logout-btn").addEventListener("click", () => {
-    sessionStorage.removeItem('paySheetAccount'); // Remove session data
+    localStorage.removeItem('paySheetAccount'); // Remove data from localStorage
     window.location.href = "index.html";
 });
 
@@ -70,8 +70,16 @@ function handleRequest(request) {
         switch (request) {
             case "1":
                 //Existing code remains the same
-                addMessage('ai', 'Please provide your PaySheet number to check the balance.');
-                isWaitingForPaySheet = true;
+                // Retrieve PaySheet number from localStorage if available
+                const storedAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
+                if (storedAccount && storedAccount.paySheetNumber) {
+                    accountNumber = storedAccount.paySheetNumber;
+                    isWaitingForPin = true;
+                    addMessage('ai', 'PaySheet number retrieved from your local storage. Please enter your 4-digit PIN.');
+                } else {
+                    addMessage('ai', 'Please provide your PaySheet number to check the balance.');
+                    isWaitingForPaySheet = true;
+                }
                 break;
             case "2":
                 addMessage('ai', 'Our standard transaction fee is 2% per transfer.');
@@ -300,8 +308,8 @@ function monitorLoginActivity() {
 
 // Regular security monitoring
 setInterval(() => {
-    const accountNumber = sessionStorage.getItem("paySheetAccount") ?
-        JSON.parse(sessionStorage.getItem("paySheetAccount")).accountName : null;
+    const storedAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
+    const accountNumber = storedAccount ? storedAccount.accountName : null;
 
     if (accountNumber) {
         monitorLoginActivity();
