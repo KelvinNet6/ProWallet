@@ -52,7 +52,7 @@ function hideLoading() {
 
 // Handle user input and AI responses
 document.getElementById("send-btn").addEventListener("click", function() {
-    const userInput = document.getElementById("user-query").value.trim();
+    const userInput = document.getElementById("user-query").value.trim().toLowerCase();
 
     if (!userInput) return;  // Prevent sending empty input
 
@@ -61,6 +61,23 @@ document.getElementById("send-btn").addEventListener("click", function() {
 
     // Clear the input field immediately after sending the message
     document.getElementById("user-query").value = '';
+
+    // Show greeting options if user types "start"
+    if (userInput === "start") {
+        let helpMessage = "Welcome to PaySheet! Please select an option by entering its number:\n";
+        helpMessage += "1. Check Balance\n";
+        helpMessage += "2. Transfer Fee Information\n";
+        helpMessage += "3. Withdrawal Fee Information\n";
+        helpMessage += "4. Find Nearest Agent\n";
+        helpMessage += "5. About PaySheet\n";
+        helpMessage += "6. Transfer Funds Guide\n";
+        helpMessage += "7. Cash Out Guide\n";
+        helpMessage += "8. Security Tips\n";
+        helpMessage += "9. Customer Support\n";
+        helpMessage += "10. Transaction Limits\n";
+        addMessage('ai', helpMessage);
+        return;
+    }
 
     // Handle Context Awareness
     const userContext = JSON.parse(sessionStorage.getItem('userContext')) || {};
@@ -189,20 +206,16 @@ function fetchBalance(accountNumber, emailAddress) {
 // Initial greeting message
 window.addEventListener('load', function() {
     setTimeout(function() {
-        let helpMessage = "Welcome to PaySheet! Please select an option by entering its number:\n";
-        helpMessage += "1. Check Balance\n";
-        helpMessage += "2. Transfer Fee Information\n";
-        helpMessage += "3. Withdrawal Fee Information\n";
-        helpMessage += "4. Find Nearest Agent\n";
-        helpMessage += "5. About PaySheet\n";
-        helpMessage += "6. Transfer Funds Guide\n";
-        helpMessage += "7. Cash Out Guide\n";
-        helpMessage += "8. Security Tips\n";
-        helpMessage += "9. Customer Support\n";
-        helpMessage += "10. Transaction Limits\n";
-        addMessage('ai', helpMessage);
+        addMessage('ai', "Type 'start' to begin chatting with PaySheet Assistant!");
     }, 1000);
 });
+
+// Function to clear chat history
+function clearChat() {
+    const chatWindow = document.getElementById("chat-window");
+    chatWindow.innerHTML = '';
+    addMessage('ai', "Chat history cleared. Type 'start' to begin chatting!");
+}
 
 // Security monitoring functions
 function monitorLoginActivity() {
