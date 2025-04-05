@@ -11,11 +11,16 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 });
 
 // Add message function to display chat bubbles
-function addMessage(sender, message) {
+function addMessage(sender, message, loading = false) {
     const chatWindow = document.getElementById("chat-window");
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("chat-bubble", sender === "ai" ? "ai-bubble" : "user-bubble");
-    messageDiv.innerHTML = `<p>${message}</p>`;
+    if (loading) {
+        messageDiv.classList.add("loading");
+        messageDiv.innerHTML = `<p>${message} <span class="dots">...</span></p>`;
+    } else {
+        messageDiv.innerHTML = `<p>${message}</p>`;
+    }
     chatWindow.appendChild(messageDiv);
     chatWindow.scrollTop = chatWindow.scrollHeight; // Scroll to the latest message
 }
@@ -37,18 +42,66 @@ function processNextRequest() {
 }
 
 function handleRequest(request) {
-    // Don't need to show loading here since the main switch statement handles responses
+    // Show loading indicator
+    addMessage('ai', 'Processing your request...', true);
+
+    setTimeout(() => {
+        //Remove loading message
+        const loadingMessages = document.querySelectorAll('.loading');
+        loadingMessages.forEach(msg => msg.remove());
+
+        switch (request) {
+            case "1":
+                //Existing code remains the same
+                addMessage('ai', 'Please provide your PaySheet number to check the balance.');
+                isWaitingForPaySheet = true;
+                break;
+            case "2":
+                addMessage('ai', 'Our standard transaction fee is 2% per transfer.');
+                break;
+            case "3":
+                addMessage('ai', 'The withdrawal fee for cashing out is $1.50 per transaction.');
+                break;
+            case "4":
+                addMessage('ai', 'Please share your location to find the nearest payment collection agent.');
+                break;
+            case "5":
+                addMessage('ai', 'About PaySheet: PaySheet is a comprehensive payment processing platform designed to simplify your financial transactions.');
+                break;
+            case "6":
+                addMessage('ai', 'To transfer funds, please visit the Transfer Funds page or click the TF option in the menu.');
+                break;
+            case "7":
+                addMessage('ai', 'For cash withdrawals, please visit the Cash Out page or click the Cash Out option in the menu.');
+                break;
+            case "8":
+                addMessage('ai', 'For account security tips:\n- Keep your PaySheet number private\n- Enable two-factor authentication\n- Monitor your transactions regularly\n- Report suspicious activity immediately');
+                break;
+            case "9":
+                addMessage('ai', 'Customer Support is available 24/7. You can reach us through:\n- Email: support@paysheet.com\n- Phone: 1-800-PAYSHEET\n- Live Chat: Available on website');
+                break;
+            case "10":
+                addMessage('ai', 'Transaction Limits:\n- Daily Transfer: Up to MWK 10,000,000\n- Weekly Withdrawal: Up to MWK 25,000,000\n- Monthly Transaction: Up to MWK 50,000,000');
+                break;
+            default:
+                let helpMessage = "Please select an option by entering its number:\n";
+                helpMessage += "1. Check Balance\n";
+                helpMessage += "2. Transfer Fee Information\n";
+                helpMessage += "3. Withdrawal Fee Information\n";
+                helpMessage += "4. Find Nearest Agent\n";
+                helpMessage += "5. About PaySheet\n";
+                helpMessage += "6. Transfer Funds Guide\n";
+                helpMessage += "7. Cash Out Guide\n";
+                helpMessage += "8. Security Tips\n";
+                helpMessage += "9. Customer Support\n";
+                helpMessage += "10. Transaction Limits\n";
+                addMessage('ai', helpMessage);
+        }
+    }, 3000);
+
     processNextRequest();
 }
 
-function showLoading() {
-    addMessage('ai', 'Please wait, I am processing your request...');
-}
-
-function hideLoading() {
-    const loadingMessages = document.querySelectorAll('.loading');
-    loadingMessages.forEach(msg => msg.remove());
-}
 
 // Handle user input and AI responses
 document.getElementById("send-btn").addEventListener("click", function() {
@@ -98,53 +151,6 @@ document.getElementById("send-btn").addEventListener("click", function() {
         return;
     }
 
-    // Main interaction flow based on numeric input
-    switch(userInput) {
-        case "1":
-            addMessage('ai', 'Please provide your PaySheet number to check the balance.');
-            isWaitingForPaySheet = true;
-            break;
-        case "2":
-            addMessage('ai', 'Our standard transaction fee is 2% per transfer.');
-            break;
-        case "3":
-            addMessage('ai', 'The withdrawal fee for cashing out is $1.50 per transaction.');
-            break;
-        case "4":
-            addMessage('ai', 'Please share your location to find the nearest payment collection agent.');
-            break;
-        case "5":
-            addMessage('ai', 'About PaySheet: PaySheet is a comprehensive payment processing platform designed to simplify your financial transactions.');
-            break;
-        case "6":
-            addMessage('ai', 'To transfer funds, please visit the Transfer Funds page or click the TF option in the menu.');
-            break;
-        case "7":
-            addMessage('ai', 'For cash withdrawals, please visit the Cash Out page or click the Cash Out option in the menu.');
-            break;
-        case "8":
-            addMessage('ai', 'For account security tips:\n- Keep your PaySheet number private\n- Enable two-factor authentication\n- Monitor your transactions regularly\n- Report suspicious activity immediately');
-            break;
-        case "9":
-            addMessage('ai', 'Customer Support is available 24/7. You can reach us through:\n- Email: support@paysheet.com\n- Phone: 1-800-PAYSHEET\n- Live Chat: Available on website');
-            break;
-        case "10":
-            addMessage('ai', 'Transaction Limits:\n- Daily Transfer: Up to MWK 10,000,000\n- Weekly Withdrawal: Up to MWK 25,000,000\n- Monthly Transaction: Up to MWK 50,000,000');
-            break;
-        default:
-            let helpMessage = "Please select an option by entering its number:\n";
-            helpMessage += "1. Check Balance\n";
-            helpMessage += "2. Transfer Fee Information\n";
-            helpMessage += "3. Withdrawal Fee Information\n";
-            helpMessage += "4. Find Nearest Agent\n";
-            helpMessage += "5. About PaySheet\n";
-            helpMessage += "6. Transfer Funds Guide\n";
-            helpMessage += "7. Cash Out Guide\n";
-            helpMessage += "8. Security Tips\n";
-            helpMessage += "9. Customer Support\n";
-            helpMessage += "10. Transaction Limits\n";
-            addMessage('ai', helpMessage);
-    }
 
     // Add to request queue
     requestQueue.push(userInput);
@@ -238,7 +244,7 @@ function monitorLoginActivity() {
 
 // Regular security monitoring
 setInterval(() => {
-    const accountNumber = sessionStorage.getItem("paySheetAccount") ? 
+    const accountNumber = sessionStorage.getItem("paySheetAccount") ?
         JSON.parse(sessionStorage.getItem("paySheetAccount")).accountName : null;
 
     if (accountNumber) {
