@@ -40,8 +40,12 @@ window.addEventListener('load', function() {
 // Flag to track whether we are expecting a PaySheet number or email address
 let isWaitingForPaySheet = false;
 let isWaitingForEmail = false;
+let isWaitingForPin = false; // Added flag for PIN verification
 let accountNumber = '';
 let emailAddress = '';
+let pinAttempts = 0; // Added variable to track PIN attempts
+const MAX_PIN_ATTEMPTS = 3; // Maximum number of PIN attempts
+
 
 // Queue to manage multiple requests
 let requestQueue = [];
@@ -157,6 +161,16 @@ document.getElementById("send-btn").addEventListener("click", function() {
         return;
     }
 
+    // If we are waiting for a PIN
+    if (isWaitingForPin) {
+        if (userInput.length !== 4 || isNaN(userInput)) {
+            addMessage('ai', 'Please enter a valid 4-digit PIN.');
+            return;
+        }
+        verifyPin(userInput);
+        return;
+    }
+
     // If we are waiting for an email address
     if (isWaitingForEmail) {
         emailAddress = userInput;
@@ -180,8 +194,8 @@ function checkPaySheetNumber(paySheetNumber) {
             if (data.isValid) {
                 accountNumber = paySheetNumber;
                 isWaitingForPaySheet = false;
-                isWaitingForEmail = true;
-                addMessage('ai', 'PaySheet number verified successfully! Now, please provide your email address.');
+                isWaitingForPin = true; // Added PIN verification step
+                addMessage('ai', 'PaySheet number verified successfully! Please enter your 4-digit PIN.');
             } else {
                 addMessage('ai', 'Sorry, the PaySheet number you entered is invalid. Please check and try again.');
                 isWaitingForPaySheet = false;
@@ -219,6 +233,35 @@ function fetchBalance(accountNumber, emailAddress) {
         .catch(error => {
             addMessage('ai', 'Sorry, there was an error fetching your balance. Please try again later.');
             console.error('Error fetching balance:', error);
+        });
+}
+
+// Function to verify PIN
+function verifyPin(pin) {
+    const apiUrl = `https://0.0.0.0:5000/api/epaywallet/account/verify/pin/${accountNumber}/${pin}`;
+
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.isValid) {
+                pinAttempts = 0;
+                isWaitingForPin = false;
+                isWaitingForEmail = true;
+                addMessage('ai', 'PIN verified successfully! Now, please provide your email address.');
+            } else {
+                pinAttempts++;
+                if (pinAttempts >= MAX_PIN_ATTEMPTS) {
+                    addMessage('ai', 'Maximum PIN attempts exceeded. Please try again later.');
+                    isWaitingForPin = false;
+                    pinAttempts = 0;
+                } else {
+                    addMessage('ai', `Invalid PIN. Please try again. ${MAX_PIN_ATTEMPTS - pinAttempts} attempts remaining.`);
+                }
+            }
+        })
+        .catch(error => {
+            addMessage('ai', 'Sorry, there was an error verifying your PIN. Please try again later.');
+            console.error('Error verifying PIN:', error);
         });
 }
 
