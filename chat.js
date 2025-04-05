@@ -43,12 +43,13 @@ function processNextRequest() {
 
 function handleRequest(request) {
     // Show loading indicator
-    addMessage('ai', 'Processing your request...', true);
+    const loadingMessage = addMessage('ai', '...', true);
 
     setTimeout(() => {
-        //Remove loading message
-        const loadingMessages = document.querySelectorAll('.loading');
-        loadingMessages.forEach(msg => msg.remove());
+        // Remove loading message
+        if (loadingMessage && loadingMessage.parentNode) {
+            loadingMessage.remove();
+        }
 
         switch (request) {
             case "1":
