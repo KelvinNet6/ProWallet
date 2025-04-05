@@ -195,6 +195,11 @@ window.addEventListener('load', function() {
         helpMessage += "3. Withdrawal Fee Information\n";
         helpMessage += "4. Find Nearest Agent\n";
         helpMessage += "5. About PaySheet\n";
+        helpMessage += "6. Transfer Funds Guide\n";
+        helpMessage += "7. Cash Out Guide\n";
+        helpMessage += "8. Security Tips\n";
+        helpMessage += "9. Customer Support\n";
+        helpMessage += "10. Transaction Limits\n";
         addMessage('ai', helpMessage);
     }, 1000);
 });
