@@ -1199,8 +1199,9 @@ button:hover {
 /* Navigation links section */
 .nav-links {
     display: flex;
-    gap: 20px; /* Space between links */
-    border-left: 2px solid #ddd; /* Vertical line separating balance and links */
+    flex-direction: column;
+    gap: 10px;
+    border-left: 2px solid #ddd;
     padding-left: 20px;
 }
 
@@ -1208,7 +1209,8 @@ button:hover {
     color: #333;
     text-decoration: none;
     font-size: 1rem;
-    padding: 5px 10px;
+    padding: 8px 10px;
+    display: block;
 }
 
 .nav-links a:hover {
