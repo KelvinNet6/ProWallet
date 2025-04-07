@@ -109,17 +109,17 @@ function handleRequest(request) {
                 addMessage('ai', 'Transaction Limits:\n- Daily Transfer: Up to MWK 10,000,000\n- Weekly Withdrawal: Up to MWK 25,000,000\n- Monthly Transaction: Up to MWK 50,000,000');
                 break;
             default:
-                let helpMessage = "Please select an option by entering its number:\n";
-                helpMessage += "1. Check Balance\n";
-                helpMessage += "2. Transfer Fee Information\n";
-                helpMessage += "3. Withdrawal Fee Information\n";
-                helpMessage += "4. Find Nearest Agent\n";
-                helpMessage += "5. About PaySheet\n";
-                helpMessage += "6. Transfer Funds Guide\n";
-                helpMessage += "7. Cash Out Guide\n";
-                helpMessage += "8. Security Tips\n";
-                helpMessage += "9. Customer Support\n";
-                helpMessage += "10. Transaction Limits\n";
+                let helpMessage = "Please select an option by entering its number:\n\n\n";
+                helpMessage += "1. Check Balance\n\n";
+                helpMessage += "2. Transfer Fee Information\n\n";
+                helpMessage += "3. Withdrawal Fee Information\n\n";
+                helpMessage += "4. Find Nearest Agent\n\n";
+                helpMessage += "5. About PaySheet\v\n";
+                helpMessage += "6. Transfer Funds Guide\n\n";
+                helpMessage += "7. Cash Out Guide\n\n";
+                helpMessage += "8. Security Tips\n\n";
+                helpMessage += "9. Customer Support\n\n";
+                helpMessage += "10. Transaction Limits\n\n";
                 addMessage('ai', helpMessage);
         }
     }, 3000);
@@ -142,17 +142,17 @@ document.getElementById("send-btn").addEventListener("click", function() {
 
     // Show greeting options if user types "start"
     if (userInput === "start") {
-        let helpMessage = "Welcome to PaySheet! Please select an option by entering its number:\n";
-        helpMessage += "1. Check Balance\n";
-        helpMessage += "2. Transfer Fee Information\n";
-        helpMessage += "3. Withdrawal Fee Information\n";
-        helpMessage += "4. Find Nearest Agent\n";
-        helpMessage += "5. About PaySheet\n";
-        helpMessage += "6. Transfer Funds Guide\n";
-        helpMessage += "7. Cash Out Guide\n";
-        helpMessage += "8. Security Tips\n";
-        helpMessage += "9. Customer Support\n";
-        helpMessage += "10. Transaction Limits\n";
+        let helpMessage = "Welcome to PaySheet! Please select an option by entering its number:\n\n\n";
+        helpMessage += "1. Check Balance\n\n";
+        helpMessage += "2. Transfer Fee Information\n\n";
+        helpMessage += "3. Withdrawal Fee Information\n\n";
+        helpMessage += "4. Find Nearest Agent\n\n";
+        helpMessage += "5. About PaySheet\v\n";
+        helpMessage += "6. Transfer Funds Guide\n\n";
+        helpMessage += "7. Cash Out Guide\n\n";
+        helpMessage += "8. Security Tips\n\n";
+        helpMessage += "9. Customer Support\n\n";
+        helpMessage += "10. Transaction Limits\n\n";
         addMessage('ai', helpMessage);
         return;
     }
