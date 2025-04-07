@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const storedAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
     const enableNFCBtn = document.getElementById('enableNFC');
@@ -32,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if ('NDEFReader' in window) {
                 const ndef = new NDEFReader();
                 await ndef.scan();
-                
+
                 enableNFCBtn.style.display = 'none';
                 disableNFCBtn.style.display = 'block';
                 paymentStatus.innerHTML = '<i class="fas fa-check-circle"></i><p>NFC Active - Ready to Pay</p>';
@@ -44,7 +43,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error('NFC not supported');
             }
         } catch (error) {
-            paymentStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i><p>NFC not available on this device</p>';
+            paymentStatus.innerHTML = `
+                <i class="fas fa-exclamation-circle"></i>
+                <p>NFC not available on this device.</p>
+                <small>Please ensure:</small>
+                <ul style="text-align: left; margin-top: 5px;">
+                    <li>Your device has NFC hardware</li>
+                    <li>NFC is enabled in your device settings</li>
+                    <li>You're using a supported browser (Chrome Android/iOS)</li>
+                </ul>`;
         }
     });
 
@@ -62,7 +69,7 @@ async function handleNFCPayment(event) {
     try {
         // Simulate payment processing
         await new Promise(resolve => setTimeout(resolve, 2000));
-        
+
         paymentStatus.innerHTML = '<i class="fas fa-check-circle"></i><p>Payment Successful!</p>';
         setTimeout(() => {
             paymentStatus.innerHTML = '<i class="fas fa-check-circle"></i><p>Ready for next payment</p>';
