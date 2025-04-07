@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PaySheet</title>
-      <link rel="icon" href="screenshot_2025_02_06_14_53_13_QDM_icon.ico" type="image/png">
+    <link rel="icon" href="screenshot_2025_02_06_14_53_13_QDM_icon.ico" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
@@ -21,7 +21,6 @@
             <li><a href="contactless.html"><i class="fas fa-wifi fa-rotate-90"></i> Contactless Pay</a></li>
             <li><a href="profilesettings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
             <li><button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sign Out</button></li>
-
         </ul>
     </div>
 
@@ -30,39 +29,102 @@
             <h1>PaySheet | Profile</h1>
         </header>
 
-       <div class="settings-container">
-        <h1>Profile Update</h1>
+        <div class="settings-container">
+            <!-- Profile Card -->
+            <div class="profile-card">
+                <div class="profile-header">
+                    <img id="current-profile-img" src="Screenshot 2025-02-06 14.53.13.png" alt="Profile" class="profile-img">
+                    <div class="profile-info">
+                        <h2 id="user-name">User Name</h2>
+                        <p id="user-email">user@email.com</p>
+                    </div>
+                </div>
+                <button class="settings-btn primary-btn" id="edit-profile-btn">
+                    <i class="fas fa-user-edit"></i> Edit Profile
+                </button>
+            </div>
 
-        <!-- Profile Section -->
-        <div class="section">
-            <h2>Profile</h2>
-            <button class="btn" id="edit-profile-btn">Edit Profile</button>
-            <button class="btn" id="change-profile-pic-btn"></button>
+            <!-- Settings Grid -->
+            <div class="settings-grid">
+                <!-- Security Section -->
+                <div class="settings-section">
+                    <h3><i class="fas fa-shield-alt"></i> Security</h3>
+                    <div class="settings-content">
+                        <button class="settings-btn" id="change-password-btn">
+                            <i class="fas fa-key"></i> Change Password
+                        </button>
+                        <button class="settings-btn" id="enable-2fa-btn">
+                            <i class="fas fa-lock"></i> Enable 2FA
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notifications Section -->
+                <div class="settings-section">
+                    <h3><i class="fas fa-bell"></i> Notifications</h3>
+                    <div class="settings-content">
+                        <div class="toggle-setting">
+                            <label for="email-notifications">Email Notifications</label>
+                            <label class="switch">
+                                <input type="checkbox" id="email-notifications" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-setting">
+                            <label for="sms-notifications">SMS Notifications</label>
+                            <label class="switch">
+                                <input type="checkbox" id="sms-notifications">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Privacy Section -->
+                <div class="settings-section">
+                    <h3><i class="fas fa-user-shield"></i> Privacy</h3>
+                    <div class="settings-content">
+                        <div class="toggle-setting">
+                            <label for="privacy-mode">Privacy Mode</label>
+                            <label class="switch">
+                                <input type="checkbox" id="privacy-mode">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-setting">
+                            <label for="activity-visibility">Activity Visibility</label>
+                            <label class="switch">
+                                <input type="checkbox" id="activity-visibility" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preferences Section -->
+                <div class="settings-section">
+                    <h3><i class="fas fa-sliders-h"></i> Preferences</h3>
+                    <div class="settings-content">
+                        <div class="select-setting">
+                            <label for="language">Language</label>
+                            <select id="language" class="settings-select">
+                                <option value="en">English</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                            </select>
+                        </div>
+                        <div class="select-setting">
+                            <label for="timezone">Timezone</label>
+                            <select id="timezone" class="settings-select">
+                                <option value="UTC">UTC</option>
+                                <option value="EST">EST</option>
+                                <option value="PST">PST</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <!-- Privacy Section -->
-        <div class="section">
-            <h2>Privacy</h2>
-            <label for="privacy-toggle">Enable Privacy Mode</label>
-            <input type="checkbox" id="privacy-toggle" class="toggle">
-        </div>
-
-        <!-- Notification Section -->
-        <div class="section">
-            <h2>Notifications</h2>
-            <label for="email-notifications">Email Notifications</label>
-            <input type="checkbox" id="email-notifications" class="toggle" checked>
-
-            <label for="sms-notifications">SMS Notifications</label>
-            <input type="checkbox" id="sms-notifications" class="toggle">
-        </div>
-
-        <!-- Change Password Section -->
-        <div class="section">
-            <h2>Change Password</h2>
-            <button class="btn" id="change-password-btn">Change Password</button>
-        </div>
-
     </div>
 
     <!-- Profile Edit Popup -->
@@ -70,9 +132,21 @@
         <div class="popup-content">
             <span id="close-profile-popup" class="close">&times;</span>
             <h3>Edit Profile</h3>
-            <img id="profile-img" src="" alt="Profile Image" class="profile-img">
-            <input type="file" id="profile-upload" class="file-upload">
-            <button id="save-profile-btn" class="btn" style="display: none;">Save</button>
+            <form id="profile-form">
+                <div class="form-group">
+                    <img id="profile-preview" src="" alt="Profile Preview" class="profile-img">
+                    <input type="file" id="profile-upload" class="file-upload" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label for="edit-name">Full Name</label>
+                    <input type="text" id="edit-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-email">Email</label>
+                    <input type="email" id="edit-email" required>
+                </div>
+                <button type="submit" class="settings-btn primary-btn">Save Changes</button>
+            </form>
         </div>
     </div>
 
@@ -82,159 +156,37 @@
             <span id="close-password-popup" class="close">&times;</span>
             <h3>Change Password</h3>
             <form id="password-form">
-                <label for="current-password">Current Password:</label>
-                <input type="password" id="current-password" required>
-
-                <label for="new-password">New Password:</label>
-                <input type="password" id="new-password" required>
-
-                <label for="confirm-password">Confirm Password:</label>
-                <input type="password" id="confirm-password" required>
-
-                <button type="submit" class="btn">Save New Password</button>
+                <div class="form-group">
+                    <label for="current-password">Current Password</label>
+                    <input type="password" id="current-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">New Password</label>
+                    <input type="password" id="new-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" required>
+                </div>
+                <div id="password-error" class="error"></div>
+                <button type="submit" class="settings-btn primary-btn">Update Password</button>
             </form>
-            <div id="password-error" class="error" style="display: none;">Passwords do not match!</div>
         </div>
     </div>
 
+    <!-- Bottom Navigation for Mobile View -->
+    <div class="bottom-nav">
+        <a href="home.html" class="nav-item">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="FAQs.html" class="nav-item">
+            <i class="fas fa-question-circle"></i>
+        </a>
+        <a href="chat.html" class="nav-item ai-chat-logo">
+            <img src="Capture.PNG" alt="AI Chat Logo" class="ai-chat-img">
+        </a>
+    </div>
+
     <script src="scripts.js"></script>
-
-<script>
-
-    // Toggle Sidebar for Mobile
-        document.getElementById("menu-btn").addEventListener("click", () => {
-            const sidebar = document.getElementById("sidebar");
-            sidebar.classList.toggle("active");
-        });
-
-      // Logout functionality
-document.getElementById("logout-btn").addEventListener("click", () => {
-    localStorage.removeItem('authToken');
-    window.location.href = "index.html";
-});
-
-// Open/Close Profile Popup
-document.getElementById('edit-profile-btn').addEventListener('click', function() {
-    document.getElementById('profile-popup').style.display = 'flex';
-});
-
-document.getElementById('close-profile-popup').addEventListener('click', function() {
-    document.getElementById('profile-popup').style.display = 'none';
-});
-
-// Handle Profile Image Upload
-document.getElementById('profile-upload').addEventListener('change', function(event) {
-    const file = event.target.files[0];  // Get the file object
-    if (file) {
-        const reader = new FileReader();  // Create a FileReader to read the file
-        reader.onload = function(e) {
-            // Apply the selected image as the new profile picture
-            const base64Image = e.target.result;
-            document.getElementById('profile-img').src = base64Image;
-
-            // Save the base64 string to localStorage
-            localStorage.setItem('profileImage', base64Image);
-            
-            // Show the Save button
-            document.getElementById('save-profile-btn').style.display = 'block';
-        };
-        reader.readAsDataURL(file);  // Read the image file as a data URL
-    }
-});
-
-// On page load, retrieve the image from localStorage if available
-window.addEventListener('load', function() {
-    const savedProfileImage = localStorage.getItem('profileImage');
-    if (savedProfileImage) {
-        document.getElementById('profile-img').src = savedProfileImage;
-    }
-});
-
-// Save Profile
-document.getElementById('save-profile-btn').addEventListener('click', function() {
-    // Handle saving the profile picture here (upload it to the server, etc.)
-    alert('Profile picture saved!');
-    document.getElementById('profile-popup').style.display = 'none';
-});
-
-// Change Password Popup
-document.getElementById('change-password-btn').addEventListener('click', function() {
-    document.getElementById('password-popup').style.display = 'flex';
-});
-
-document.getElementById('close-password-popup').addEventListener('click', function() {
-    document.getElementById('password-popup').style.display = 'none';
-});
-
-// Password Form Validation and API Call
-document.getElementById('password-form').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    const currentPassword = document.getElementById('current-password').value;
-    const newPassword = document.getElementById('new-password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
-
-    // Simple form validation
-    if (newPassword !== confirmPassword) {
-        document.getElementById('password-error').style.display = 'block';
-        return;
-    }
-
-    document.getElementById('password-error').style.display = 'none';
-
-    // Get the authentication token (assumed to be stored in localStorage)
-    const authToken = localStorage.getItem('authToken');
-
-    if (!authToken) {
-        alert('User not authenticated. Please log in again.');
-        window.location.href = "index.html";
-        return;
-    }
-
-    // Prepare the payload for the API request
-    const payload = {
-        currentPassword: currentPassword,
-        newPassword: newPassword,
-    };
-
-    try {
-        // Send the request to the API (Replace with your actual API URL)
-        const response = await fetch('https://your-api-endpoint.com/change-password', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authToken}`, // Sending the token for authentication
-            },
-            body: JSON.stringify(payload),
-        });
-
-        if (response.ok) {
-            // Successfully changed the password
-            alert('Password changed successfully!');
-            document.getElementById('password-popup').style.display = 'none';
-        } else {
-            // Handle API errors (e.g., incorrect current password)
-            const errorData = await response.json();
-            alert(`Error: ${errorData.message || 'An error occurred. Please try again.'}`);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again later.');
-    }
-});
-
-        </script>
-
-  <!-- Bottom Navigation for Mobile View -->
-<div class="bottom-nav">
-    <a href="home.html" class="nav-item">
-        <i class="fas fa-home"></i>
-    </a>
-    <a href="FAQs.html" class="nav-item">
-        <i class="fas fa-question-circle"></i>
-    </a>
-    <a href="chat.html" class="nav-item ai-chat-logo">
-        <img src="Capture.PNG" alt="AI Chat Logo" class="ai-chat-img">
-    </a>
-        
 </body>
 </html>
