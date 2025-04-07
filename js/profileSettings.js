@@ -131,3 +131,98 @@ const savedTimezone = localStorage.getItem('timezone');
 if (savedTimezone) {
     document.getElementById('timezone').value = savedTimezone;
 }
+// 2FA Implementation
+document.getElementById('enable-2fa-btn').addEventListener('click', async () => {
+    const response = await fetch('https://0.0.0.0:5000/api/2fa/setup', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
+    });
+    
+    if (response.ok) {
+        const data = await response.json();
+        // Show QR code or setup instructions
+        alert('2FA setup instructions sent to your email');
+    }
+});
+
+// Notification Settings
+const emailNotifs = document.getElementById('email-notifications');
+const smsNotifs = document.getElementById('sms-notifications');
+
+emailNotifs.addEventListener('change', async (e) => {
+    await updateNotificationSettings('email', e.target.checked);
+});
+
+smsNotifs.addEventListener('change', async (e) => {
+    await updateNotificationSettings('sms', e.target.checked);
+});
+
+async function updateNotificationSettings(type, enabled) {
+    try {
+        const response = await fetch('https://0.0.0.0:5000/api/notifications/settings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            },
+            body: JSON.stringify({
+                type: type,
+                enabled: enabled
+            })
+        });
+        
+        if (!response.ok) throw new Error('Failed to update settings');
+        
+        // Save to localStorage for persistence
+        localStorage.setItem(`${type}Notifications`, enabled);
+    } catch (error) {
+        console.error('Error updating notification settings:', error);
+        alert('Failed to update notification settings');
+    }
+}
+
+// Privacy Settings
+const privacyMode = document.getElementById('privacy-mode');
+const activityVisibility = document.getElementById('activity-visibility');
+
+privacyMode.addEventListener('change', (e) => {
+    updatePrivacySettings('privacyMode', e.target.checked);
+});
+
+activityVisibility.addEventListener('change', (e) => {
+    updatePrivacySettings('activityVisibility', e.target.checked);
+});
+
+async function updatePrivacySettings(setting, enabled) {
+    try {
+        const response = await fetch('https://0.0.0.0:5000/api/privacy/settings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            },
+            body: JSON.stringify({
+                setting: setting,
+                enabled: enabled
+            })
+        });
+        
+        if (!response.ok) throw new Error('Failed to update privacy settings');
+        
+        // Save to localStorage for persistence
+        localStorage.setItem(setting, enabled);
+    } catch (error) {
+        console.error('Error updating privacy settings:', error);
+        alert('Failed to update privacy settings');
+    }
+}
+
+// Load saved settings on page load
+window.addEventListener('load', () => {
+    emailNotifs.checked = localStorage.getItem('emailNotifications') === 'true';
+    smsNotifs.checked = localStorage.getItem('smsNotifications') === 'true';
+    privacyMode.checked = localStorage.getItem('privacyMode') === 'true';
+    activityVisibility.checked = localStorage.getItem('activityVisibility') === 'true';
+});
