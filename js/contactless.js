@@ -8,8 +8,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const cardHolder = document.getElementById('cardHolder');
 
     if (storedAccount) {
-        cardNumber.textContent = `**** **** **** ${storedAccount.paySheetNumber.slice(-4)}`;
-        cardHolder.textContent = storedAccount.accountName;
+        // Fetch card data from API
+        fetch(`https://0.0.0.0:5000/api/epaywallet/account/get/${storedAccount.paySheetNumber}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            cardNumber.textContent = `**** **** **** ${data.cardNumber.slice(-4)}`;
+            cardHolder.textContent = data.accountName;
+        })
+        .catch(error => {
+            console.error('Error fetching card data:', error);
+            // Fallback to stored data
+            cardNumber.textContent = `**** **** **** ${storedAccount.paySheetNumber.slice(-4)}`;
+            cardHolder.textContent = storedAccount.accountName;
+        });
     }
 
     enableNFCBtn.addEventListener('click', async () => {
