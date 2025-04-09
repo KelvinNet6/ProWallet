@@ -64,17 +64,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function handleNFCPayment(event) {
     const paymentStatus = document.getElementById('paymentStatus');
+    const storedAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
+    
+    if (!storedAccount || !storedAccount.paySheetNumber) {
+        paymentStatus.innerHTML = '<i class="fas fa-times-circle"></i><p>Account not found</p>';
+        return;
+    }
+
     paymentStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i><p>Processing Payment...</p>';
 
     try {
-        // Simulate payment processing
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        // Default transaction amount - you may want to make this configurable
+        const transactionAmount = 10.00;
 
-        paymentStatus.innerHTML = '<i class="fas fa-check-circle"></i><p>Payment Successful!</p>';
-        setTimeout(() => {
-            paymentStatus.innerHTML = '<i class="fas fa-check-circle"></i><p>Ready for next payment</p>';
-        }, 3000);
+        // Process payment through API
+        const response = await fetch(`https://0.0.0.0:5000/api/epaywallet/account/transaction`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            },
+            body: JSON.stringify({
+                accountNumber: storedAccount.paySheetNumber,
+                amount: transactionAmount,
+                transactionType: 'NFC_PAYMENT'
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            paymentStatus.innerHTML = '<i class="fas fa-check-circle"></i><p>Payment Successful!</p>';
+            setTimeout(() => {
+                paymentStatus.innerHTML = '<i class="fas fa-check-circle"></i><p>Ready for next payment</p>';
+            }, 3000);
+        } else {
+            throw new Error(data.message || 'Payment failed');
+        }
     } catch (error) {
-        paymentStatus.innerHTML = '<i class="fas fa-times-circle"></i><p>Payment Failed</p>';
+        console.error('Payment error:', error);
+        paymentStatus.innerHTML = '<i class="fas fa-times-circle"></i><p>Payment Failed: ' + 
+            (error.message || 'Transaction could not be processed') + '</p>';
     }
 }
