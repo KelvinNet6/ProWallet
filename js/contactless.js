@@ -71,7 +71,11 @@ async function handleNFCPayment(event) {
         return;
     }
 
-    paymentStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i><p>Processing Payment...</p>';
+    paymentStatus.innerHTML = `
+        <div class="payment-animation">
+            <i class="fas fa-circle-notch fa-spin"></i>
+            <p>Processing Payment...</p>
+        </div>`;
 
     try {
         // Default transaction amount - you may want to make this configurable
@@ -94,9 +98,17 @@ async function handleNFCPayment(event) {
         const data = await response.json();
 
         if (data.success) {
-            paymentStatus.innerHTML = '<i class="fas fa-check-circle"></i><p>Payment Successful!</p>';
+            paymentStatus.innerHTML = `
+                <div class="payment-animation success">
+                    <i class="fas fa-check-circle success-icon"></i>
+                    <p>Payment Successful!</p>
+                </div>`;
             setTimeout(() => {
-                paymentStatus.innerHTML = '<i class="fas fa-check-circle"></i><p>Ready for next payment</p>';
+                paymentStatus.innerHTML = `
+                    <div class="payment-animation ready">
+                        <i class="fas fa-check-circle"></i>
+                        <p>Ready for next payment</p>
+                    </div>`;
             }, 3000);
         } else {
             throw new Error(data.message || 'Payment failed');
