@@ -1,4 +1,14 @@
+// Toggle Sidebar for Mobile
+document.getElementById("menu-btn").addEventListener("click", () => {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("active");
+});
 
+// Logout functionality
+document.getElementById("logout-btn").addEventListener("click", () => {
+    localStorage.removeItem('paySheetAccount'); // Remove data from localStorage
+    window.location.href = "index.html";
+});
 // Get DOM elements
 const editProfileBtn = document.getElementById('edit-profile-btn');
 const profilePopup = document.getElementById('profile-popup');
