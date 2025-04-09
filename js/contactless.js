@@ -1,3 +1,15 @@
+// Toggle Sidebar for Mobile
+document.getElementById("menu-btn").addEventListener("click", () => {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("active");
+});
+
+// Logout functionality
+document.getElementById("logout-btn").addEventListener("click", () => {
+    localStorage.removeItem('paySheetAccount'); // Remove data from localStorage
+    window.location.href = "index.html";
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     const storedAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
     const enableNFCBtn = document.getElementById('enableNFC');
