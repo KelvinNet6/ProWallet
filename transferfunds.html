@@ -42,14 +42,17 @@
             </div>
             <br>
             <div class="right-container">
-                <div class="form-group">
+                <div class="form-group recipient-section">
+                    <h3>Recipient Details</h3>
                     <label for="to-account">To Account (Recipient)</label>
-                    <input type="text" id="to-account" name="to_account" placeholder="Enter recipient's EPayWallet Number" />
+                    <input type="text" id="to-account" name="to_account" placeholder="Enter recipient's PaySheet Number" />
                 </div>
 
-                <div class="form-group">
+                <div class="form-group amount-section">
+                    <h3>Transfer Amount</h3>
                     <label for="amount">Amount</label>
                     <input type="number" id="amount" name="amount" placeholder="Enter amount to transfer" />
+                    <div class="amount-hint">Enter amount in USD</div>
                 </div>
 
                 <button type="button" class="submit-btn" id="transfer-btn">

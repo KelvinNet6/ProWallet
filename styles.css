@@ -508,7 +508,47 @@ canvas {
 }
 /* Form Group Styling */
 .form-group {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.payment-number-display {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
     margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.payment-number-display h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.number-box {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.recipient-section, .amount-section {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.amount-hint {
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 5px;
+}
+
+.form-group h3 {
+    margin-bottom: 15px;
+    color: #333;
 }
 
 /* Label Styling */
