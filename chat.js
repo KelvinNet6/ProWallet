@@ -37,8 +37,8 @@ window.addEventListener('load', function() {
     });
 });
 
-// Flag to track whether we are expecting a PaySheet number or email address
-let isWaitingForPaySheet = false;
+// Flag to track whether we are expecting a PayCo number or email address
+let isWaitingForPayCo = false;
 let isWaitingForEmail = false;
 let isWaitingForPin = false; // Added flag for PIN verification
 let accountNumber = '';
@@ -70,15 +70,15 @@ function handleRequest(request) {
         switch (request) {
             case "1":
                 //Existing code remains the same
-                // Retrieve PaySheet number from localStorage if available
+                // Retrieve PayCo number from localStorage if available
                 const storedAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
                 if (storedAccount && storedAccount.paySheetNumber) {
                     accountNumber = storedAccount.paySheetNumber;
                     isWaitingForPin = true;
-                    addMessage('ai', 'PaySheet number retrieved from your local storage. Please enter your 4-digit PIN.');
+                    addMessage('ai', 'PayCo number retrieved from your local storage. Please enter your 4-digit PIN.');
                 } else {
-                    addMessage('ai', 'Please provide your PaySheet number to check the balance.');
-                    isWaitingForPaySheet = true;
+                    addMessage('ai', 'Please provide your PayCo number to check the balance.');
+                    isWaitingForPayCo = true;
                 }
                 break;
             case "2":
@@ -91,7 +91,7 @@ function handleRequest(request) {
                 addMessage('ai', 'Please share your location to find the nearest payment collection agent.');
                 break;
             case "5":
-                addMessage('ai', 'About PaySheet: PaySheet is a comprehensive payment processing platform designed to simplify your financial transactions.');
+                addMessage('ai', 'About PayCo: PayCo is a comprehensive payment processing platform designed to simplify your financial transactions.');
                 break;
             case "6":
                 addMessage('ai', 'To transfer funds, please visit the Transfer Funds page or click the TF option in the menu.');
@@ -100,7 +100,7 @@ function handleRequest(request) {
                 addMessage('ai', 'For cash withdrawals, please visit the Cash Out page or click the Cash Out option in the menu.');
                 break;
             case "8":
-                addMessage('ai', 'For account security tips:\n- Keep your PaySheet number private\n- Enable two-factor authentication\n- Monitor your transactions regularly\n- Report suspicious activity immediately');
+                addMessage('ai', 'For account security tips:\n- Keep your PayCo number private\n- Enable two-factor authentication\n- Monitor your transactions regularly\n- Report suspicious activity immediately');
                 break;
             case "9":
                 addMessage('ai', 'Customer Support is available 24/7. You can reach us through:\n- Email: support@paysheet.com\n- Phone: 1-800-PAYSHEET\n- Live Chat: Available on website');
@@ -114,7 +114,7 @@ function handleRequest(request) {
                 helpMessage += "2. Transfer Fee Information\n\n";
                 helpMessage += "3. Withdrawal Fee Information\n\n";
                 helpMessage += "4. Find Nearest Agent\n\n";
-                helpMessage += "5. About PaySheet\v\n";
+                helpMessage += "5. About PayCo\v\n";
                 helpMessage += "6. Transfer Funds Guide\n\n";
                 helpMessage += "7. Cash Out Guide\n\n";
                 helpMessage += "8. Security Tips\n\n";
@@ -142,12 +142,12 @@ document.getElementById("send-btn").addEventListener("click", function() {
 
     // Show greeting options if user types "start"
     if (userInput === "start") {
-        let helpMessage = "Welcome to PaySheet! Please select an option by entering its number:\n\n\n";
+        let helpMessage = "Welcome to PayCo! Please select an option by entering its number:\n\n\n";
         helpMessage += "1. Check Balance\n\n";
         helpMessage += "2. Transfer Fee Information\n\n";
         helpMessage += "3. Withdrawal Fee Information\n\n";
         helpMessage += "4. Find Nearest Agent\n\n";
-        helpMessage += "5. About PaySheet\v\n";
+        helpMessage += "5. About PayCo\v\n";
         helpMessage += "6. Transfer Funds Guide\n\n";
         helpMessage += "7. Cash Out Guide\n\n";
         helpMessage += "8. Security Tips\n\n";
@@ -163,9 +163,9 @@ document.getElementById("send-btn").addEventListener("click", function() {
         addMessage('ai', `Last time, you asked about your ${userContext.lastInteraction}. How can I assist you today?`);
     }
 
-    // If we are waiting for a PaySheet number
-    if (isWaitingForPaySheet) {
-        checkPaySheetNumber(userInput);
+    // If we are waiting for a PayCo number
+    if (isWaitingForPayCo) {
+        checkPayCoNumber(userInput);
         return;
     }
 
@@ -192,30 +192,30 @@ document.getElementById("send-btn").addEventListener("click", function() {
     processNextRequest();
 });
 
-// Function to check PaySheet number from the integrated API
-function checkPaySheetNumber(paySheetNumber) {
-    const apiUrl = `https://0.0.0.0:5000/api/epaywallet/account/request/check/paysheet/${paySheetNumber}`;
+// Function to check PayCo number from the integrated API
+function checkPayCoNumber(payCoNumber) {
+    const apiUrl = `https://0.0.0.0:5000/api/epaywallet/account/request/check/paysheet/${payCoNumber}`;
 
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
             if (data.isValid) {
-                accountNumber = paySheetNumber;
-                isWaitingForPaySheet = false;
+                accountNumber = payCoNumber;
+                isWaitingForPayCo = false;
                 isWaitingForPin = true; // Added PIN verification step
-                addMessage('ai', 'PaySheet number verified successfully! Please enter your 4-digit PIN.');
+                addMessage('ai', 'PayCo number verified successfully! Please enter your 4-digit PIN.');
             } else {
-                addMessage('ai', 'Sorry, the PaySheet number you entered is invalid. Please check and try again.');
-                isWaitingForPaySheet = false;
+                addMessage('ai', 'Sorry, the PayCo number you entered is invalid. Please check and try again.');
+                isWaitingForPayCo = false;
             }
         })
         .catch(error => {
-            addMessage('ai', 'Sorry, there was an error verifying your PaySheet number. Please try again later.');
-            console.error('Error checking PaySheet number:', error);
+            addMessage('ai', 'Sorry, there was an error verifying your PayCo number. Please try again later.');
+            console.error('Error checking PayCo number:', error);
         });
 }
 
-// Function to fetch balance using PaySheet number and email address
+// Function to fetch balance using PayCo number and email address
 function fetchBalance(accountNumber, emailAddress) {
     const apiUrl = `https://0.0.0.0:44323/Help/Api/GET-api/epaywallet/account/request/get/source/accountbalance/${accountNumber}/${emailAddress}`;
 
@@ -276,7 +276,7 @@ function verifyPin(pin) {
 // Initial greeting message
 window.addEventListener('load', function() {
     setTimeout(function() {
-        addMessage('ai', "Type 'start' to begin chatting with PaySheet Assistant!");
+        addMessage('ai', "Type 'start' to begin chatting with PayCo Assistant!");
     }, 1000);
 });
 
