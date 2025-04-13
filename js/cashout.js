@@ -12,6 +12,18 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 });
 
 // Handle form submission
+// Get user's PayCo number when page loads
+document.addEventListener("DOMContentLoaded", function() {
+    const userAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
+    if (userAccount && userAccount.paySheetNumber) {
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.id = 'userPayCoNumber';
+        hiddenInput.value = userAccount.paySheetNumber;
+        document.getElementById("cashOutForm").appendChild(hiddenInput);
+    }
+});
+
 document.getElementById("cashOutForm").addEventListener("submit", function(event) {
     event.preventDefault();
 

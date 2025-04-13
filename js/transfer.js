@@ -12,6 +12,12 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
+    // Get user's PayCo number from localStorage
+    const userAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
+    if (userAccount && userAccount.paySheetNumber) {
+        document.getElementById("from-account").value = userAccount.paySheetNumber;
+    }
+    
     const transferBtn = document.getElementById("transfer-btn");
     const popup = document.getElementById("security-popup");
     const closePopupBtn = document.getElementById("closePopupBtn");
