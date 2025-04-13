@@ -196,7 +196,13 @@ document.getElementById("send-btn").addEventListener("click", function() {
 function checkPayCoNumber(payCoNumber) {
     const apiUrl = `https://YOUR_GOOGLE_CLOUD_API_ENDPOINT/api/epaywallet/account/request/check/paysheet/${payCoNumber}`;
 
-    fetch(apiUrl)
+    fetch(apiUrl, {
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+            "X-API-Key": localStorage.getItem("gcpApiKey"),
+            "X-Project-ID": localStorage.getItem("gcpProjectId")
+        }
+    })
         .then(response => response.json())
         .then(data => {
             if (data.isValid) {
@@ -219,7 +225,13 @@ function checkPayCoNumber(payCoNumber) {
 function fetchBalance(accountNumber, emailAddress) {
     const apiUrl = `https://0.0.0.0:44323/Help/Api/GET-api/epaywallet/account/request/get/source/accountbalance/${accountNumber}/${emailAddress}`;
 
-    fetch(apiUrl)
+    fetch(apiUrl, {
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+            "X-API-Key": localStorage.getItem("gcpApiKey"),
+            "X-Project-ID": localStorage.getItem("gcpProjectId")
+        }
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -248,7 +260,13 @@ function fetchBalance(accountNumber, emailAddress) {
 function verifyPin(pin) {
     const apiUrl = `https://0.0.0.0:5000/api/epaywallet/account/verify/pin/${accountNumber}/${pin}`;
 
-    fetch(apiUrl)
+    fetch(apiUrl, {
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+            "X-API-Key": localStorage.getItem("gcpApiKey"),
+            "X-Project-ID": localStorage.getItem("gcpProjectId")
+        }
+    })
         .then(response => response.json())
         .then(data => {
             if (data.isValid) {
@@ -291,7 +309,13 @@ function clearChat() {
 function monitorLoginActivity() {
     const apiUrl = `https://0.0.0.0:44323/Help/Api/GET-api/epaywallet/account/request/login/activity`;
 
-    fetch(apiUrl)
+    fetch(apiUrl, {
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+            "X-API-Key": localStorage.getItem("gcpApiKey"),
+            "X-Project-ID": localStorage.getItem("gcpProjectId")
+        }
+    })
         .then(response => response.json())
         .then(data => {
             if (data.failedAttempts > 3) {
