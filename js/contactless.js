@@ -6,7 +6,7 @@ document.getElementById("menu-btn").addEventListener("click", () => {
 
 // Logout functionality
 document.getElementById("logout-btn").addEventListener("click", () => {
-    localStorage.removeItem('paySheetAccount'); // Remove data from localStorage
+    localStorage.removeItem('payCoAccount'); // Remove data from localStorage
     window.location.href = "index.html";
 });
 

@@ -194,7 +194,7 @@ document.getElementById("send-btn").addEventListener("click", function() {
 
 // Function to check PayCo number from the integrated API
 function checkPayCoNumber(payCoNumber) {
-    const apiUrl = `https://YOUR_GOOGLE_CLOUD_API_ENDPOINT/api/epaywallet/account/request/check/paysheet/${payCoNumber}`;
+    const apiUrl = `https://YOUR_GOOGLE_CLOUD_API_ENDPOINT/api/epaywallet/account/request/check/payco/${payCoNumber}`;
 
     fetch(apiUrl, {
         headers: {
