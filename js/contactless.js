@@ -94,7 +94,7 @@ async function handleNFCPayment(event) {
         const transactionAmount = 10.00;
 
         // Process payment through API
-        const response = await fetch(`https://0.0.0.0:5000/api/epaywallet/account/transaction`, {
+        const response = await fetch(`https://YOUR_GOOGLE_CLOUD_API_ENDPOINT/api/epaywallet/account/transaction`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
