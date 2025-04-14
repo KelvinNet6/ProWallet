@@ -30,62 +30,18 @@
         </div>
     </div>
 
-    <script src="app.js"></script>
-
-<script>
-    // API endpoint for login verification
-    const apiUrl = "https://your-api-url.com/login"; // Replace with your actual API URL
-
-    // Form validation and login function
-    document.getElementById("login-btn").addEventListener("click", function () {
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-
-        // Prepare data to send in the API request
-        const data = {
-            email: email,
-            password: password
-        };
-
-        // Send a POST request to the API for login verification
-        fetch(apiUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Check if the response contains a successful login status
-            if (data.success) {
-                // Save the PaySheet account number to sessionStorage
-                sessionStorage.setItem("paySheetAccount", data.paySheetAccount);
-
-                // Redirect to home.html if login is successful
-                window.location.href = "home.html";
-            } else {
-                alert("Invalid email or password. Please try again.");
-            }
-        })
-        .catch(error => {
-            console.error("Error during login:", error);
-            alert("An error occurred while logging in. Please try again later.");
-        });
-    });
-</script>
-
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then((registration) => {
-        console.log('Service Worker registered with scope:', registration.scope);
-      })
-      .catch((error) => {
-        console.error('Service Worker registration failed:', error);
-      });
-  }
-</script>
+    <script src="js/login.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+          .then((registration) => {
+            console.log('Service Worker registered with scope:', registration.scope);
+          })
+          .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
+      }
+    </script>
 
 </body>
 </html>
