@@ -6,34 +6,47 @@ document.getElementById("menu-btn").addEventListener("click", () => {
 
 // Logout functionality
 document.getElementById("logout-btn").addEventListener("click", () => {
-    localStorage.removeItem('paySheetAccount'); // Remove data from localStorage
+    localStorage.removeItem('authToken'); // Remove data from localStorage
     window.location.href = "index.html";
 });
+
 // Get DOM elements
-const editProfileBtn = document.getElementById('edit-profile-btn');
-const profilePopup = document.getElementById('profile-popup');
-const closeProfilePopup = document.getElementById('close-profile-popup');
-const passwordPopup = document.getElementById('password-popup');
-const closePasswordPopup = document.getElementById('close-password-popup');
-const changePasswordBtn = document.getElementById('change-password-btn');
-const profileForm = document.getElementById('profile-form');
+const emailNotifs = document.getElementById('email-notifications');
+const smsNotifs = document.getElementById('sms-notifications');
+const privacyMode = document.getElementById('privacy-mode');
+const activityVisibility = document.getElementById('activity-visibility');
+const passwordModal = document.getElementById('password-modal');
+const closePasswordModal = passwordModal.querySelector('.close');
 const passwordForm = document.getElementById('password-form');
-const profilePreview = document.getElementById('profile-preview');
-const profileUpload = document.getElementById('profile-upload');
 
-// Load user data
-const userData = JSON.parse(localStorage.getItem('userData')) || {
-    name: 'User Name',
-    email: 'user@email.com',
-    profileImage: 'Screenshot 2025-02-06 14.53.13.png'
-};
 
-// Initialize user data display
-document.getElementById('user-name').textContent = userData.name;
-document.getElementById('user-email').textContent = userData.email;
-document.getElementById('current-profile-img').src = userData.profileImage;
+// Load user profile
+window.addEventListener('load', async () => {
+    try {
+        const response = await fetch('https://0.0.0.0:5000/api/user/profile', {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            }
+        });
+        if (response.ok) {
+            const data = await response.json();
+            document.getElementById('user-name').textContent = data.name;
+            document.getElementById('user-email').textContent = data.email;
+
+            // Load saved settings
+            emailNotifs.checked = data.emailNotifications;
+            smsNotifs.checked = data.smsNotifications;
+            privacyMode.checked = data.privacyMode;
+            activityVisibility.checked = data.activityVisibility;
+        }
+    } catch (error) {
+        console.error('Error loading profile:', error);
+    }
+});
 
 // Profile image upload preview
+const profileUpload = document.getElementById('profile-upload');
+const profilePreview = document.getElementById('profile-preview');
 profileUpload.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -45,122 +58,7 @@ profileUpload.addEventListener('change', (e) => {
     }
 });
 
-// Toggle popups
-editProfileBtn.addEventListener('click', () => {
-    document.getElementById('edit-name').value = userData.name;
-    document.getElementById('edit-email').value = userData.email;
-    profilePreview.src = userData.profileImage;
-    profilePopup.style.display = 'flex';
-});
-
-closeProfilePopup.addEventListener('click', () => {
-    profilePopup.style.display = 'none';
-});
-
-changePasswordBtn.addEventListener('click', () => {
-    passwordPopup.style.display = 'flex';
-});
-
-closePasswordPopup.addEventListener('click', () => {
-    passwordPopup.style.display = 'none';
-});
-
-// Handle profile form submission
-profileForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    userData.name = document.getElementById('edit-name').value;
-    userData.email = document.getElementById('edit-email').value;
-    
-    if (profilePreview.src) {
-        userData.profileImage = profilePreview.src;
-    }
-    
-    localStorage.setItem('userData', JSON.stringify(userData));
-    
-    // Update display
-    document.getElementById('user-name').textContent = userData.name;
-    document.getElementById('user-email').textContent = userData.email;
-    document.getElementById('current-profile-img').src = userData.profileImage;
-    
-    profilePopup.style.display = 'none';
-});
-
-// Handle password form submission
-passwordForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const currentPassword = document.getElementById('current-password').value;
-    const newPassword = document.getElementById('new-password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
-    const errorDiv = document.getElementById('password-error');
-    
-    if (newPassword !== confirmPassword) {
-        errorDiv.textContent = 'New passwords do not match!';
-        return;
-    }
-    
-    // Here you would typically validate current password with backend
-    // For demo, we'll just simulate success
-    localStorage.setItem('password', newPassword);
-    errorDiv.textContent = '';
-    passwordPopup.style.display = 'none';
-    alert('Password updated successfully!');
-});
-
-// Handle toggles
-document.querySelectorAll('input[type="checkbox"]').forEach(toggle => {
-    toggle.addEventListener('change', (e) => {
-        const setting = e.target.id;
-        localStorage.setItem(setting, e.target.checked);
-    });
-    
-    // Load saved toggle states
-    const savedState = localStorage.getItem(toggle.id);
-    if (savedState !== null) {
-        toggle.checked = savedState === 'true';
-    }
-});
-
-// Handle language and timezone selection
-document.getElementById('language').addEventListener('change', (e) => {
-    localStorage.setItem('language', e.target.value);
-});
-
-document.getElementById('timezone').addEventListener('change', (e) => {
-    localStorage.setItem('timezone', e.target.value);
-});
-
-// Load saved selections
-const savedLanguage = localStorage.getItem('language');
-if (savedLanguage) {
-    document.getElementById('language').value = savedLanguage;
-}
-
-const savedTimezone = localStorage.getItem('timezone');
-if (savedTimezone) {
-    document.getElementById('timezone').value = savedTimezone;
-}
-// 2FA Implementation
-document.getElementById('enable-2fa-btn').addEventListener('click', async () => {
-    const response = await fetch('https://0.0.0.0:5000/api/2fa/setup', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-        }
-    });
-    
-    if (response.ok) {
-        const data = await response.json();
-        // Show QR code or setup instructions
-        alert('2FA setup instructions sent to your email');
-    }
-});
-
 // Notification Settings
-const emailNotifs = document.getElementById('email-notifications');
-const smsNotifs = document.getElementById('sms-notifications');
-
 emailNotifs.addEventListener('change', async (e) => {
     await updateNotificationSettings('email', e.target.checked);
 });
@@ -177,16 +75,10 @@ async function updateNotificationSettings(type, enabled) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('authToken')}`
             },
-            body: JSON.stringify({
-                type: type,
-                enabled: enabled
-            })
+            body: JSON.stringify({ type, enabled })
         });
-        
+
         if (!response.ok) throw new Error('Failed to update settings');
-        
-        // Save to localStorage for persistence
-        localStorage.setItem(`${type}Notifications`, enabled);
     } catch (error) {
         console.error('Error updating notification settings:', error);
         alert('Failed to update notification settings');
@@ -194,9 +86,6 @@ async function updateNotificationSettings(type, enabled) {
 }
 
 // Privacy Settings
-const privacyMode = document.getElementById('privacy-mode');
-const activityVisibility = document.getElementById('activity-visibility');
-
 privacyMode.addEventListener('change', (e) => {
     updatePrivacySettings('privacyMode', e.target.checked);
 });
@@ -213,26 +102,80 @@ async function updatePrivacySettings(setting, enabled) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('authToken')}`
             },
-            body: JSON.stringify({
-                setting: setting,
-                enabled: enabled
-            })
+            body: JSON.stringify({ setting, enabled })
         });
-        
+
         if (!response.ok) throw new Error('Failed to update privacy settings');
-        
-        // Save to localStorage for persistence
-        localStorage.setItem(setting, enabled);
     } catch (error) {
         console.error('Error updating privacy settings:', error);
         alert('Failed to update privacy settings');
     }
 }
 
-// Load saved settings on page load
-window.addEventListener('load', () => {
-    emailNotifs.checked = localStorage.getItem('emailNotifications') === 'true';
-    smsNotifs.checked = localStorage.getItem('smsNotifications') === 'true';
-    privacyMode.checked = localStorage.getItem('privacyMode') === 'true';
-    activityVisibility.checked = localStorage.getItem('activityVisibility') === 'true';
+// Password Change
+document.getElementById('change-password-btn').addEventListener('click', () => {
+    passwordModal.style.display = 'block';
+});
+
+closePasswordModal.addEventListener('click', () => {
+    passwordModal.style.display = 'none';
+});
+
+passwordForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const currentPassword = document.getElementById('current-password').value;
+    const newPassword = document.getElementById('new-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+
+    if (newPassword !== confirmPassword) {
+        alert('New passwords do not match');
+        return;
+    }
+
+    try {
+        const response = await fetch('https://0.0.0.0:5000/api/user/change-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            },
+            body: JSON.stringify({
+                currentPassword,
+                newPassword
+            })
+        });
+
+        if (response.ok) {
+            alert('Password updated successfully');
+            passwordModal.style.display = 'none';
+            passwordForm.reset();
+        } else {
+            alert('Failed to update password');
+        }
+    } catch (error) {
+        console.error('Error changing password:', error);
+        alert('Failed to change password');
+    }
+});
+
+// 2FA Setup
+document.getElementById('enable-2fa-btn').addEventListener('click', async () => {
+    try {
+        const response = await fetch('https://0.0.0.0:5000/api/2fa/setup', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            alert('2FA setup instructions sent to your email');
+        } else {
+            alert('Failed to setup 2FA');
+        }
+    } catch (error) {
+        console.error('Error setting up 2FA:', error);
+        alert('Failed to setup 2FA');
+    }
 });

@@ -7,7 +7,6 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
@@ -26,25 +25,20 @@
 
     <div class="main-content" id="home">
         <header class="header">
-            <h1>PayCo | Profile</h1>
+            <h1>PayCode | Profile</h1>
         </header>
 
         <div class="settings-container">
-            <!-- Profile Card -->
             <div class="profile-card">
                 <div class="profile-header">
-                    <img id="current-profile-img" src="favicon.png" alt="PaySheet Logo" class="profile-img">
+                    <img id="current-profile-img" src="favicon.png" alt="Profile Picture" class="profile-img">
                     <div class="profile-info">
-                        <h2 id="user-name">User Name</h2>
-                        <p id="user-email">user@email.com</p>
+                        <h2 id="user-name">Loading...</h2>
+                        <p id="user-email">Loading...</p>
                     </div>
                 </div>
-                <button class="settings-btn primary-btn" id="edit-profile-btn">
-                    <i class="fas fa-user-edit"></i> Edit Profile
-                </button>
             </div>
 
-            <!-- Settings Grid -->
             <div class="settings-grid">
                 <!-- Security Section -->
                 <div class="settings-section">
@@ -100,60 +94,14 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Preferences Section -->
-                <div class="settings-section">
-                    <h3><i class="fas fa-sliders-h"></i> Preferences</h3>
-                    <div class="settings-content">
-                        <div class="select-setting">
-                            <label for="language">Language</label>
-                            <select id="language" class="settings-select">
-                                <option value="en">English</option>
-                                <option value="es">Spanish</option>
-                                <option value="fr">French</option>
-                            </select>
-                        </div>
-                        <div class="select-setting">
-                            <label for="timezone">Timezone</label>
-                            <select id="timezone" class="settings-select">
-                                <option value="UTC">UTC</option>
-                                <option value="EST">EST</option>
-                                <option value="PST">PST</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 
-    <!-- Profile Edit Popup -->
-    <div id="profile-popup" class="popup">
+    <!-- Password Change Modal -->
+    <div id="password-modal" class="popup">
         <div class="popup-content">
-            <span id="close-profile-popup" class="close">&times;</span>
-            <h3>Edit Profile</h3>
-            <form id="profile-form">
-                <div class="form-group">
-                    <img id="profile-preview" src="" alt="Profile Preview" class="profile-img">
-                    <input type="file" id="profile-upload" class="file-upload" accept="image/*">
-                </div>
-                <div class="form-group">
-                    <label for="edit-name">Full Name</label>
-                    <input type="text" id="edit-name" required>
-                </div>
-                <div class="form-group">
-                    <label for="edit-email">Email</label>
-                    <input type="email" id="edit-email" required>
-                </div>
-                <button type="submit" class="settings-btn primary-btn">Save Changes</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Change Password Popup -->
-    <div id="password-popup" class="popup">
-        <div class="popup-content">
-            <span id="close-password-popup" class="close">&times;</span>
+            <span class="close">&times;</span>
             <h3>Change Password</h3>
             <form id="password-form">
                 <div class="form-group">
@@ -168,13 +116,12 @@
                     <label for="confirm-password">Confirm Password</label>
                     <input type="password" id="confirm-password" required>
                 </div>
-                <div id="password-error" class="error"></div>
                 <button type="submit" class="settings-btn primary-btn">Update Password</button>
             </form>
         </div>
     </div>
 
-    <!-- Bottom Navigation for Mobile View -->
+    <!-- Bottom Navigation -->
     <div class="bottom-nav">
         <a href="home.html" class="nav-item">
             <i class="fas fa-home"></i>
