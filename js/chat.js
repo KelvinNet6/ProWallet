@@ -46,7 +46,6 @@ let emailAddress = '';
 let pinAttempts = 0; // Added variable to track PIN attempts
 const MAX_PIN_ATTEMPTS = 3; // Maximum number of PIN attempts
 
-
 // Queue to manage multiple requests
 let requestQueue = [];
 
@@ -69,8 +68,6 @@ function handleRequest(request) {
 
         switch (request) {
             case "1":
-                //Existing code remains the same
-                // Retrieve PayCo number from localStorage if available
                 const storedAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
                 if (storedAccount && storedAccount.paySheetNumber) {
                     accountNumber = storedAccount.paySheetNumber;
@@ -126,7 +123,6 @@ function handleRequest(request) {
 
     processNextRequest();
 }
-
 
 // Handle user input and AI responses
 document.getElementById("send-btn").addEventListener("click", function() {
@@ -186,7 +182,6 @@ document.getElementById("send-btn").addEventListener("click", function() {
         return;
     }
 
-
     // Add to request queue
     requestQueue.push(userInput);
     processNextRequest();
@@ -208,7 +203,7 @@ function checkPayCoNumber(payCoNumber) {
             if (data.isValid) {
                 accountNumber = payCoNumber;
                 isWaitingForPayCo = false;
-                isWaitingForPin = true; // Added PIN verification step
+                isWaitingForPin = true;
                 addMessage('ai', 'PayCo number verified successfully! Please enter your 4-digit PIN.');
             } else {
                 addMessage('ai', 'Sorry, the PayCo number you entered is invalid. Please check and try again.');
@@ -291,49 +286,11 @@ function verifyPin(pin) {
         });
 }
 
-// Function to fetch and display transactions
-async function fetchTransactions() {
-    try {
-        const apiUrl = "https://0.0.0.0:44323/api/epaywallet/account/transactions";
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem("authToken")}`,
-                "X-API-Key": localStorage.getItem("gcpApiKey"),
-                "X-Project-ID": localStorage.getItem("gcpProjectId")
-            }
-        });
-
-        if (response.ok) {
-            const userData = await response.json();
-            const transactionList = document.getElementById('transaction-list');
-            transactionList.innerHTML = userData.allTransactions.map(t => `
-                <div class="transaction-item">
-                    <span class="transaction-type">${t.type}</span>
-                    <span class="transaction-amount">${t.amount}</span>
-                    <span class="transaction-date">${t.date}</span>
-                </div>
-            `).join('');
-        }
-    } catch (error) {
-        console.error('Error fetching transactions:', error);
-    }
-}
-
-// Toggle transaction history visibility
-document.getElementById('view-transactions-btn').addEventListener('click', function() {
-    const historySection = document.querySelector('.transaction-history-section');
-    historySection.style.display = historySection.style.display === 'none' ? 'block' : 'none';
-    fetchTransactions();
-});
-
 // Initial greeting message
 window.addEventListener('load', function() {
     setTimeout(function() {
         addMessage('ai', "Type 'start' to begin chatting with PayCo Assistant!");
     }, 1000);
-    // Hide transaction history initially
-    document.querySelector('.transaction-history-section').style.display = 'none';
 });
 
 // Function to clear chat history
