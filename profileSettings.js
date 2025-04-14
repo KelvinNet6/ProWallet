@@ -1,1 +1,0 @@
-localStorage.removeItem('payCoAccount'); // Remove data from localStorage
