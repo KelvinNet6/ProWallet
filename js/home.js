@@ -37,7 +37,7 @@ window.addEventListener("click", (event) => {
 
 // Function to fetch and display transactions
 async function fetchTransactions() {
-    const paySheetAccount = sessionStorage.getItem("paySheetAccount");
+    const paySheetAccount = localStorage.getItem("paySheetAccount");
 
     if (paySheetAccount) {
         try {
@@ -111,6 +111,10 @@ window.addEventListener('load', async function() {
 });
 
 function initializeTransactionChart(transactions) {
+    if (!transactions || transactions.length === 0) {
+        console.log('No transaction data available');
+        return;
+    }
     const canvas = document.getElementById('transactionChart');
     const ctx = canvas.getContext('2d');
     new Chart(ctx, {
