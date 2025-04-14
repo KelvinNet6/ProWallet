@@ -293,26 +293,25 @@ function verifyPin(pin) {
 
 // Function to fetch and display transactions
 async function fetchTransactions() {
-    const storedAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
-    if (!storedAccount) return;
-
     try {
-        const response = await fetch(`https://0.0.0.0:44323/api/epaywallet/account/transactions/${storedAccount.paySheetNumber}`, {
+        const apiUrl = "https://0.0.0.0:44323/api/epaywallet/account/transactions";
+        const response = await fetch(apiUrl, {
+            method: 'GET',
             headers: {
-                "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+                'Authorization': `Bearer ${localStorage.getItem("authToken")}`,
                 "X-API-Key": localStorage.getItem("gcpApiKey"),
                 "X-Project-ID": localStorage.getItem("gcpProjectId")
             }
         });
 
         if (response.ok) {
-            const transactions = await response.json();
+            const userData = await response.json();
             const transactionList = document.getElementById('transaction-list');
-            transactionList.innerHTML = transactions.map(t => `
+            transactionList.innerHTML = userData.allTransactions.map(t => `
                 <div class="transaction-item">
                     <span class="transaction-type">${t.type}</span>
-                    <span class="transaction-amount">MWK ${t.amount}</span>
-                    <span class="transaction-date">${new Date(t.date).toLocaleDateString()}</span>
+                    <span class="transaction-amount">${t.amount}</span>
+                    <span class="transaction-date">${t.date}</span>
                 </div>
             `).join('');
         }
