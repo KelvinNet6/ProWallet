@@ -1108,6 +1108,45 @@ button:hover {
     overflow-y: auto;
 }
 
+/* Transaction History Styles */
+.transaction-history-section {
+    background: #fff;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.transaction-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.transaction-type {
+    font-weight: bold;
+}
+
+.transaction-amount {
+    color: #007bff;
+}
+
+.transaction-date {
+    color: #666;
+}
+
+#view-transactions-btn {
+    background-color: #28a745;
+    color: white;
+    margin-left: 10px;
+}
+
 /* Chat Bubble Styles */
 .chat-bubble {
     max-width: 60%;

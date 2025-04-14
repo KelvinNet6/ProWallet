@@ -291,11 +291,50 @@ function verifyPin(pin) {
         });
 }
 
+// Function to fetch and display transactions
+async function fetchTransactions() {
+    const storedAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
+    if (!storedAccount) return;
+
+    try {
+        const response = await fetch(`https://0.0.0.0:44323/api/epaywallet/account/transactions/${storedAccount.paySheetNumber}`, {
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+                "X-API-Key": localStorage.getItem("gcpApiKey"),
+                "X-Project-ID": localStorage.getItem("gcpProjectId")
+            }
+        });
+
+        if (response.ok) {
+            const transactions = await response.json();
+            const transactionList = document.getElementById('transaction-list');
+            transactionList.innerHTML = transactions.map(t => `
+                <div class="transaction-item">
+                    <span class="transaction-type">${t.type}</span>
+                    <span class="transaction-amount">MWK ${t.amount}</span>
+                    <span class="transaction-date">${new Date(t.date).toLocaleDateString()}</span>
+                </div>
+            `).join('');
+        }
+    } catch (error) {
+        console.error('Error fetching transactions:', error);
+    }
+}
+
+// Toggle transaction history visibility
+document.getElementById('view-transactions-btn').addEventListener('click', function() {
+    const historySection = document.querySelector('.transaction-history-section');
+    historySection.style.display = historySection.style.display === 'none' ? 'block' : 'none';
+    fetchTransactions();
+});
+
 // Initial greeting message
 window.addEventListener('load', function() {
     setTimeout(function() {
         addMessage('ai', "Type 'start' to begin chatting with PayCo Assistant!");
     }, 1000);
+    // Hide transaction history initially
+    document.querySelector('.transaction-history-section').style.display = 'none';
 });
 
 // Function to clear chat history
