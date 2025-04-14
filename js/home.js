@@ -7,7 +7,8 @@ document.getElementById("menu-btn").addEventListener("click", () => {
 
 // Logout functionality
 document.getElementById("logout-btn").addEventListener("click", () => {
-    sessionStorage.removeItem('paySheetAccount');
+    localStorage.removeItem('paySheetAccount');
+    localStorage.removeItem('authToken');
     window.location.href = "index.html";
 });
 
