@@ -1,7 +1,7 @@
 
 // API endpoint for login verification
-const apiUrl = "https://your-api-url.com/login"; 
-const accountDetailsApi = "https://your-api-url.com/account-details";
+const apiUrl = "https://0.0.0.0:44323/api/epaywallet/account/login"; 
+const accountDetailsApi = "https://0.0.0.0:44323/api/epaywallet/account/details";
 
 async function handleLogin(email, password) {
     try {

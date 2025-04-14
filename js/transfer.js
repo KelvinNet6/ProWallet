@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 };
 
                 // API URL to handle transfer
-                const apiUrl = "https://YOUR_GOOGLE_CLOUD_API_ENDPOINT/api/epaywallet/account/request/get/source/accountbalance";
+                const apiUrl = "https://0.0.0.0:44323/api/epaywallet/account/request/get/source/accountbalance";
 
                 // Send the data to the API for processing
                 fetch(apiUrl, {
