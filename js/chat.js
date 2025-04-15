@@ -286,11 +286,30 @@ function verifyPin(pin) {
         });
 }
 
-// Initial greeting message
+// Initial greeting message and URL parameter handling
 window.addEventListener('load', function() {
-    setTimeout(function() {
-        addMessage('ai', "Type 'start' to begin chatting with PayCo Assistant!");
-    }, 1000);
+    const urlParams = new URLSearchParams(window.location.search);
+    const action = urlParams.get('action');
+    
+    if (action === 'balance') {
+        setTimeout(() => {
+            document.getElementById("user-query").value = "1";
+            document.getElementById("send-btn").click();
+        }, 1000);
+    } else if (action === 'paycode') {
+        setTimeout(() => {
+            const storedAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
+            if (storedAccount && storedAccount.paySheetNumber) {
+                addMessage('ai', `Your PayCode number is: ${storedAccount.paySheetNumber}`);
+            } else {
+                addMessage('ai', "Please log in to view your PayCode number.");
+            }
+        }, 1000);
+    } else {
+        setTimeout(function() {
+            addMessage('ai', "Type 'start' to begin chatting with PayCo Assistant!");
+        }, 1000);
+    }
 });
 
 // Function to clear chat history
