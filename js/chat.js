@@ -203,8 +203,15 @@ function checkPayCoNumber(payCoNumber) {
             if (data.isValid) {
                 accountNumber = payCoNumber;
                 isWaitingForPayCo = false;
-                isWaitingForPin = true;
-                addMessage('ai', 'PayCo number verified successfully! Please enter your 4-digit PIN.');
+                if (requestQueue[0] === "1") {
+                    // For balance check, proceed directly to email
+                    isWaitingForEmail = true;
+                    addMessage('ai', 'PayCo number verified successfully! Please enter your email address.');
+                } else {
+                    // For PayCode info, ask for PIN
+                    isWaitingForPin = true;
+                    addMessage('ai', 'PayCo number verified successfully! Please enter your 4-digit PIN.');
+                }
             } else {
                 addMessage('ai', 'Sorry, the PayCo number you entered is invalid. Please check and try again.');
                 isWaitingForPayCo = false;
