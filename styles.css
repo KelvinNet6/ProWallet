@@ -58,6 +58,23 @@ body {
 .header {
     text-align: center;
     margin-bottom: 40px;
+    padding: 10px;
+}
+
+@media (max-width: 768px) {
+    .header {
+        margin-bottom: 20px;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+    }
+
+    .main-content {
+        padding: 10px;
+        margin-left: 0;
+        width: 100%;
+    }
 }
 
 h1 {
@@ -641,11 +658,30 @@ textarea {
 @media (max-width: 768px) {
     .transfer-form {
         flex-direction: column;
+        padding: 10px;
     }
 
     .left-container, .right-container {
         width: 100%; 
-        margin-right: 0; 
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="password"] {
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 10px;
+    }
+
+    .submit-btn {
+        margin-top: 10px;
+        padding: 12px;
     }
 
     .left-container .form-group img.account-icon {
@@ -1095,6 +1131,26 @@ button:hover {
 @media (max-width: 768px) {
     .bottom-nav {
         display: flex;
+        height: 60px;
+        padding: 5px 0;
+        z-index: 1000;
+    }
+
+    .main-content {
+        padding-bottom: 70px; /* Space for bottom nav */
+    }
+
+    .user-input {
+        bottom: 60px; /* Adjust for bottom nav */
+    }
+
+    .nav-item {
+        padding: 5px 15px;
+    }
+
+    .ai-chat-logo .ai-chat-img {
+        width: 25px;
+        height: 25px;
     }
 }
 
