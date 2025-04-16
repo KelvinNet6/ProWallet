@@ -1072,11 +1072,37 @@ button:hover {
     cursor: pointer;
 }
 
+.profile-img-container {
+    position: relative;
+    display: inline-block;
+}
+
 .profile-img {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     margin-bottom: 20px;
+    object-fit: cover;
+}
+
+.upload-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 0;
+    background: #007bff;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.upload-btn:hover {
+    background: #0056b3;
 }
 
 .file-upload {

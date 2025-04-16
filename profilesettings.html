@@ -31,7 +31,13 @@
         <div class="settings-container">
             <div class="profile-card">
                 <div class="profile-header">
-                    <img id="current-profile-img" src="favicon.png" alt="Profile Picture" class="profile-img">
+                    <div class="profile-img-container">
+                        <img id="current-profile-img" src="favicon.png" alt="Profile Picture" class="profile-img">
+                        <label for="profile-upload" class="upload-btn">
+                            <i class="fas fa-camera"></i>
+                            <input type="file" id="profile-upload" accept="image/*" style="display: none;">
+                        </label>
+                    </div>
                     <div class="profile-info">
                         <h2 id="user-name">Loading...</h2>
                         <p id="user-email">Loading...</p>
