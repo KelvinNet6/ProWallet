@@ -161,7 +161,12 @@ document.getElementById("send-btn").addEventListener("click", function() {
 
     // If we are waiting for a PayCo number
     if (isWaitingForPayCo) {
-        checkPayCoNumber(userInput);
+        const storedAccount = JSON.parse(localStorage.getItem('userData'));
+        if (storedAccount && storedAccount.payCodeNumber) {
+            checkPayCoNumber(storedAccount.payCodeNumber);
+        } else {
+            checkPayCoNumber(userInput);
+        }
         return;
     }
 
