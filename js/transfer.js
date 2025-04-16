@@ -1,4 +1,3 @@
-
 // Toggle Sidebar for Mobile
 document.getElementById("menu-btn").addEventListener("click", () => {
     const sidebar = document.getElementById("sidebar");
@@ -17,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (userAccount && userAccount.paySheetNumber) {
         document.getElementById("from-account").value = userAccount.paySheetNumber;
     }
-    
+
     const transferBtn = document.getElementById("transfer-btn");
     const popup = document.getElementById("security-popup");
     const closePopupBtn = document.getElementById("closePopupBtn");
@@ -96,6 +95,30 @@ document.addEventListener("DOMContentLoaded", function() {
     popup.addEventListener("click", function(event) {
         if (event.target === popup) {
             popup.style.display = "none";
+        }
+    });
+
+    document.getElementById("to-account").addEventListener("input", function() {
+        const toAccount = this.value;
+        if (toAccount.length >= 8) {
+            // Fetch recipient details
+            fetch(`https://0.0.0.0:5000/api/epaywallet/account/details/${toAccount}`, {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+                    "X-API-Key": localStorage.getItem("gcpApiKey"),
+                    "X-Project-ID": localStorage.getItem("gcpProjectId")
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById("recipient-details").style.display = "block";
+                    document.getElementById("recipient-name").textContent = data.fullName;
+                    document.getElementById("recipient-image").src = data.profileImage || "favicon.png";
+                }
+            });
+        } else {
+            document.getElementById("recipient-details").style.display = "none";
         }
     });
 });
