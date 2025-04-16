@@ -265,6 +265,11 @@ function fetchBalance(accountNumber, emailAddress) {
 
 // Function to verify PIN
 function verifyPin(pin) {
+    if (window.verifyPinForPayCode) {
+        window.verifyPinForPayCode(pin);
+        window.verifyPinForPayCode = null;
+        return;
+    }
     const apiUrl = `https://0.0.0.0:5000/api/epaywallet/account/verify/pin/${accountNumber}/${pin}`;
 
     fetch(apiUrl, {
@@ -310,11 +315,54 @@ window.addEventListener('load', function() {
         }, 1000);
     } else if (action === 'paycode') {
         setTimeout(() => {
-            const storedAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
-            if (storedAccount && storedAccount.paySheetNumber) {
-                addMessage('ai', `Your PayCode number is: ${storedAccount.paySheetNumber}`);
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                addMessage('ai', 'Please enter your 4-digit PIN to view your PayCode details.');
+                isWaitingForPin = true;
+                accountNumber = userData.payCodeNumber;
+                
+                // Override PIN verification for PayCode info
+                window.verifyPinForPayCode = function(pin) {
+                    const apiUrl = `https://0.0.0.0:5000/api/epaywallet/account/verify/pin/${accountNumber}/${pin}`;
+                    
+                    fetch(apiUrl, {
+                        headers: {
+                            "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+                            "X-API-Key": localStorage.getItem("gcpApiKey"),
+                            "X-Project-ID": localStorage.getItem("gcpProjectId")
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.isValid) {
+                            const userInfo = `
+PayCode Details:
+- Full Name: ${userData.fullName}
+- PayCode Number: ${userData.payCodeNumber}
+- Email: ${userData.email}
+- Account Status: ${userData.accountStatus}
+`;
+                            addMessage('ai', userInfo);
+                            isWaitingForPin = false;
+                            pinAttempts = 0;
+                        } else {
+                            pinAttempts++;
+                            if (pinAttempts >= MAX_PIN_ATTEMPTS) {
+                                addMessage('ai', 'Maximum PIN attempts exceeded. Please try again later.');
+                                isWaitingForPin = false;
+                                pinAttempts = 0;
+                            } else {
+                                addMessage('ai', `Invalid PIN. Please try again. ${MAX_PIN_ATTEMPTS - pinAttempts} attempts remaining.`);
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        addMessage('ai', 'Sorry, there was an error verifying your PIN. Please try again later.');
+                        console.error('Error verifying PIN:', error);
+                    });
+                };
             } else {
-                addMessage('ai', "Please log in to view your PayCode number.");
+                addMessage('ai', "Please log in to view your PayCode details.");
             }
         }, 1000);
     } else {
