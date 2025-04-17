@@ -14,13 +14,11 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 // Handle form submission
 // Get user's PayCo number when page loads
 document.addEventListener("DOMContentLoaded", function() {
-    const userAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
-    if (userAccount && userAccount.paySheetNumber) {
-        const hiddenInput = document.createElement('input');
-        hiddenInput.type = 'hidden';
-        hiddenInput.id = 'userPayCoNumber';
-        hiddenInput.value = userAccount.paySheetNumber;
-        document.getElementById("cashOutForm").appendChild(hiddenInput);
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    if (userData && userData.paycode) {
+        document.getElementById("paymentNumber").value = userData.paycode;
+    } else {
+        console.error('PayCode not found in localStorage');
     }
 });
 
