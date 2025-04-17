@@ -88,7 +88,7 @@ document.getElementById("cashOutForm").addEventListener("submit", function(event
 document.getElementById("amount").addEventListener("input", function() {
     const amount = parseFloat(document.getElementById("amount").value.trim());
     const fee = amount * 0.02; // 2% fee
-    document.getElementById("feeInfo").innerText = `Transaction Fee: $${fee.toFixed(2)}`;
+    document.getElementById("feeInfo").innerText = `Transaction Fee: K${fee.toFixed(2)}`;
 });
 
 // Toggle Cash Pickup Location visibility
