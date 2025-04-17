@@ -3,6 +3,22 @@
 const userData = JSON.parse(localStorage.getItem('userData'));
 const apiBaseUrl = 'https://0.0.0.0:44323/api/epaywallet';
 
+// Check for authentication before proceeding
+function checkAuth() {
+    if (!userData || !userData.token) {
+        window.location.href = 'index.html';
+        return false;
+    }
+    return true;
+}
+
+// Verify authentication on page load
+if (!checkAuth()) {
+    console.log('User not authenticated');
+} else {
+    initializeProfile();
+}
+
 // Function to initialize profile page
 async function initializeProfile() {
     if (!userData) {
