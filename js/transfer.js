@@ -72,7 +72,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert("Transfer successful!");
+                        const amountMWK = new Intl.NumberFormat('en-MW', { 
+                            style: 'currency', 
+                            currency: 'MWK' 
+                        }).format(amount);
+                        alert(`Transfer of ${amountMWK} successful!`);
                         window.location.href = "home.html";
                     } else {
                         alert("Transfer failed: " + data.message);

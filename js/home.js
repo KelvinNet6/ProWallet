@@ -123,7 +123,7 @@ function initializeTransactionChart(transactions) {
             labels: transactions.map(t => t.date),
             datasets: [{
                 label: 'Transaction Amount (K)',
-                data: transactions.map(t => parseInt(t.amount.replace('K', '').replace(',', ''))),
+                data: transactions.map(t => parseInt(t.amount.replace('MWK', '').replace(',', ''))),
                 borderColor: 'rgba(75, 192, 192, 1)',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 fill: true
