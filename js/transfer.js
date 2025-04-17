@@ -32,12 +32,15 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!toAccount || !amount) {
             errorMessage.textContent = "Please fill in both recipient and amount.";
             errorMessage.style.display = "block";
-        } else {
-            errorMessage.style.display = "none";
-            popup.style.display = "flex";
+            return;
+        }
+        
+        errorMessage.style.display = "none";
+        popup.style.display = "flex";
+    });
 
-            // Now, send the transaction details to the API
-            transferForm.addEventListener("submit", function(e) {
+    // Handle security verification form submission
+    document.getElementById("security-form").addEventListener("submit", function(e) {
                 e.preventDefault();
 
                 const securityCode = document.getElementById("security-code").value;
