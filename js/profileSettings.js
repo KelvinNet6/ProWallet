@@ -5,13 +5,8 @@ const apiBaseUrl = 'https://0.0.0.0:44323/api/epaywallet';
 
 // Function to initialize profile page
 async function initializeProfile() {
-    // Check authentication only once
-    if (!userData || !userData.token) {
-        window.location.href = 'index.html';
-        return;
-    }
     if (!userData) {
-        window.location.href = 'index.html';
+        console.error('No user data found');
         return;
     }
 

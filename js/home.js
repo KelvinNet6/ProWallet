@@ -1,4 +1,10 @@
 
+// Check authentication first
+const userData = JSON.parse(localStorage.getItem('userData'));
+if (!userData || !userData.token) {
+    window.location.href = 'index.html';
+}
+
 // Toggle Sidebar for Mobile
 document.getElementById("menu-btn").addEventListener("click", () => {
     const sidebar = document.getElementById("sidebar");
