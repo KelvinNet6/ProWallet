@@ -1,10 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PayCode</title>
-
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
@@ -26,54 +26,60 @@
 
     <div class="main-content" id="home">
         <header class="header">
-            <h1>PayCode | <br>Transfer</h1>
+            <h1>PayCode Transfer</h1>
         </header>
 
-        <h2>Enter Recipient PayCo Number!</h2>
-        <br>
-
-        <form id="transfer-form" class="transfer-form">
-            <div class="left-container">
-                <div class="form-group" style="display: none;">
-                    <input type="hidden" id="from-account" name="from_account" />
-                </div>
-            </div>
-            <br>
-            <div class="right-container">
-                <div class="form-group recipient-section">
-                    <h3>Recipient Details</h3>
-                    <label for="to-account">To Account (Recipient)</label>
-                    <input type="text" id="to-account" name="to_account" placeholder="Enter recipient's PaySheet Number" />
-                    <div id="recipient-details" style="display: none; text-align: center; margin-top: 15px;">
-                        <img id="recipient-image" src="favicon.png" alt="Recipient" style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px;">
-                        <div id="recipient-name" style="font-weight: bold;"></div>
+        <div class="transfer-container">
+            <form id="transfer-form" class="modern-form">
+                <input type="hidden" id="from-account" name="from_account" />
+                
+                <div class="form-card recipient-card">
+                    <div class="card-header">
+                        <i class="fas fa-user-circle"></i>
+                        <h3>Recipient Details</h3>
+                    </div>
+                    <div class="form-group">
+                        <label for="to-account">PayCode Number</label>
+                        <input type="text" id="to-account" name="to_account" placeholder="Enter recipient's PayCode" />
+                    </div>
+                    <div id="recipient-details" class="recipient-preview">
+                        <img id="recipient-image" src="favicon.png" alt="Recipient">
+                        <div id="recipient-name"></div>
                     </div>
                 </div>
 
-                <div class="form-group amount-section">
-                    <h3>Transfer Amount</h3>
-                    <label for="amount">Amount</label>
-                    <input type="number" id="amount" name="amount" placeholder="Enter amount to transfer" />
-                    <div class="amount-hint">Enter amount in MWK</div>
+                <div class="form-card amount-card">
+                    <div class="card-header">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <h3>Transfer Amount</h3>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount (MWK)</label>
+                        <div class="amount-input-wrapper">
+                            <span class="currency-symbol">K</span>
+                            <input type="number" id="amount" name="amount" placeholder="0.00" />
+                        </div>
+                    </div>
                 </div>
 
-                <button type="button" class="submit-btn" id="transfer-btn">
-                    <i class="fas fa-paper-plane"></i> Transfer
+                <button type="button" class="modern-button" id="transfer-btn">
+                    <i class="fas fa-paper-plane"></i> Send Money
                 </button>
-                <br>
+                
                 <div id="error-message" class="error-message"></div>
-            </div>
-        </form>
+            </form>
+        </div>
 
-        <div id="security-popup" class="popup">
+        <div id="security-popup" class="modern-popup">
             <div class="popup-content">
-                <h3>Enter Security Code</h3>
-                <form id="security-form" class="security-form">
-                    <label for="security-code">PayCode</label>
-                    <input type="password" id="security-code" name="security_code" placeholder="Enter your security code" required />
-                    <button type="submit">Confirm</button>
-                    <br>
-                    <span id="closePopupBtn" class="close">&times;</span>
+                <h3><i class="fas fa-shield-alt"></i> Security Verification</h3>
+                <form id="security-form">
+                    <div class="form-group">
+                        <label for="security-code">Enter PayCode</label>
+                        <input type="password" id="security-code" name="security_code" placeholder="••••" maxlength="4" />
+                    </div>
+                    <button type="submit" class="modern-button">Confirm Transfer</button>
+                    <button type="button" id="closePopupBtn" class="modern-button secondary">Cancel</button>
                 </form>
             </div>
         </div>
