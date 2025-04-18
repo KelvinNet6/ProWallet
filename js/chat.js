@@ -367,7 +367,7 @@ PayCode Details:
         }, 1000);
     } else {
         setTimeout(function() {
-            addMessage('ai', "Type 'start' to begin chatting with PayCo Assistant!");
+            addMessage('ai', "Type 'start' to begin chatting with PayKelvin Assistant!");
         }, 1000);
     }
 });
