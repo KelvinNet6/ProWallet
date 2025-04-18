@@ -2159,16 +2159,15 @@ button:hover {
 .favicon-chip {
     width: 32px;
     height: 32px;
-    background: linear-gradient(45deg, #c4a300, #ffd700);
+    background: linear-gradient(45deg, #0066cc, #0099ff);
     border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 6px;
-    color: #1a1a1a;
-    font-weight: bold;
-    border: 1px solid rgba(0,0,0,0.2);
+    font-size: 16px;
+    color: white;
+    font-weight: 900;
+    border: 1px solid rgba(255,255,255,0.2);
     box-shadow: 0 1px 2px rgba(0,0,0,0.1);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
