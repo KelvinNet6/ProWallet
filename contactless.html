@@ -18,7 +18,7 @@
             <li><a href="home.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
             <li><a href="transferfunds.html"><i class="fas fa-exchange-alt"></i> TF</a></li>
             <li><a href="cashout.html"><i class="fas fa-money-check-alt"></i> Cash Out</a></li>
-            <li><a href="contactless.html"><i class="fas fa-wifi fa-rotate-90"></i> Contactless Pay</a></li>
+            <li><a href="virtualpaycard.html"><i class="fas fa-credit-card"></i> Virtual PayCard</a></li>
             <li><a href="profilesettings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
             <li><button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sign Out</button></li>
         </ul>
@@ -26,25 +26,25 @@
 
     <div class="main-content">
         <header class="header">
-            <h1>PayCode | Contactless Pay</h1>
+            <h1>PayCode | Virtual PayCard</h1>
         </header>
 
         <div class="contactless-container">
             <div class="card-display">
                 <div class="virtual-card">
-                    <div class="card-chip">PayCode</div>
+                    <div class="card-chip">Yoco Pay</div>
                     <div class="card-number" id="cardNumber">46000****</div>
-                    <div class="card-holder" id="cardHolder">Kelvin Kadzenje</div>
-                    <div class="card-nfc-icon"><i class="fas fa-wifi fa-rotate-90"></i></div>
+                    <div class="card-holder" id="cardHolder">Khumo</div>
+                    <div class="card-nfc-icon"><i class="fas fa-credit-card"></i></div>
                 </div>
             </div>
             <div class="payment-status" id="paymentStatus">
                 <i class="fas fa-mobile-alt"></i>
-                <p>Hold near payment terminal</p>
+                <p>Ready for Yoco payment</p>
             </div>
             <div class="payment-controls">
-                <button id="enableNFC" class="btn">Pay With PayCode</button>
-                <button id="disableNFC" class="btn btn-secondary" style="display: none;">Disable</button>
+                <button id="enablePayment" class="btn">Pay With Yoco</button>
+                <button id="disablePayment" class="btn btn-secondary" style="display: none;">Cancel</button>
             </div>
         </div>
     </div>
@@ -61,6 +61,6 @@
         </a>
     </div>
 
-    <script src="js/contactless.js"></script>
+    <script src="js/virtualpaycard.js"></script>
 </body>
 </html>

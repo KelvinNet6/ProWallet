@@ -6,14 +6,14 @@ document.getElementById("menu-btn").addEventListener("click", () => {
 
 // Logout functionality
 document.getElementById("logout-btn").addEventListener("click", () => {
-    localStorage.removeItem('payCoAccount'); // Remove data from localStorage
+    localStorage.removeItem('payCoAccount');
     window.location.href = "index.html";
 });
 
 document.addEventListener('DOMContentLoaded', () => {
     const storedAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
-    const enableNFCBtn = document.getElementById('enableNFC');
-    const disableNFCBtn = document.getElementById('disableNFC');
+    const enablePaymentBtn = document.getElementById('enablePayment');
+    const disablePaymentBtn = document.getElementById('disablePayment');
     const paymentStatus = document.getElementById('paymentStatus');
     const cardNumber = document.getElementById('cardNumber');
     const cardHolder = document.getElementById('cardHolder');
@@ -32,102 +32,47 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => {
             console.error('Error fetching card data:', error);
-            // Fallback to stored data
             cardNumber.textContent = `**** **** **** ${storedAccount.paySheetNumber.slice(-4)}`;
             cardHolder.textContent = storedAccount.accountName;
         });
     }
 
-    enableNFCBtn.addEventListener('click', async () => {
+    enablePaymentBtn.addEventListener('click', async () => {
         try {
-            if ('NDEFReader' in window) {
-                const ndef = new NDEFReader();
-                await ndef.scan();
+            paymentStatus.innerHTML = `
+                <div class="payment-animation">
+                    <i class="fas fa-circle-notch fa-spin"></i>
+                    <p>Connecting to Yoco...</p>
+                </div>`;
 
-                enableNFCBtn.style.display = 'none';
-                disableNFCBtn.style.display = 'block';
-                paymentStatus.innerHTML = '<i class="fas fa-check-circle"></i><p>NFC Active - Ready to Pay</p>';
+            // Initialize Yoco payment
+            const response = await fetch('https://0.0.0.0:5000/api/yoco/initialize-payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                },
+                body: JSON.stringify({
+                    accountNumber: storedAccount.paySheetNumber
+                })
+            });
 
-                ndef.onreading = event => {
-                    handleNFCPayment(event);
-                };
-            } else {
-                throw new Error('NFC not supported');
-            }
+            enablePaymentBtn.style.display = 'none';
+            disablePaymentBtn.style.display = 'block';
+
+            // Handle Yoco payment response here
+            // Add your Yoco integration code
+
         } catch (error) {
             paymentStatus.innerHTML = `
                 <i class="fas fa-exclamation-circle"></i>
-                <p>NFC not available on this device.</p>
-                <small>Please ensure:</small>
-                <ul style="text-align: left; margin-top: 5px;">
-                    <li>Your device has NFC hardware</li>
-                    <li>NFC is enabled in your device settings</li>
-                    <li>You're using a supported browser (Chrome Android/iOS)</li>
-                </ul>`;
+                <p>Payment service unavailable</p>`;
         }
     });
 
-    disableNFCBtn.addEventListener('click', () => {
-        enableNFCBtn.style.display = 'block';
-        disableNFCBtn.style.display = 'none';
-        paymentStatus.innerHTML = '<i class="fas fa-mobile-alt"></i><p>Hold near payment terminal</p>';
+    disablePaymentBtn.addEventListener('click', () => {
+        enablePaymentBtn.style.display = 'block';
+        disablePaymentBtn.style.display = 'none';
+        paymentStatus.innerHTML = '<i class="fas fa-mobile-alt"></i><p>Ready for Yoco payment</p>';
     });
 });
-
-async function handleNFCPayment(event) {
-    const paymentStatus = document.getElementById('paymentStatus');
-    const storedAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
-    
-    if (!storedAccount || !storedAccount.paySheetNumber) {
-        paymentStatus.innerHTML = '<i class="fas fa-times-circle"></i><p>Account not found</p>';
-        return;
-    }
-
-    paymentStatus.innerHTML = `
-        <div class="payment-animation">
-            <i class="fas fa-circle-notch fa-spin"></i>
-            <p>Processing Payment...</p>
-        </div>`;
-
-    try {
-        // Default transaction amount - you may want to make this configurable
-        const transactionAmount = 10.00;
-
-        // Process payment through API
-        const response = await fetch(`https://0.0.0.0:44323/api/epaywallet/account/transaction`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-            },
-            body: JSON.stringify({
-                accountNumber: storedAccount.paySheetNumber,
-                amount: transactionAmount,
-                transactionType: 'NFC_PAYMENT'
-            })
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            paymentStatus.innerHTML = `
-                <div class="payment-animation success">
-                    <i class="fas fa-check-circle success-icon"></i>
-                    <p>Payment Successful!</p>
-                </div>`;
-            setTimeout(() => {
-                paymentStatus.innerHTML = `
-                    <div class="payment-animation ready">
-                        <i class="fas fa-check-circle"></i>
-                        <p>Ready for next payment</p>
-                    </div>`;
-            }, 3000);
-        } else {
-            throw new Error(data.message || 'Payment failed');
-        }
-    } catch (error) {
-        console.error('Payment error:', error);
-        paymentStatus.innerHTML = '<i class="fas fa-times-circle"></i><p>Payment Failed: ' + 
-            (error.message || 'Transaction could not be processed') + '</p>';
-    }
-}
