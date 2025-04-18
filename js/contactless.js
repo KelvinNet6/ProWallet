@@ -1,3 +1,4 @@
+
 // Toggle Sidebar for Mobile
 document.getElementById("menu-btn").addEventListener("click", () => {
     const sidebar = document.getElementById("sidebar");
@@ -19,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const cardHolder = document.getElementById('cardHolder');
 
     if (storedAccount) {
-        // Fetch card data from API
         fetch(`https://0.0.0.0:5000/api/epaywallet/account/get/${storedAccount.paySheetNumber}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('authToken')}`
@@ -42,37 +42,51 @@ document.addEventListener('DOMContentLoaded', () => {
             paymentStatus.innerHTML = `
                 <div class="payment-animation">
                     <i class="fas fa-circle-notch fa-spin"></i>
-                    <p>Connecting to Yoco...</p>
+                    <p>Connecting to Yoco POS...</p>
                 </div>`;
 
-            // Initialize Yoco payment
-            const response = await fetch('https://0.0.0.0:5000/api/yoco/initialize-payment', {
+            // Initialize Yoco POS payment
+            const response = await fetch('https://0.0.0.0:5000/api/yoco/pos/initialize-payment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                 },
                 body: JSON.stringify({
-                    accountNumber: storedAccount.paySheetNumber
+                    accountNumber: storedAccount.paySheetNumber,
+                    cardType: 'virtual'
                 })
             });
 
-            enablePaymentBtn.style.display = 'none';
-            disablePaymentBtn.style.display = 'block';
+            const result = await response.json();
 
-            // Handle Yoco payment response here
-            // Add your Yoco integration code
-
+            if (result.success) {
+                paymentStatus.innerHTML = `
+                    <div class="payment-animation success">
+                        <i class="fas fa-check-circle"></i>
+                        <p>Connected to Yoco POS. Ready for payment.</p>
+                    </div>`;
+                enablePaymentBtn.style.display = 'none';
+                disablePaymentBtn.style.display = 'block';
+            } else {
+                throw new Error(result.message || 'Failed to connect to Yoco POS');
+            }
         } catch (error) {
             paymentStatus.innerHTML = `
-                <i class="fas fa-exclamation-circle"></i>
-                <p>Payment service unavailable</p>`;
+                <div class="payment-animation error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>${error.message || 'Payment service unavailable'}</p>
+                </div>`;
         }
     });
 
     disablePaymentBtn.addEventListener('click', () => {
         enablePaymentBtn.style.display = 'block';
         disablePaymentBtn.style.display = 'none';
-        paymentStatus.innerHTML = '<i class="fas fa-mobile-alt"></i><p>Ready for Yoco payment</p>';
+        paymentStatus.innerHTML = `
+            <div class="payment-status">
+                <i class="fas fa-credit-card"></i>
+                <p>Ready for Yoco POS payment</p>
+            </div>`;
     });
 });
