@@ -11,13 +11,32 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 });
 
 // Add message function to display chat bubbles
-function addMessage(sender, message, loading = false) {
+function addMessage(sender, message, loading = false, type = '') {
     const chatWindow = document.getElementById("chat-window");
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("chat-bubble", sender === "ai" ? "ai-bubble" : "user-bubble");
+    
     if (loading) {
         messageDiv.classList.add("loading");
-        messageDiv.innerHTML = `<p>${message} <span class="dots">...</span></p>`;
+        let progressBar = '';
+        
+        if (type === 'transfer' || type === 'withdrawal' || type === 'contactless') {
+            progressBar = `
+                <div class="transaction-progress">
+                    <div class="progress-label">${type.charAt(0).toUpperCase() + type.slice(1)} Processing</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="${type}-progress"></div>
+                    </div>
+                    <div class="progress-status" id="${type}-status">Initializing...</div>
+                </div>
+            `;
+            messageDiv.innerHTML = progressBar;
+            
+            // Simulate progress
+            simulateTransactionProgress(type);
+        } else {
+            messageDiv.innerHTML = `<p>${message} <span class="dots">...</span></p>`;
+        }
     } else {
         messageDiv.innerHTML = `<p>${message}</p>`;
         // Save message to localStorage
@@ -27,6 +46,37 @@ function addMessage(sender, message, loading = false) {
     }
     chatWindow.appendChild(messageDiv);
     chatWindow.scrollTop = chatWindow.scrollHeight;
+    return messageDiv;
+}
+
+function simulateTransactionProgress(type) {
+    let progress = 0;
+    const progressFill = document.getElementById(`${type}-progress`);
+    const statusText = document.getElementById(`${type}-status`);
+    const stages = {
+        0: 'Initializing...',
+        25: 'Verifying details...',
+        50: 'Processing transaction...',
+        75: 'Confirming...',
+        100: 'Completed!'
+    };
+
+    const interval = setInterval(() => {
+        if (progress >= 100) {
+            clearInterval(interval);
+            return;
+        }
+        
+        progress += 1;
+        progressFill.style.width = `${progress}%`;
+        
+        // Update status text at specific stages
+        Object.keys(stages).forEach(stage => {
+            if (progress === parseInt(stage)) {
+                statusText.textContent = stages[stage];
+            }
+        });
+    }, 50);
 }
 
 // Load chat history on page load
