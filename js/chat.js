@@ -157,17 +157,42 @@ function handleRequest(request) {
                 break;
             default:
                 let helpMessage = "Please select an option by entering its number:\n\n\n";
-                helpMessage += "1. Check Balance\n\n";
-                helpMessage += "2. Transfer Fee Information\n\n";
-                helpMessage += "3. Withdrawal Fee Information\n\n";
-                helpMessage += "4. Find Nearest Agent\n\n";
-                helpMessage += "5. About PayCo\v\n";
-                helpMessage += "6. Transfer Funds Guide\n\n";
-                helpMessage += "7. Cash Out Guide\n\n";
-                helpMessage += "8. Security Tips\n\n";
-                helpMessage += "9. Customer Support\n\n";
-                helpMessage += "10. Transaction Limits\n\n";
-                helpMessage += "11. Process Overview\n\n";
+                helpMessage = `
+Please select an option:
+
+1️⃣ Check Balance
+────────────────────────
+
+2️⃣ Transfer Fee Information
+────────────────────────
+
+3️⃣ Withdrawal Fee Information
+────────────────────────
+
+4️⃣ Find Nearest Agent
+────────────────────────
+
+5️⃣ About PayCo
+────────────────────────
+
+6️⃣ Transfer Funds Guide
+────────────────────────
+
+7️⃣ Cash Out Guide
+────────────────────────
+
+8️⃣ Security Tips
+────────────────────────
+
+9️⃣ Customer Support
+────────────────────────
+
+🔟 Transaction Limits
+────────────────────────
+
+1️⃣1️⃣ Process Overview
+────────────────────────
+`;
                 addMessage('ai', helpMessage);
         }
     }, 3000);
