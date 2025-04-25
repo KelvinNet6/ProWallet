@@ -63,7 +63,13 @@ async function handleLogin(email, password) {
         }
     } catch (error) {
         console.error("Error during login:", error);
-        alert("An error occurred while logging in. Please try again later.");
+        if (!navigator.onLine) {
+            alert("Please check your internet connection and try again.");
+        } else if (error.message.includes("Failed to fetch")) {
+            alert("Unable to connect to the server. Please try again in a few moments.");
+        } else {
+            alert("Login failed. Please check your email and password.");
+        }
     }
 }
 
