@@ -22,13 +22,20 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-document.getElementById("cashOutForm").addEventListener("submit", function(event) {
+document.getElementById("cashOutForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
     const paymentNumber = document.getElementById("paymentNumber").value.trim();
     const amount = parseFloat(document.getElementById("amount").value.trim());
     const paymentMethod = document.getElementById("paymentMethod").value;
     const pickupLocation = document.getElementById("pickupLocation").value.trim();
+    
+    // Show processing animation
+    document.querySelector(".form-container").innerHTML += `
+        <div class="processing-animation">
+            <i class="fas fa-circle-notch fa-spin"></i>
+            <p>Processing withdrawal...</p>
+        </div>`;
 
     // Validate inputs
     if (!paymentNumber || !amount || isNaN(amount) || amount <= 0) {

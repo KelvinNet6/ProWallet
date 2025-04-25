@@ -51,11 +51,19 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
 
                 // Create the payload for the transfer
+                // Validate amount limits
+                if (amount > 10000000) {
+                    alert("Amount exceeds daily transfer limit of MWK 10,000,000");
+                    return;
+                }
+
                 const transferData = {
                     from_account: fromAccount,
                     to_account: toAccount,
                     amount: amount,
-                    security_code: securityCode
+                    security_code: securityCode,
+                    timestamp: new Date().toISOString(),
+                    transaction_id: Math.random().toString(36).substring(2, 15)
                 };
 
                 // API URL to handle transfer

@@ -39,11 +39,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     enablePaymentBtn.addEventListener('click', async () => {
         try {
+            // Show NFC activation animation
             paymentStatus.innerHTML = `
                 <div class="payment-animation">
-                    <i class="fas fa-circle-notch fa-spin"></i>
-                    <p>Connecting to Yoco POS...</p>
+                    <i class="fas fa-wifi fa-pulse"></i>
+                    <p>Activating NFC payment...</p>
+                    <div class="nfc-range-indicator"></div>
                 </div>`;
+            
+            // Add tap sound effect
+            const tapSound = new Audio('tap-sound.mp3');
+            tapSound.play();
 
             // Initialize Yoco POS payment
             const response = await fetch('https://0.0.0.0:5000/api/yoco/pos/initialize-payment', {
