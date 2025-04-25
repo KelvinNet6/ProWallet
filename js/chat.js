@@ -529,6 +529,76 @@ function monitorLoginActivity() {
         .then(data => {
             if (data.failedAttempts > 3) {
                 addMessage('ai', 'Warning: Multiple failed login attempts detected. If this was not you, please secure your account immediately.');
+
+// Demo transaction data
+const demoTransactions = {
+    transfers: [
+        { date: '2024-02-01', amount: 5000, status: 'completed' },
+        { date: '2024-02-02', amount: 3000, status: 'completed' },
+        { date: '2024-02-03', amount: 7500, status: 'processing' }
+    ],
+    withdrawals: [
+        { date: '2024-02-01', amount: 2000, status: 'completed' },
+        { date: '2024-02-02', amount: 4000, status: 'completed' },
+        { date: '2024-02-04', amount: 1500, status: 'processing' }
+    ],
+    contactless: [
+        { date: '2024-02-02', amount: 1000, status: 'completed' },
+        { date: '2024-02-03', amount: 500, status: 'completed' },
+        { date: '2024-02-04', amount: 2000, status: 'processing' }
+    ]
+};
+
+function showTransactionOverview() {
+    const messageDiv = document.createElement("div");
+    messageDiv.classList.add("chat-bubble", "ai-bubble");
+    
+    const canvas = document.createElement("canvas");
+    canvas.id = "transactionChart";
+    messageDiv.appendChild(canvas);
+    
+    document.getElementById("chat-window").appendChild(messageDiv);
+    
+    const ctx = canvas.getContext("2d");
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Transfers', 'Withdrawals', 'Contactless'],
+            datasets: [{
+                label: 'Total Transactions (MWK)',
+                data: [
+                    demoTransactions.transfers.reduce((sum, t) => sum + t.amount, 0),
+                    demoTransactions.withdrawals.reduce((sum, t) => sum + t.amount, 0),
+                    demoTransactions.contactless.reduce((sum, t) => sum + t.amount, 0)
+                ],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Amount (MWK)'
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Add to existing request queue handler for option 11
+if (userInput === "11") {
+    showTransactionOverview();
+    return;
+}
+
             }
             if (data.unusualLoginLocation) {
                 addMessage('ai', `Suspicious activity: A login attempt was made from a new location (IP: ${data.unusualLoginLocation}).`);
