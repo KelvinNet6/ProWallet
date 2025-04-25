@@ -117,9 +117,94 @@ function handleRequest(request) {
                 helpMessage += "8. Security Tips\n\n";
                 helpMessage += "9. Customer Support\n\n";
                 helpMessage += "10. Transaction Limits\n\n";
+                helpMessage += "11. Process Overview\n\n";
                 addMessage('ai', helpMessage);
         }
     }, 3000);
+
+    const showProcessOverview = () => {
+        const overviewHTML = `
+            <div style="background: #fff; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                <h3>System Process Overview</h3>
+                
+                <!-- Transaction Processing -->
+                <div style="margin: 15px 0;">
+                    <h4>Transaction Processing</h4>
+                    <div class="progress-bar" style="background: #eee; height: 20px; border-radius: 10px; overflow: hidden;">
+                        <div style="width: 85%; background: #4CAF50; height: 100%; transition: width 1s;">
+                            <span style="color: white; padding: 0 10px;">85%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Authentication Services -->
+                <div style="margin: 15px 0;">
+                    <h4>Authentication Services</h4>
+                    <div style="display: inline-block; position: relative; width: 80px; height: 80px;">
+                        <svg viewBox="0 0 36 36" style="transform: rotate(-90deg);">
+                            <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none" stroke="#4CAF50" stroke-width="3" stroke-dasharray="90, 100"/>
+                        </svg>
+                        <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">90%</span>
+                    </div>
+                </div>
+
+                <!-- System Resources -->
+                <div style="margin: 15px 0;">
+                    <h4>System Resources</h4>
+                    <canvas id="resourceChart" width="400" height="200"></canvas>
+                </div>
+
+                <!-- Active Users -->
+                <div style="margin: 15px 0;">
+                    <h4>Active Users</h4>
+                    <div class="progress-bar" style="background: #eee; height: 20px; border-radius: 10px; overflow: hidden;">
+                        <div style="width: 75%; background: #2196F3; height: 100%; transition: width 1s;">
+                            <span style="color: white; padding: 0 10px;">75%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+
+        addMessage('ai', overviewHTML);
+
+        // Initialize the resource chart
+        setTimeout(() => {
+            const ctx = document.getElementById('resourceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                    datasets: [{
+                        label: 'CPU Usage',
+                        data: [65, 59, 80, 81, 56, 55],
+                        borderColor: '#4CAF50',
+                        tension: 0.4
+                    }, {
+                        label: 'Memory Usage',
+                        data: [45, 70, 65, 89, 90, 75],
+                        borderColor: '#2196F3',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }, 100);
+    };
+
+    // Handle option 11 for process overview
+    if (userInput === "11") {
+        showProcessOverview();
+        return;
+    }
 
     processNextRequest();
 }
