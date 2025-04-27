@@ -30,12 +30,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     const ndef = new NDEFReader();
                     await ndef.scan();
                     
-                    ndef.addEventListener("reading", async ({ message }) => {
+                    ndef.addEventListener("reading", async ({ message, serialNumber }) => {
                         const tapSound = new Audio('tap-sound.mp3');
                         tapSound.play();
                         
-                        const response = await initiatePayment();
+                        // Handle POS terminal communication
+                        const posData = {
+                            cardSerial: serialNumber,
+                            timestamp: new Date().toISOString(),
+                            terminalId: message.terminalId || 'DEFAULT_TERMINAL'
+                        };
+                        
+                        const response = await initiatePayment(posData);
                         handlePaymentResponse(response);
+                    });
+
+                    // Handle connection events
+                    ndef.addEventListener("connecting", () => {
+                        paymentStatus.innerHTML = `
+                            <div class="payment-animation">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Connecting to payment terminal...</p>
+                            </div>`;
                     });
 
                     ndef.addEventListener("error", (error) => {
