@@ -527,7 +527,7 @@ PayCode Details:
         }, 1000);
     } else {
         setTimeout(function() {
-            addMessage('ai', "Type 'start' to begin chatting with PayKelvin Assistant!");
+            addMessage('ai', "Type 'start' to begin chatting with ProWallet Assistant!");
         }, 1000);
     }
 });

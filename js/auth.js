@@ -1,4 +1,3 @@
-
 // Authentication check function
 function checkAuth() {
     const userData = JSON.parse(localStorage.getItem('userData'));

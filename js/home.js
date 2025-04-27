@@ -77,7 +77,7 @@ window.addEventListener('load', async function() {
         
         if (userData) {
             // Update account name
-            document.getElementById("account-name").textContent = `PaySheet Account: ${userData.accountName}`;
+            document.getElementById("account-name").textContent = `ProWallet Account: ${userData.accountName}`;
 
             // Populate recent transactions
             const recentTransactionsContainer = document.getElementById("recent-transactions");
