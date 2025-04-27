@@ -314,6 +314,29 @@ body.dark-mode button.mode-toggle-btn {
     right: 20px;
     top: 20px;
     font-size: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.card-nfc-icon::after {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-left: 8px;
+    background: linear-gradient(45deg, #fff 0%, #eee 100%);
+    border-radius: 50%;
+    position: relative;
+}
+
+.card-nfc-icon::before {
+    content: ')';
+    position: absolute;
+    right: 0;
+    transform: rotate(90deg) scaleX(0.5);
+    font-size: 32px;
+    color: #1a1a1a;
+    z-index: 1;
 }
 
 .payment-status {
