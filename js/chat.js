@@ -147,7 +147,7 @@ function handleRequest(request) {
                 addMessage('ai', 'For cash withdrawals, please visit the Cash Out page or click the Cash Out option in the menu.');
                 break;
             case "8":
-                addMessage('ai', 'For account security tips:\n- Keep your PayCo number private\n- Enable two-factor authentication\n- Monitor your transactions regularly\n- Report suspicious activity immediately');
+                addMessage('ai', 'For account security tips:\n- Keep your ProWallet number private\n- Enable two-factor authentication\n- Monitor your transactions regularly\n- Report suspicious activity immediately');
                 break;
             case "9":
                 addMessage('ai', 'Customer Support is available 24/7. You can reach us through:\n- Email: support@paysheet.com\n- Phone: 1-800-PAYSHEET\n- Live Chat: Available on website');
