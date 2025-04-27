@@ -26,10 +26,32 @@ document.addEventListener('DOMContentLoaded', () => {
             tapSound.play();
 
             try {
-                const response = await initiatePayment();
-                handlePaymentResponse(response);
+                if ('NDEFReader' in window) {
+                    const ndef = new NDEFReader();
+                    await ndef.scan();
+                    
+                    ndef.addEventListener("reading", async ({ message }) => {
+                        const tapSound = new Audio('tap-sound.mp3');
+                        tapSound.play();
+                        
+                        const response = await initiatePayment();
+                        handlePaymentResponse(response);
+                    });
+
+                    ndef.addEventListener("error", (error) => {
+                        showError("NFC Error: " + error.message);
+                    });
+                } else {
+                    showError("NFC is not supported on this device");
+                }
             } catch (error) {
-                showError(error.message);
+                if (error.name === 'NotAllowedError') {
+                    showError("Please enable NFC on your device");
+                } else if (error.name === 'NotSupportedError') {
+                    showError("NFC is not supported on this device");
+                } else {
+                    showError(error.message);
+                }
             }
         }
     });
@@ -164,9 +186,10 @@ document.addEventListener('DOMContentLoaded', () => {
         disablePaymentBtn.style.display = 'none';
         paymentStatus.innerHTML = `
             <div class="payment-status">
-                <i class="fas fa-credit-card"></i>
-                <p>Ready for Card Machine Tap-to-Pay</p>
-                <small>Hold your device near the payment terminal</small>
+                <i class="fas fa-wifi"></i>
+                <p>NFC Payment Ready</p>
+                <small>Hold your device near the NFC payment terminal</small>
+                <div class="nfc-indicator"></div>
             </div>`;
     });
 });

@@ -356,6 +356,21 @@ body.dark-mode button.mode-toggle-btn {
     justify-content: center;
 }
 
+.nfc-indicator {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #007bff;
+    margin: 10px auto;
+    animation: nfc-pulse 2s infinite;
+}
+
+@keyframes nfc-pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 123, 255, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
+}
+
 .btn-secondary {
     background-color: #dc3545;
 }
