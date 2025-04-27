@@ -51,8 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const tapSound = new Audio('tap-sound.mp3');
             tapSound.play();
 
-            // Initialize Yoco POS payment
-            const response = await fetch('https://0.0.0.0:5000/api/yoco/pos/initialize-payment', {
+            // Initialize Epawallet payment
+            const response = await fetch('https://0.0.0.0:5000/api/epaywallet/payment/initialize', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify({
                     accountNumber: storedAccount.paySheetNumber,
-                    cardType: 'virtual'
+                    paymentType: 'contactless'
                 })
             });
 
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 paymentStatus.innerHTML = `
                     <div class="payment-animation success">
                         <i class="fas fa-check-circle"></i>
-                        <p>Connected to Yoco POS. Ready for payment.</p>
+                        <p>Contactless payment enabled. Ready for transaction.</p>
                     </div>`;
                 enablePaymentBtn.style.display = 'none';
                 disablePaymentBtn.style.display = 'block';
