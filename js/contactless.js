@@ -129,6 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     enablePaymentBtn.addEventListener('click', async () => {
         try {
+            if (!('NDEFReader' in window)) {
+                throw new Error('NFC is not supported on this device');
+            }
+
             paymentStatus.innerHTML = `
                 <div class="payment-animation">
                     <i class="fas fa-wifi fa-pulse"></i>
@@ -137,8 +141,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>`;
 
             isPaymentEnabled = true;
-                // Get transaction amount from card machine
-                const amount = await getTransactionAmount();
+            enablePaymentBtn.style.display = 'none';
+            disablePaymentBtn.style.display = 'block';
+
+            // Initialize NFC reader
+            const ndef = new NDEFReader();
+            await ndef.scan();
                 
                 // Get current balance
                 const userData = JSON.parse(localStorage.getItem('userData'));
