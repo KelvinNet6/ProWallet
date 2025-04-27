@@ -74,9 +74,45 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Define payment functions outside event listeners
+    async function initiatePayment() {
+        try {
+            const amount = await getTransactionAmount();
+            
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (!userData || !userData.balance) {
+                showError("Unable to fetch account balance");
+                return;
+            }
+
+            if (userData.balance < amount) {
+                showError("Insufficient balance for this transaction");
+                return;
+            }
+
+            const response = await fetch('https://0.0.0.0:5000/api/epaywallet/payment/initialize', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                },
+                body: JSON.stringify({
+                    accountNumber: storedAccount.payCodeNumber,
+                    paymentType: 'contactless',
+                    amount: amount,
+                    deductFromWallet: true
+                })
+            });
+
+            return await response.json();
+        } catch (error) {
+            showError(error.message || 'Payment failed');
+            return { success: false };
+        }
+    }
+
     enablePaymentBtn.addEventListener('click', async () => {
         try {
-            // Show NFC activation animation
             paymentStatus.innerHTML = `
                 <div class="payment-animation">
                     <i class="fas fa-wifi fa-pulse"></i>
@@ -84,10 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="nfc-range-indicator"></div>
                 </div>`;
 
-            // Add tap sound effect
             isPaymentEnabled = true;
-
-            async function initiatePayment() {
                 // Get transaction amount from card machine
                 const amount = await getTransactionAmount();
                 
