@@ -12,12 +12,28 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const storedAccount = JSON.parse(localStorage.getItem('paySheetAccount'));
+    const storedAccount = JSON.parse(localStorage.getItem('userData'));
     const enablePaymentBtn = document.getElementById('enablePayment');
     const disablePaymentBtn = document.getElementById('disablePayment');
     const paymentStatus = document.getElementById('paymentStatus');
     const cardNumber = document.getElementById('cardNumber');
     const cardHolder = document.getElementById('cardHolder');
+    let isPaymentEnabled = false;
+
+    // Add tap detection
+    document.querySelector('.virtual-card').addEventListener('click', async () => {
+        if (isPaymentEnabled) {
+            const tapSound = new Audio('tap-sound.mp3');
+            tapSound.play();
+            
+            try {
+                const response = await initiatePayment();
+                handlePaymentResponse(response);
+            } catch (error) {
+                showError(error.message);
+            }
+        }
+    });
 
     if (storedAccount) {
         fetch(`https://0.0.0.0:5000/api/epaywallet/account/get/${storedAccount.paySheetNumber}`, {
@@ -48,8 +64,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>`;
             
             // Add tap sound effect
-            const tapSound = new Audio('tap-sound.mp3');
-            tapSound.play();
+            isPaymentEnabled = true;
+            
+            async function initiatePayment() {
+                const response = await fetch('https://0.0.0.0:5000/api/epaywallet/payment/initialize', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    },
+                    body: JSON.stringify({
+                        accountNumber: storedAccount.payCodeNumber,
+                        paymentType: 'contactless'
+                    })
+                });
+                return await response.json();
+            }
+
+            function handlePaymentResponse(result) {
+                if (result.success) {
+                    paymentStatus.innerHTML = `
+                        <div class="payment-animation success">
+                            <i class="fas fa-check-circle"></i>
+                            <p>Payment successful!</p>
+                        </div>`;
+                } else {
+                    showError('Payment failed. Please try again.');
+                }
+            }
+
+            function showError(message) {
+                paymentStatus.innerHTML = `
+                    <div class="payment-animation error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>${message}</p>
+                    </div>`;
+            }
 
             // Initialize Epawallet payment
             const response = await fetch('https://0.0.0.0:5000/api/epaywallet/payment/initialize', {
