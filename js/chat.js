@@ -122,9 +122,9 @@ function handleRequest(request) {
                 if (storedAccount && storedAccount.paySheetNumber) {
                     accountNumber = storedAccount.paySheetNumber;
                     isWaitingForPin = true;
-                    addMessage('ai', 'PayCo number retrieved from your local storage. Please enter your 4-digit PIN.');
+                    addMessage('ai', 'ProWallet number retrieved from your local storage. Please enter your 4-digit PIN.');
                 } else {
-                    addMessage('ai', 'Please provide your PayCo number to check the balance.');
+                    addMessage('ai', 'Please provide your ProWallet number to check the balance.');
                     isWaitingForPayCo = true;
                 }
                 break;
@@ -138,7 +138,7 @@ function handleRequest(request) {
                 addMessage('ai', 'Please share your location to find the nearest payment collection agent.');
                 break;
             case "5":
-                addMessage('ai', 'About PayCo: PayCo is a comprehensive payment processing platform designed to simplify your financial transactions.');
+                addMessage('ai', 'About ProWallet: ProWallet is a comprehensive payment processing platform designed to simplify your financial transactions.');
                 break;
             case "6":
                 addMessage('ai', 'To transfer funds, please visit the Transfer Funds page or click the TF option in the menu.');
@@ -298,12 +298,12 @@ document.getElementById("send-btn").addEventListener("click", function() {
 
     // Show greeting options if user types "start"
     if (userInput === "start") {
-        let helpMessage = "Welcome to PayCo! Please select an option by entering its number:\n\n\n";
+        let helpMessage = "Welcome to ProWallet! Please select an option by entering its number:\n\n\n";
         helpMessage += "1. Check Balance\n\n";
         helpMessage += "2. Transfer Fee Information\n\n";
         helpMessage += "3. Withdrawal Fee Information\n\n";
         helpMessage += "4. Find Nearest Agent\n\n";
-        helpMessage += "5. About PayCo\v\n";
+        helpMessage += "5. About ProWallet\v\n";
         helpMessage += "6. Transfer Funds Guide\n\n";
         helpMessage += "7. Cash Out Guide\n\n";
         helpMessage += "8. Security Tips\n\n";
@@ -371,20 +371,20 @@ function checkPayCoNumber(payCoNumber) {
                 if (requestQueue[0] === "1") {
                     // For balance check, proceed directly to email
                     isWaitingForEmail = true;
-                    addMessage('ai', 'PayCo number verified successfully! Please enter your email address.');
+                    addMessage('ai', 'ProWallet number verified successfully! Please enter your email address.');
                 } else {
                     // For PayCode info, ask for PIN
                     isWaitingForPin = true;
-                    addMessage('ai', 'PayCo number verified successfully! Please enter your 4-digit PIN.');
+                    addMessage('ai', 'ProWallet number verified successfully! Please enter your 4-digit PIN.');
                 }
             } else {
-                addMessage('ai', 'Sorry, the PayCo number you entered is invalid. Please check and try again.');
+                addMessage('ai', 'Sorry, the ProWallet number you entered is invalid. Please check and try again.');
                 isWaitingForPayCo = false;
             }
         })
         .catch(error => {
-            addMessage('ai', 'Sorry, there was an error verifying your PayCo number. Please try again later.');
-            console.error('Error checking PayCo number:', error);
+            addMessage('ai', 'Sorry, there was an error verifying your ProWallet number. Please try again later.');
+            console.error('Error checking ProWallet number:', error);
         });
 }
 
@@ -496,9 +496,9 @@ window.addEventListener('load', function() {
                     .then(data => {
                         if (data.isValid) {
                             const userInfo = `
-PayCode Details:
+ProWallet Details:
 - Full Name: ${userData.fullName}
-- PayCode Number: ${userData.payCodeNumber}
+- ProWallet Number: ${userData.payCodeNumber}
 - Email: ${userData.email}
 - Account Status: ${userData.accountStatus}
 `;
