@@ -275,13 +275,51 @@ body.dark-mode button.mode-toggle-btn {
 }
 
 .virtual-card {
-    background: linear-gradient(45deg, #1a1a1a, #4a4a4a);
+    background: linear-gradient(135deg, #1a1a1a, #4a4a4a, #2c3e50);
     border-radius: 15px;
     padding: 20px;
     color: white;
     position: relative;
     height: 200px;
     margin-bottom: 30px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+}
+
+.virtual-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(255,255,255,0.1) 0%,
+        rgba(255,255,255,0.2) 50%,
+        rgba(255,255,255,0.1) 100%);
+    background-size: 200% 200%;
+    animation: hologram-shine 3s infinite;
+    pointer-events: none;
+}
+
+@keyframes hologram-shine {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+}
+
+.card-issuer {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: gold;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .card-chip {
