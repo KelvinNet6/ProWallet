@@ -29,18 +29,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if ('NDEFReader' in window) {
                     const ndef = new NDEFReader();
                     await ndef.scan();
-                    
+
                     ndef.addEventListener("reading", async ({ message, serialNumber }) => {
                         const tapSound = new Audio('tap-sound.mp3');
                         tapSound.play();
-                        
+
                         // Handle POS terminal communication
                         const posData = {
                             cardSerial: serialNumber,
                             timestamp: new Date().toISOString(),
                             terminalId: message.terminalId || 'DEFAULT_TERMINAL'
                         };
-                        
+
                         const response = await initiatePayment(posData);
                         handlePaymentResponse(response);
                     });
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function initiatePayment() {
         try {
             const amount = await getTransactionAmount();
-            
+
             const userData = JSON.parse(localStorage.getItem('userData'));
             if (!userData || !userData.balance) {
                 showError("Unable to fetch account balance");
@@ -129,14 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     enablePaymentBtn.addEventListener('click', async () => {
         try {
-            if (!('NDEFReader' in window)) {
-                throw new Error('NFC is not supported on this device');
-            }
-
             paymentStatus.innerHTML = `
                 <div class="payment-animation">
                     <i class="fas fa-wifi fa-pulse"></i>
-                    <p>Activating NFC payment...</p>
+                    <p>Activating ProWallet payment...</p>
                     <div class="nfc-range-indicator"></div>
                 </div>`;
 
@@ -144,10 +140,11 @@ document.addEventListener('DOMContentLoaded', () => {
             enablePaymentBtn.style.display = 'none';
             disablePaymentBtn.style.display = 'block';
 
-            // Initialize NFC reader
-            const ndef = new NDEFReader();
-            await ndef.scan();
-                
+            const storedAccount = JSON.parse(localStorage.getItem('userData'));
+            if (!storedAccount) {
+                throw new Error('Account data not found');
+            }
+
                 // Get current balance
                 const userData = JSON.parse(localStorage.getItem('userData'));
                 if (!userData || !userData.balance) {
@@ -160,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showError("Insufficient balance for this transaction");
                     return;
                 }
-                
+
                 const response = await fetch('https://0.0.0.0:5000/api/epaywallet/payment/initialize', {
                     method: 'POST',
                     headers: {
@@ -176,14 +173,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 const result = await response.json();
-                
+
                 if (result.success) {
                     try {
                         // Update wallet balance in localStorage
                         const userData = JSON.parse(localStorage.getItem('userData'));
                         userData.balance -= amount;
                         localStorage.setItem('userData', JSON.stringify(userData));
-                        
+
                         // Show success message with new balance
                         paymentStatus.innerHTML = `
                             <div class="payment-animation success">
@@ -191,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <p>Payment successful!</p>
                                 <small>New balance: MWK ${userData.balance.toLocaleString()}</small>
                             </div>`;
-                            
+
                         // Create transaction record
                         const transaction = {
                             type: 'payment',
@@ -199,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             timestamp: new Date().toISOString(),
                             status: 'completed'
                         };
-                        
+
                         const transactions = JSON.parse(localStorage.getItem('transactions') || '[]');
                         transactions.push(transaction);
                         localStorage.setItem('transactions', JSON.stringify(transactions));
@@ -208,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         showError('Payment processed but local data update failed');
                     }
                 }
-                
+
                 return result;
             }
 
