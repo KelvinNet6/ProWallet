@@ -91,6 +91,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Get transaction amount from card machine
                 const amount = await getTransactionAmount();
                 
+                // Get current balance
+                const userData = JSON.parse(localStorage.getItem('userData'));
+                if (!userData || !userData.balance) {
+                    showError("Unable to fetch account balance");
+                    return;
+                }
+
+                // Validate sufficient balance
+                if (userData.balance < amount) {
+                    showError("Insufficient balance for this transaction");
+                    return;
+                }
+                
                 const response = await fetch('https://0.0.0.0:5000/api/epaywallet/payment/initialize', {
                     method: 'POST',
                     headers: {
@@ -108,10 +121,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = await response.json();
                 
                 if (result.success) {
-                    // Update wallet balance in localStorage
-                    const userData = JSON.parse(localStorage.getItem('userData'));
-                    userData.balance -= amount;
-                    localStorage.setItem('userData', JSON.stringify(userData));
+                    try {
+                        // Update wallet balance in localStorage
+                        const userData = JSON.parse(localStorage.getItem('userData'));
+                        userData.balance -= amount;
+                        localStorage.setItem('userData', JSON.stringify(userData));
+                        
+                        // Show success message with new balance
+                        paymentStatus.innerHTML = `
+                            <div class="payment-animation success">
+                                <i class="fas fa-check-circle"></i>
+                                <p>Payment successful!</p>
+                                <small>New balance: MWK ${userData.balance.toLocaleString()}</small>
+                            </div>`;
+                            
+                        // Create transaction record
+                        const transaction = {
+                            type: 'payment',
+                            amount: amount,
+                            timestamp: new Date().toISOString(),
+                            status: 'completed'
+                        };
+                        
+                        const transactions = JSON.parse(localStorage.getItem('transactions') || '[]');
+                        transactions.push(transaction);
+                        localStorage.setItem('transactions', JSON.stringify(transactions));
+                    } catch (error) {
+                        console.error('Error updating local data:', error);
+                        showError('Payment processed but local data update failed');
+                    }
                 }
                 
                 return result;
