@@ -160,7 +160,7 @@ button:hover {
         transform: translateX(-100%);
         position: fixed;
     }
-    
+
     .sidebar.active {
         transform: translateX(0);
     }
@@ -177,7 +177,7 @@ button:hover {
         cursor: pointer;
         font-size: 18px;
     }
-    
+
     .main-content {
         margin-left: 0;
         width: 100%;
@@ -313,7 +313,7 @@ body.dark-mode button.mode-toggle-btn {
 .card-issuer {
     position: absolute;
     top: 20px;
-    right: 20px;
+    left: 20px;
     font-size: 1.2em;
     font-weight: bold;
     text-transform: uppercase;
@@ -350,7 +350,7 @@ body.dark-mode button.mode-toggle-btn {
 .card-nfc-icon {
     position: absolute;
     right: 20px;
-    top: 20px;
+    bottom: 20px;
     font-size: 24px;
     display: flex;
     align-items: center;
@@ -1032,7 +1032,7 @@ input, select {
     .transfer-container {
         padding: 10px;
     }
-    
+
     .form-card {
         padding: 15px;
     }
@@ -1156,7 +1156,7 @@ input, select {
 }
 
 input:checked + .slider {
-    background-color: #007bff;
+        background-color: #007bff;
 }
 
 input:checked + .slider:before {
