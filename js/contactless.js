@@ -66,6 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
             isPaymentEnabled = true;
 
             async function initiatePayment() {
+                // Get transaction amount from card machine
+                const amount = await getTransactionAmount();
+                
                 const response = await fetch('https://0.0.0.0:5000/api/epaywallet/payment/initialize', {
                     method: 'POST',
                     headers: {
@@ -74,10 +77,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     },
                     body: JSON.stringify({
                         accountNumber: storedAccount.payCodeNumber,
-                        paymentType: 'contactless'
+                        paymentType: 'contactless',
+                        amount: amount,
+                        deductFromWallet: true
                     })
                 });
-                return await response.json();
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Update wallet balance in localStorage
+                    const userData = JSON.parse(localStorage.getItem('userData'));
+                    userData.balance -= amount;
+                    localStorage.setItem('userData', JSON.stringify(userData));
+                }
+                
+                return result;
+            }
+
+            async function getTransactionAmount() {
+                // Simulate getting amount from card machine
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve(parseFloat(prompt("Enter transaction amount:", "0")));
+                    }, 1000);
+                });
             }
 
             function handlePaymentResponse(result) {
