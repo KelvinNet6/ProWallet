@@ -16,8 +16,6 @@ async function handleLogin(email, password) {
             localStorage.setItem("userData", JSON.stringify(defaultUserData));
             window.location.href = "home.html";
             return;
-        }
-
         } else {
             alert("Please use the default credentials:\nEmail: kelvin.net6@gmail.com\nPassword: 433677kk");
             return;
