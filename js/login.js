@@ -1,4 +1,3 @@
-
 async function handleLogin(email, password) {
     try {
         // Use default credentials for demo
@@ -16,35 +15,14 @@ async function handleLogin(email, password) {
             localStorage.setItem("userData", JSON.stringify(defaultUserData));
             window.location.href = "home.html";
             return;
-        } else {
-            alert("Please use the default credentials:\nEmail: kelvin.net6@gmail.com\nPassword: 433677kk");
-            return;
-            
-            // Save complete user data to localStorage
-            const userData = {
-                token: loginData.token,
-                userId: loginData.userId,
-                email: email,
-                paySheetNumber: accountData.paySheetNumber,
-                payCodeNumber: accountData.payCodeNumber,
-                fullName: accountData.fullName,
-                balance: accountData.balance,
-                accountStatus: accountData.status
-            };
-            
-            localStorage.setItem("userData", JSON.stringify(userData));
-            
-            // Redirect to home page
-            window.location.href = "home.html";
-        } else {
-            alert("Invalid email or password. Please try again.");
         }
+
+        alert("Please use the default credentials:\nEmail: kelvin.net6@gmail.com\nPassword: 433677kk");
+        return;
     } catch (error) {
         console.error("Error during login:", error);
         if (!navigator.onLine) {
             alert("Please check your internet connection and try again.");
-        } else if (error.message.includes("Failed to fetch")) {
-            alert("Unable to connect to the server. Please try again in a few moments.");
         } else {
             alert("Login failed. Please check your email and password.");
         }
