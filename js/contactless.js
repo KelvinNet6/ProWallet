@@ -1,4 +1,3 @@
-
 // Toggle Sidebar for Mobile
 document.getElementById("menu-btn").addEventListener("click", () => {
     const sidebar = document.getElementById("sidebar");
@@ -25,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isPaymentEnabled) {
             const tapSound = new Audio('tap-sound.mp3');
             tapSound.play();
-            
+
             try {
                 const response = await initiatePayment();
                 handlePaymentResponse(response);
@@ -62,10 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p>Activating NFC payment...</p>
                     <div class="nfc-range-indicator"></div>
                 </div>`;
-            
+
             // Add tap sound effect
             isPaymentEnabled = true;
-            
+
             async function initiatePayment() {
                 const response = await fetch('https://0.0.0.0:5000/api/epaywallet/payment/initialize', {
                     method: 'POST',
@@ -142,7 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
         paymentStatus.innerHTML = `
             <div class="payment-status">
                 <i class="fas fa-credit-card"></i>
-                <p>Ready for Yoco POS payment</p>
+                <p>Ready for Card Machine Tap-to-Pay</p>
+                <small>Hold your device near the payment terminal</small>
             </div>`;
     });
 });
