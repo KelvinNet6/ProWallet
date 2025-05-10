@@ -212,63 +212,67 @@ async function getSystemMetrics() {
 // Function to show process overview
 async function showProcessOverview() {
     const metrics = await getSystemMetrics();
-    const overviewHTML = `
-        <div style="background: #fff; padding: 20px; border-radius: 10px; margin-top: 20px;">
-            <h3>System Process Overview</h3>
+    addMessage('ai', 'Generating system overview...');
+    
+    // Create a container for the metrics
+    const container = document.createElement('div');
+    container.className = 'system-metrics';
+    container.style.cssText = 'background: #fff; padding: 20px; border-radius: 10px; margin: 20px 0;';
+    
+    // Add metric sections
+    const sections = [
+        {
+            title: 'Transaction Success Rate',
+            value: metrics.transactionSuccess,
+            color: '#4CAF50'
+        },
+        {
+            title: 'Authentication Success',
+            value: metrics.authSuccess,
+            color: '#2196F3'
+        },
+        {
+            title: 'CPU Usage',
+            value: metrics.cpuUsage,
+            color: '#FF9800'
+        },
+        {
+            title: 'Memory Usage',
+            value: metrics.memoryUsage,
+            color: '#E91E63'
+        }
+    ];
 
-            <!-- Transaction Processing -->
-            <div style="margin: 15px 0;">
-                <h4>Transaction Processing Success Rate</h4>
-                <div class="progress-bar" style="background: #eee; height: 20px; border-radius: 10px; overflow: hidden;">
-                    <div style="width: ${metrics.transactionSuccess}%; background: #4CAF50; height: 100%; transition: width 1s;">
-                        <span style="color: white; padding: 0 10px;">${metrics.transactionSuccess}%</span>
-                    </div>
+    sections.forEach(section => {
+        const metricDiv = document.createElement('div');
+        metricDiv.style.margin = '15px 0';
+        metricDiv.innerHTML = `
+            <h4 style="margin-bottom: 10px">${section.title}</h4>
+            <div style="background: #eee; height: 20px; border-radius: 10px; overflow: hidden">
+                <div style="width: ${section.value}%; background: ${section.color}; height: 100%; transition: width 1s;">
+                    <span style="color: white; padding: 0 10px">${section.value}%</span>
                 </div>
             </div>
+        `;
+        container.appendChild(metricDiv);
+    });
 
-            <!-- Authentication Services -->
-            <div style="margin: 15px 0;">
-                <h4>Authentication Success Rate</h4>
-                <div class="progress-bar" style="background: #eee; height: 20px; border-radius: 10px; overflow: hidden;">
-                    <div style="width: ${metrics.authSuccess}%; background: #4CAF50; height: 100%; transition: width 1s;">
-                        <span style="color: white; padding: 0 10px;">${metrics.authSuccess}%</span>
-                    </div>
-                </div>
-            </div>
+    // Add active users counter
+    const usersDiv = document.createElement('div');
+    usersDiv.innerHTML = `
+        <h4>Active Users</h4>
+        <div style="font-size: 24px; color: #2196F3; font-weight: bold">
+            ${metrics.activeUsers} users online
+        </div>
+    `;
+    container.appendChild(usersDiv);
 
-            <!-- System Resources -->
-            <div style="margin: 15px 0;">
-                <h4>System Resources</h4>
-                <div style="display: flex; gap: 20px;">
-                    <div style="flex: 1;">
-                        <h5>CPU Usage</h5>
-                        <div class="progress-bar" style="background: #eee; height: 20px; border-radius: 10px; overflow: hidden;">
-                            <div style="width: ${metrics.cpuUsage}%; background: #FF9800; height: 100%; transition: width 1s;">
-                                <span style="color: white; padding: 0 10px;">${metrics.cpuUsage}%</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="flex: 1;">
-                        <h5>Memory Usage</h5>
-                        <div class="progress-bar" style="background: #eee; height: 20px; border-radius: 10px; overflow: hidden;">
-                            <div style="width: ${metrics.memoryUsage}%; background: #2196F3; height: 100%; transition: width 1s;">
-                                <span style="color: white; padding: 0 10px;">${metrics.memoryUsage}%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Active Users -->
-            <div style="margin: 15px 0;">
-                <h4>Active Users</h4>
-                <div style="font-size: 24px; color: #2196F3; font-weight: bold;">
-                    ${metrics.activeUsers} users online
-                </div>
-            </div>
-        </div>`;
-
-        addMessage('ai', overviewHTML);
+    // Add to chat window
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('chat-bubble', 'ai-bubble');
+    messageDiv.appendChild(container);
+    document.getElementById('chat-window').appendChild(messageDiv);
+    document.getElementById('chat-window').scrollTop = document.getElementById('chat-window').scrollHeight;
 
         // Initialize the resource chart
         setTimeout(() => {
