@@ -203,8 +203,14 @@ Please select an option:
 
 // Function to get system metrics
 async function getSystemMetrics() {
-    // In a real implementation, these would come from your backend API
+    // Generate realistic demo metrics
     return {
+        transactionSuccess: Math.floor(Math.random() * (98 - 85) + 85),
+        authSuccess: Math.floor(Math.random() * (100 - 90) + 90),
+        activeUsers: Math.floor(Math.random() * (1000 - 100) + 100),
+        cpuUsage: Math.floor(Math.random() * (90 - 40) + 40),
+        memoryUsage: Math.floor(Math.random() * (80 - 30) + 30),
+        dailyTransactions: Math.floor(Math.random() * (5000 - 1000) + 1000)
         transactionSuccess: Math.floor(Math.random() * (98 - 85) + 85),
         authSuccess: Math.floor(Math.random() * (100 - 90) + 90),
         activeUsers: Math.floor(Math.random() * (1000 - 100) + 100),
@@ -217,6 +223,19 @@ async function getSystemMetrics() {
 async function showProcessOverview() {
     const metrics = await getSystemMetrics();
     addMessage('ai', 'Generating system overview...');
+    
+    // Create detailed overview message
+    const overviewMessage = `
+System Overview:
+━━━━━━━━━━━━━━━━━━━━━━━━
+• Transaction Success Rate: ${metrics.transactionSuccess}%
+• Authentication Success: ${metrics.authSuccess}%
+• Active Users: ${metrics.activeUsers}
+• CPU Usage: ${metrics.cpuUsage}%
+• Memory Usage: ${metrics.memoryUsage}%
+• Daily Transactions: ${metrics.dailyTransactions}
+`;
+    addMessage('ai', overviewMessage);
 
     // Create a container for the metrics
     const container = document.createElement('div');
@@ -320,8 +339,17 @@ async function showProcessOverview() {
 }
 
 // Handle user input and AI responses
+// Handle enter key press
+document.getElementById("user-query").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        document.getElementById("send-btn").click();
+    }
+});
+
 document.getElementById("send-btn").addEventListener("click", function() {
-    const userInput = document.getElementById("user-query").value.trim().toLowerCase();
+    const userInput = document.getElementById("user-query").value.trim();
+    if (!userInput) return;
 
     if (!userInput) return;  // Prevent sending empty input
 
