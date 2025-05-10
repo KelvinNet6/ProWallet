@@ -15,11 +15,11 @@ function addMessage(sender, message, loading = false, type = '') {
     const chatWindow = document.getElementById("chat-window");
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("chat-bubble", sender === "ai" ? "ai-bubble" : "user-bubble");
-    
+
     if (loading) {
         messageDiv.classList.add("loading");
         let progressBar = '';
-        
+
         if (type === 'transfer' || type === 'withdrawal' || type === 'contactless') {
             progressBar = `
                 <div class="transaction-progress">
@@ -31,7 +31,7 @@ function addMessage(sender, message, loading = false, type = '') {
                 </div>
             `;
             messageDiv.innerHTML = progressBar;
-            
+
             // Simulate progress
             simulateTransactionProgress(type);
         } else {
@@ -66,10 +66,10 @@ function simulateTransactionProgress(type) {
             clearInterval(interval);
             return;
         }
-        
+
         progress += 1;
         progressFill.style.width = `${progress}%`;
-        
+
         // Update status text at specific stages
         Object.keys(stages).forEach(stage => {
             if (progress === parseInt(stage)) {
@@ -197,49 +197,76 @@ Please select an option:
         }
     }, 3000);
 
-    const showProcessOverview = () => {
-        const overviewHTML = `
-            <div style="background: #fff; padding: 20px; border-radius: 10px; margin-top: 20px;">
-                <h3>System Process Overview</h3>
-                
-                <!-- Transaction Processing -->
-                <div style="margin: 15px 0;">
-                    <h4>Transaction Processing</h4>
-                    <div class="progress-bar" style="background: #eee; height: 20px; border-radius: 10px; overflow: hidden;">
-                        <div style="width: 85%; background: #4CAF50; height: 100%; transition: width 1s;">
-                            <span style="color: white; padding: 0 10px;">85%</span>
+    // Function to get system metrics
+async function getSystemMetrics() {
+    // In a real implementation, these would come from your backend API
+    return {
+        transactionSuccess: Math.floor(Math.random() * (98 - 85) + 85),
+        authSuccess: Math.floor(Math.random() * (100 - 90) + 90),
+        activeUsers: Math.floor(Math.random() * (1000 - 100) + 100),
+        cpuUsage: Math.floor(Math.random() * (90 - 40) + 40),
+        memoryUsage: Math.floor(Math.random() * (80 - 30) + 30)
+    };
+}
+
+// Function to show process overview
+async function showProcessOverview() {
+    const metrics = await getSystemMetrics();
+    const overviewHTML = `
+        <div style="background: #fff; padding: 20px; border-radius: 10px; margin-top: 20px;">
+            <h3>System Process Overview</h3>
+
+            <!-- Transaction Processing -->
+            <div style="margin: 15px 0;">
+                <h4>Transaction Processing Success Rate</h4>
+                <div class="progress-bar" style="background: #eee; height: 20px; border-radius: 10px; overflow: hidden;">
+                    <div style="width: ${metrics.transactionSuccess}%; background: #4CAF50; height: 100%; transition: width 1s;">
+                        <span style="color: white; padding: 0 10px;">${metrics.transactionSuccess}%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Authentication Services -->
+            <div style="margin: 15px 0;">
+                <h4>Authentication Success Rate</h4>
+                <div class="progress-bar" style="background: #eee; height: 20px; border-radius: 10px; overflow: hidden;">
+                    <div style="width: ${metrics.authSuccess}%; background: #4CAF50; height: 100%; transition: width 1s;">
+                        <span style="color: white; padding: 0 10px;">${metrics.authSuccess}%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Resources -->
+            <div style="margin: 15px 0;">
+                <h4>System Resources</h4>
+                <div style="display: flex; gap: 20px;">
+                    <div style="flex: 1;">
+                        <h5>CPU Usage</h5>
+                        <div class="progress-bar" style="background: #eee; height: 20px; border-radius: 10px; overflow: hidden;">
+                            <div style="width: ${metrics.cpuUsage}%; background: #FF9800; height: 100%; transition: width 1s;">
+                                <span style="color: white; padding: 0 10px;">${metrics.cpuUsage}%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="flex: 1;">
+                        <h5>Memory Usage</h5>
+                        <div class="progress-bar" style="background: #eee; height: 20px; border-radius: 10px; overflow: hidden;">
+                            <div style="width: ${metrics.memoryUsage}%; background: #2196F3; height: 100%; transition: width 1s;">
+                                <span style="color: white; padding: 0 10px;">${metrics.memoryUsage}%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Authentication Services -->
-                <div style="margin: 15px 0;">
-                    <h4>Authentication Services</h4>
-                    <div style="display: inline-block; position: relative; width: 80px; height: 80px;">
-                        <svg viewBox="0 0 36 36" style="transform: rotate(-90deg);">
-                            <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                fill="none" stroke="#4CAF50" stroke-width="3" stroke-dasharray="90, 100"/>
-                        </svg>
-                        <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">90%</span>
-                    </div>
+            <!-- Active Users -->
+            <div style="margin: 15px 0;">
+                <h4>Active Users</h4>
+                <div style="font-size: 24px; color: #2196F3; font-weight: bold;">
+                    ${metrics.activeUsers} users online
                 </div>
-
-                <!-- System Resources -->
-                <div style="margin: 15px 0;">
-                    <h4>System Resources</h4>
-                    <canvas id="resourceChart" width="400" height="200"></canvas>
-                </div>
-
-                <!-- Active Users -->
-                <div style="margin: 15px 0;">
-                    <h4>Active Users</h4>
-                    <div class="progress-bar" style="background: #eee; height: 20px; border-radius: 10px; overflow: hidden;">
-                        <div style="width: 75%; background: #2196F3; height: 100%; transition: width 1s;">
-                            <span style="color: white; padding: 0 10px;">75%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>`;
+            </div>
+        </div>`;
 
         addMessage('ai', overviewHTML);
 
@@ -467,7 +494,7 @@ function verifyPin(pin) {
 window.addEventListener('load', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const action = urlParams.get('action');
-    
+
     if (action === 'balance') {
         setTimeout(() => {
             document.getElementById("user-query").value = "1";
@@ -480,11 +507,11 @@ window.addEventListener('load', function() {
                 addMessage('ai', 'Please enter your 4-digit PIN to view your PayCode details.');
                 isWaitingForPin = true;
                 accountNumber = userData.payCodeNumber;
-                
+
                 // Override PIN verification for PayCode info
                 window.verifyPinForPayCode = function(pin) {
                     const apiUrl = `https://0.0.0.0:5000/api/epaywallet/account/verify/pin/${accountNumber}/${pin}`;
-                    
+
                     fetch(apiUrl, {
                         headers: {
                             "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
@@ -577,13 +604,13 @@ const demoTransactions = {
 function showTransactionOverview() {
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("chat-bubble", "ai-bubble");
-    
+
     const canvas = document.createElement("canvas");
     canvas.id = "transactionChart";
     messageDiv.appendChild(canvas);
-    
+
     document.getElementById("chat-window").appendChild(messageDiv);
-    
+
     const ctx = canvas.getContext("2d");
     new Chart(ctx, {
         type: 'bar',
