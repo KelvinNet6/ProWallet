@@ -155,9 +155,11 @@ function handleRequest(request) {
             case "10":
                 addMessage('ai', 'Transaction Limits:\n- Daily Transfer: Up to MWK 10,000,000\n- Weekly Withdrawal: Up to MWK 25,000,000\n- Monthly Transaction: Up to MWK 50,000,000');
                 break;
+            case "11":
+                showProcessOverview();
+                break;
             default:
-                let helpMessage = "Please select an option by entering its number:\n\n\n";
-                helpMessage = `
+                let helpMessage = `
 Please select an option:
 
 1️⃣ Check Balance
@@ -191,13 +193,15 @@ Please select an option:
 ────────────────────────
 
 1️⃣1️⃣ Process Overview
-────────────────────────
-`;
+────────────────────────`;
                 addMessage('ai', helpMessage);
+                break;
         }
-    }, 3000);
+        processNextRequest();
+    }, 1000);
+}
 
-    // Function to get system metrics
+// Function to get system metrics
 async function getSystemMetrics() {
     // In a real implementation, these would come from your backend API
     return {
@@ -213,12 +217,12 @@ async function getSystemMetrics() {
 async function showProcessOverview() {
     const metrics = await getSystemMetrics();
     addMessage('ai', 'Generating system overview...');
-    
+
     // Create a container for the metrics
     const container = document.createElement('div');
     container.className = 'system-metrics';
     container.style.cssText = 'background: #fff; padding: 20px; border-radius: 10px; margin: 20px 0;';
-    
+
     // Add metric sections
     const sections = [
         {
