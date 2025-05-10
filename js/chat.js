@@ -162,37 +162,37 @@ function handleRequest(request) {
                 let helpMessage = `
 Please select an option:
 
-1️⃣ Check Balance
+1. Check Balance
 ────────────────────────
 
-2️⃣ Transfer Fee Information
+2. Transfer Fee Information
 ────────────────────────
 
-3️⃣ Withdrawal Fee Information
+3. Withdrawal Fee Information
 ────────────────────────
 
-4️⃣ Find Nearest Agent
+4. Find Nearest Agent
 ────────────────────────
 
-5️⃣ About PayCo
+5. About ProWallet
 ────────────────────────
 
-6️⃣ Transfer Funds Guide
+6. Transfer Funds Guide
 ────────────────────────
 
-7️⃣ Cash Out Guide
+7. Cash Out Guide
 ────────────────────────
 
-8️⃣ Security Tips
+8. Security Tips
 ────────────────────────
 
-9️⃣ Customer Support
+9. Customer Support
 ────────────────────────
 
-🔟 Transaction Limits
+10. Transaction Limits
 ────────────────────────
 
-1️⃣1️⃣ Process Overview
+11. Process Overview
 ────────────────────────`;
                 addMessage('ai', helpMessage);
                 break;
