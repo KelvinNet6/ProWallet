@@ -618,7 +618,6 @@ function monitorLoginActivity() {
             if (data.failedAttempts > 3) {
                 addMessage('ai', 'Warning: Multiple failed login attempts detected. If this was not you, please secure your account immediately.');
 
-// Demo transaction data
 const demoTransactions = {
     transfers: [
         { date: '2024-02-01', amount: 5000, status: 'completed' },
@@ -638,16 +637,27 @@ const demoTransactions = {
 };
 
 function showTransactionOverview() {
+    // Create container div for the message bubble
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("chat-bubble", "ai-bubble");
 
+    // Create canvas for Chart.js
     const canvas = document.createElement("canvas");
     canvas.id = "transactionChart";
+    canvas.style.width = "100%";
+    canvas.style.height = "300px"; // fixed height for visibility
     messageDiv.appendChild(canvas);
 
+    // Append to chat window
     document.getElementById("chat-window").appendChild(messageDiv);
 
+    // Get 2D context
     const ctx = canvas.getContext("2d");
+
+    // Sum amounts helper function
+    const sumAmounts = arr => arr.reduce((sum, t) => sum + t.amount, 0);
+
+    // Create Chart.js bar chart
     new Chart(ctx, {
         type: 'bar',
         data: {
@@ -655,9 +665,9 @@ function showTransactionOverview() {
             datasets: [{
                 label: 'Total Transactions (MWK)',
                 data: [
-                    demoTransactions.transfers.reduce((sum, t) => sum + t.amount, 0),
-                    demoTransactions.withdrawals.reduce((sum, t) => sum + t.amount, 0),
-                    demoTransactions.contactless.reduce((sum, t) => sum + t.amount, 0)
+                    sumAmounts(demoTransactions.transfers),
+                    sumAmounts(demoTransactions.withdrawals),
+                    sumAmounts(demoTransactions.contactless)
                 ],
                 backgroundColor: [
                     'rgba(75, 192, 192, 0.6)',
@@ -668,6 +678,7 @@ function showTransactionOverview() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: true,
@@ -676,11 +687,18 @@ function showTransactionOverview() {
                         text: 'Amount (MWK)'
                     }
                 }
+            },
+            plugins: {
+                legend: {
+                    display: true
+                },
+                tooltip: {
+                    enabled: true
+                }
             }
         }
     });
 }
-
 // Add to existing request queue handler for option 11
 if (userInput === "11") {
     showTransactionOverview();
