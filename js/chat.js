@@ -70,7 +70,7 @@ function simulateTransactionProgress(type) {
 window.addEventListener('load', function () {
     const chatHistory = JSON.parse(localStorage.getItem('chatHistory') || '[]');
     if (chatHistory.length === 0) {
-        const welcomeMessage = `Welcome to ProWallet Assistant!\n\nI can help you with: \n1. Checking balance\n2. Transaction and withdrawal fees\n3. Locating the nearest agent\n4. Account information\n5. Security guidance\n6. Viewing system and transaction statistics\n\nType 'start' or enter a number to begin.`;
+        const welcomeMessage = `Welcome to ProWallet Assistant!\n\nI can help you with:\n\n1. Checking balance\n2. Transaction and withdrawal fees\n3. Locating the nearest agent\n4. Account information\n5. Security guidance\n6. Viewing system and transaction statistics\n\nType 'start' or enter a number to begin.`;
         addMessage('ai', welcomeMessage);
     } else {
         chatHistory.forEach(msg => addMessage(msg.sender, msg.message));
@@ -218,7 +218,7 @@ document.getElementById("send-btn").addEventListener("click", function () {
     document.getElementById("user-query").value = '';
 
     if (userInput.toLowerCase() === "start") {
-        const helpMessage = `Welcome to ProWallet! Choose an option:\n\n1. Check Balance\n2. Transfer Fee Info\n3. Withdrawal Fee Info\n4. Nearest Agent\n5. About\n6. Transfer Guide\n7. Cash Out Guide\n8. Security Tips\n9. Support\n10. Limits\n11. System Overview\n12. Transactions Chart`;
+        const helpMessage = `Welcome to ProWallet Assistant!\n\nI can help you with:\n\n1. Checking balance\n2. Transaction and withdrawal fees\n3. Locating the nearest agent\n4. Account information\n5. Security guidance\n6. Viewing system and transaction statistics\n\nType the number of the option you want to explore.`;
         addMessage('ai', helpMessage);
         return;
     }
