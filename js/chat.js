@@ -69,7 +69,12 @@ function simulateTransactionProgress(type) {
 
 window.addEventListener('load', function () {
     const chatHistory = JSON.parse(localStorage.getItem('chatHistory') || '[]');
-    chatHistory.forEach(msg => addMessage(msg.sender, msg.message));
+    if (chatHistory.length === 0) {
+        const welcomeMessage = `Welcome to ProWallet Assistant!\n\nI can help you with: \n1. Checking balance\n2. Transaction and withdrawal fees\n3. Locating the nearest agent\n4. Account information\n5. Security guidance\n6. Viewing system and transaction statistics\n\nType 'start' or enter a number to begin.`;
+        addMessage('ai', welcomeMessage);
+    } else {
+        chatHistory.forEach(msg => addMessage(msg.sender, msg.message));
+    }
 });
 
 let currentState = null;
@@ -238,4 +243,3 @@ document.getElementById("send-btn").addEventListener("click", function () {
     requestQueue.push(userInput);
     processNextRequest();
 });
-
