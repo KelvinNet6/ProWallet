@@ -18,7 +18,7 @@ function addMessage(sender, message, loading = false, type = '') {
 
     if (loading) {
         messageDiv.classList.add("loading");
-        if (['transfer', 'withdrawal', 'contactless'].includes(type)) {
+        if (["transfer", "withdrawal", "contactless"].includes(type)) {
             messageDiv.innerHTML = `
                 <div class="transaction-progress">
                     <div class="progress-label">${type.charAt(0).toUpperCase() + type.slice(1)} Processing</div>
@@ -69,9 +69,12 @@ function simulateTransactionProgress(type) {
 
 window.addEventListener('load', function () {
     const chatHistory = JSON.parse(localStorage.getItem('chatHistory') || '[]');
-    if (chatHistory.length === 0) {
+    const hasWelcomed = sessionStorage.getItem('hasWelcomed');
+
+    if (!hasWelcomed) {
         const welcomeMessage = `Welcome to ProWallet Assistant!\n\nI can help you with:\n\n1. Checking balance\n2. Transaction and withdrawal fees\n3. Locating the nearest agent\n4. Account information\n5. Security guidance\n6. Viewing system and transaction statistics\n\nType 'start' or enter a number to begin.`;
         addMessage('ai', welcomeMessage);
+        sessionStorage.setItem('hasWelcomed', 'true');
     } else {
         chatHistory.forEach(msg => addMessage(msg.sender, msg.message));
     }
@@ -121,7 +124,7 @@ function handleRequest(request) {
                 addMessage('ai', 'Share your location to find the nearest agent.');
                 break;
             case "5":
-                addMessage('ai', 'ProWallet is a payment platform simplifying transactions.');
+                addMessage('ai', 'ProWallet is a comprehensive payment platform designed to simplify your transactions. It supports contactless payments with tap-to-pay functionality, allowing fast and secure checkout without cash or cards.');
                 break;
             case "6":
                 addMessage('ai', 'Visit the Transfer Funds page to send money.');
@@ -139,13 +142,17 @@ function handleRequest(request) {
                 addMessage('ai', 'Limits:\n- Daily: MWK 10M\n- Weekly: MWK 25M\n- Monthly: MWK 50M');
                 break;
             case "11":
-                showProcessOverview();
-                break;
-            case "12":
                 showTransactionOverview();
                 break;
+            case "12":
+                showProcessOverview();
+                break;
+            case "home":
+                const homeMessage = `Welcome back to ProWallet Assistant!\n\nChoose a service:\n\n1. Check Balance\n2. Transaction Fees\n3. Withdrawal Fees\n4. Find Agent\n5. About ProWallet\n6. Transfer Funds\n7. Cash Out\n8. Security Tips\n9. Customer Support\n10. Transaction Limits\n11. Transaction Overview\n12. System Overview`;
+                addMessage('ai', homeMessage);
+                break;
             default:
-                addMessage('ai', 'Please choose an option (1-12).');
+                addMessage('ai', 'Please choose an option (1-12 or type "home").');
         }
         processNextRequest();
     }, 1000);
@@ -181,8 +188,8 @@ function showTransactionOverview() {
 
     const canvas = document.createElement("canvas");
     canvas.id = "transactionChart";
-    canvas.style.width = "100%";
-    canvas.style.height = "300px";
+    canvas.width = 300;
+    canvas.height = 300;
     messageDiv.appendChild(canvas);
     document.getElementById("chat-window").appendChild(messageDiv);
 
@@ -190,21 +197,23 @@ function showTransactionOverview() {
     const sum = arr => arr.reduce((a, b) => a + b, 0);
 
     new Chart(ctx, {
-        type: 'bar',
+        type: 'doughnut',
         data: {
             labels: ['Transfers', 'Withdrawals', 'Contactless'],
             datasets: [{
-                label: 'Total (MWK)',
+                label: 'Transaction Overview',
                 data: [sum(demo.transfers), sum(demo.withdrawals), sum(demo.contactless)],
                 backgroundColor: ['#4BC0C0', '#FF6384', '#36A2EB']
             }]
         },
         options: {
             responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: { display: true, text: 'Amount (MWK)' }
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                },
+                tooltip: {
+                    enabled: true
                 }
             }
         }
@@ -217,9 +226,9 @@ document.getElementById("send-btn").addEventListener("click", function () {
     addMessage('user', userInput);
     document.getElementById("user-query").value = '';
 
-    if (userInput.toLowerCase() === "start") {
-        const helpMessage = `Welcome to ProWallet Assistant!\n\nI can help you with:\n\n1. Checking balance\n2. Transaction and withdrawal fees\n3. Locating the nearest agent\n4. Account information\n5. Security guidance\n6. Viewing system and transaction statistics\n\nType the number of the option you want to explore.`;
-        addMessage('ai', helpMessage);
+    if (userInput.toLowerCase() === "start" || userInput.toLowerCase() === "home") {
+        const homeMessage = `Welcome back to ProWallet Assistant!\n\nChoose a service:\n\n1. Check Balance\n2. Transaction Fees\n3. Withdrawal Fees\n4. Find Agent\n5. About ProWallet\n6. Transfer Funds\n7. Cash Out\n8. Security Tips\n9. Customer Support\n10. Transaction Limits\n11. Transaction Overview\n12. System Overview`;
+        addMessage('ai', homeMessage);
         return;
     }
 
