@@ -1,5 +1,5 @@
 // Toggle Sidebar for Mobile
-document.getElementBy("menu-btn").addEventListener("click", () => {
+document.getElementById("menu-btn").addEventListener("click", () => {
     const sidebar = document.getElementById("sidebar");
     sidebar.classList.toggle("active");
 });
