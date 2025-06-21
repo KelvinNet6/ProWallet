@@ -147,7 +147,7 @@ function handleRequest(request) {
             case "12":
                 showProcessOverview();
                 break;
-            case "home":
+            case "0":
                 const homeMessage = `Welcome back to ProWallet Assistant!\n\nChoose a service:\n\n1. Check Balance\n2. Transaction Fees\n3. Withdrawal Fees\n4. Find Agent\n5. About ProWallet\n6. Transfer Funds\n7. Cash Out\n8. Security Tips\n9. Customer Support\n10. Transaction Limits\n11. Transaction Overview\n12. System Overview`;
                 addMessage('ai', homeMessage);
                 break;
